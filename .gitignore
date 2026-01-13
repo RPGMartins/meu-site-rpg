@@ -1,11 +1,2 @@
 # Ignora tudo dentro de data
-data/*
-
-# Reinclui os arquivos JSON específicos
-!data/races.json
-!data/feats.json
-!data/backgrounds.json
-
-# Reinclui a pasta class e tudo dentro dela
-!data/class/
-!data/class/**
+5etools-src/*
