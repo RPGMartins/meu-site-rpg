@@ -32,7 +32,7 @@ function renderClassList(classIndex)
         const tagName = "classSelection"
 
         Clean(tagName)
-        loadClass(tagName,key)
+        LoadSubClass(tagName,key)
       };
 
     document.body.appendChild(btn);
@@ -41,7 +41,7 @@ function renderClassList(classIndex)
 
 
 
-async function loadClass(tagName,key) 
+async function LoadSubClass(tagName,key) 
 {
   const index = await loadClassIndex();
   const file = index[key];
@@ -52,10 +52,10 @@ async function loadClass(tagName,key)
   const cls = data.class[0];
   const subcls = data.subclass;
 
-  renderClassDetails(tagName,cls,subcls);
+  RenderClassDetails(tagName,cls,subcls);
 }
 
-function renderClassDetails(tagName,cls,subcls) 
+function RenderClassDetails(tagName,cls,subcls) 
 {
   let hitDice = "—";
 
@@ -75,7 +75,7 @@ function renderClassDetails(tagName,cls,subcls)
 
   document.body.appendChild(div);
 
-  renderSubClassList(subcls);
+  RenderSubClassList(subcls);
 }
 
 
