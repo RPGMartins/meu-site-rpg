@@ -3,13 +3,13 @@ var classStatick = "class-details";
 (
   async function init() 
   {
-    const index = await loadClassIndex();
+    const index = await loadRacesIndex();
     renderClassList(index);
   }
 )();
 
 
-async function loadClassIndex() 
+async function loadRacesIndex() 
 {
   const res = await fetch("./data/class/index.json");
   const index = await res.json();
@@ -34,8 +34,13 @@ function renderClassList(classIndex)
 
     btn.onclick = () => 
       {
+        CharacterState.class = classIndex;
+        CharacterState.subclass = null;
+
+        UpdateClassHeader();
+
         CleanContainer(classTitleID);
-        LoadSubClass(key)
+        LoadSubClass(classIndex,key)
       };
 
     container.appendChild(btn);
@@ -43,9 +48,8 @@ function renderClassList(classIndex)
 }
 
 
-async function LoadSubClass(key) 
+async function LoadSubClass(index,key) 
 {
-  const index = await loadClassIndex();
   const file = index[key];
 
   const res = await fetch(`./data/class/${file}`);

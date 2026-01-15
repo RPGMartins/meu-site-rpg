@@ -3,23 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <title>RPG Builder</title>
+  <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
   <h1>Teste Classes</h1>
+
+<header>
+  <nav>
+    <div id = "HeaderEscolhas">
+          <div id = "HeaderClasse"></div>
+          <div id = "HeaderRaca"></div>
+
+    </div>
+  </nav>
+</header>
+
+
 
   <div id="class-details"></div>
   <div id="classSelection"></div>
   <div id="subClass-details"></div>
   <div id="subClassSelection"></div>
+  
+  <!-- Races -->
+  <div id="ButtonsEditions"></div>
+  <div id="raceGeneral"></div>
+  <div id="subRace"></div>
+  <div id="raceInfo"></div>
+
   <!-- DEPENDÊNCIA -->
 
   <!-- BASE 5E TOOLS -->
   <script src="./js/parser.js"></script>
 
   <!-- SEU CÓDIGO -->
-  <script src="js/ClassLoaderUtils.js"></script>
+  <script src="js/ExtraUtils.js"></script>
+  <script src="js/HeaderLoader.js"></script>
+
+
+  <script src="js/ClassLoader.js"></script>
   <script src="js/SubClassLoader.js"></script>
   <script src="./js/ClassLoader.js"></script>
+  <script src="./js/RaceLoader.js"></script>
 
 </body>
 </html>

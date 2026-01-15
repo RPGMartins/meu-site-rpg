@@ -22,6 +22,9 @@ function RenderSubClassList(subcls)
 
         btn.onclick = () => 
         {
+            CharacterState.subclass = sc;
+            updateClassHeader();
+            
             CleanContainer(subclassTitleID);
             RenderSubClassDetails(sc)
         };

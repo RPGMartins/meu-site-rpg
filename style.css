@@ -1,0 +1,21 @@
+#ButtonsEditions 
+{
+  border: 2px solid #333;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+header {
+  position: fixed;     /* fixa no topo */
+  top: 0;              /* posição no topo */
+  left: 0;             /* alinhado à esquerda */
+  width: 100%;         /* ocupa toda a largura */
+  background: #b9b0b0;    /* cor de fundo */
+  color: white;        /* cor do texto */
+  padding: 10px;
+  z-index: 1000;       /* garante que fique acima do conteúdo */
+}
+main {
+  margin-top: 80px;    /* espaço para não ficar escondido atrás do header */
+}
