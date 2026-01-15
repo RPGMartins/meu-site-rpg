@@ -1,5 +1,11 @@
 window.CharacterState = 
 {
+    meta: 
+    {
+        toolVersion: "0.1",
+        createdAt: () => new Date().toISOString()
+    },
+
   class: null,
   subclass: null,
 
@@ -20,7 +26,6 @@ function UpdateClassHeader()
     html += `<br><strong>Subclasse:</strong> ${CharacterState.subclass.name}`;
   }
 
-  console.log("STATE:", CharacterState);
   container.innerHTML = html;
 }
 
