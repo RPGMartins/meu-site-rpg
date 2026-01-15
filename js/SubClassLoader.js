@@ -22,9 +22,6 @@ function RenderSubClassList(subcls)
 
         btn.onclick = () => 
         {
-            CharacterState.subclass = sc;
-            updateClassHeader();
-            
             CleanContainer(subclassTitleID);
             RenderSubClassDetails(sc)
         };
@@ -57,6 +54,9 @@ function RenderSubClassDetails(subcls)
         <p><strong>Fonte:</strong> ${Parser.sourceJsonToAbv(source)}</p>
     `;
     const container = document.getElementById(subclassTitleID);
+
+    CharacterState.subclass = subcls;
+    UpdateClassHeader();
 
     container.appendChild(div);
 }

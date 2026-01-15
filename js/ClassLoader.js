@@ -35,10 +35,6 @@ function renderClassList(classIndex)
 
     btn.onclick = () => 
       {
-        CharacterState.class = classIndex;
-        CharacterState.subclass = null;
-
-        UpdateClassHeader();
 
         CleanContainer(classTitleID);
         LoadSubClass(classIndex,key)
@@ -58,6 +54,10 @@ async function LoadSubClass(index,key)
 
   const cls = data.class[0];
   const subcls = data.subclass;
+
+  CharacterState.class = cls;
+  CharacterState.subclass = null;
+  UpdateClassHeader();
 
   RenderClassDetails(cls,subcls);
 }

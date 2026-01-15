@@ -20,6 +20,7 @@ function UpdateClassHeader()
     html += `<br><strong>Subclasse:</strong> ${CharacterState.subclass.name}`;
   }
 
+  console.log("STATE:", CharacterState);
   container.innerHTML = html;
 }
 

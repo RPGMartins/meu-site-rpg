@@ -131,7 +131,8 @@ function renderSubRaceList(race, subraces) {
 
     btn.onclick = () => 
     {
-      CharacterState.subrace = subrace;
+      CharacterState.subrace = sr;
+
       UpdateRaceHeader();
 
       CleanContainer(raceInfoID);
