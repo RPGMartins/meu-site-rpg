@@ -18,6 +18,7 @@ async function loadRacesIndex()
 
 function renderClassList(classIndex) 
 {
+  CleanContainer(classStatick);
   const title = document.createElement("h2");
   title.textContent = "Classes disponíveis";
   const container = document.getElementById(classStatick);

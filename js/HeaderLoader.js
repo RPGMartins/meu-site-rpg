@@ -1,4 +1,4 @@
-const CharacterState = 
+window.CharacterState = 
 {
   class: null,
   subclass: null,
