@@ -1,15 +1,8 @@
-function Clean(tagName)
+function CleanContainer(id) 
 {
-  var elements =  document.getElementsByTagName(tagName)
-
-  if(elements == undefined)
+  const container = document.getElementById(id);
+  if (container) 
   {
-    return;
-  }
-
-  for (let index = elements.length-1; index >= 0; index--) 
-  {
-    var element = elements[index];
-    document.body.removeChild(element)
+    container.innerHTML = "";
   }
 }

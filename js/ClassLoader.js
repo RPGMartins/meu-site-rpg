@@ -1,9 +1,10 @@
+var classTitleID = "classSelection";
+var classStatick = "class-details";
 (
   async function init() 
   {
     const index = await loadClassIndex();
     renderClassList(index);
-
   }
 )();
 
@@ -19,29 +20,30 @@ function renderClassList(classIndex)
 {
   const title = document.createElement("h2");
   title.textContent = "Classes disponíveis";
-  document.body.appendChild(title);
+  const container = document.getElementById(classStatick);
+  container.appendChild(title);
 
+  
   Object.keys(classIndex).forEach(key => 
   {
     const btn = document.createElement("button");
     btn.textContent = key;
     btn.style.display = "block";
 
+    console.log("ID: "+btn.id);
+
     btn.onclick = () => 
       {
-        const tagName = "classSelection"
-
-        Clean(tagName)
-        LoadSubClass(tagName,key)
+        CleanContainer(classTitleID);
+        LoadSubClass(key)
       };
 
-    document.body.appendChild(btn);
+    container.appendChild(btn);
   });
 }
 
 
-
-async function LoadSubClass(tagName,key) 
+async function LoadSubClass(key) 
 {
   const index = await loadClassIndex();
   const file = index[key];
@@ -52,10 +54,11 @@ async function LoadSubClass(tagName,key)
   const cls = data.class[0];
   const subcls = data.subclass;
 
-  RenderClassDetails(tagName,cls,subcls);
+  RenderClassDetails(cls,subcls);
 }
 
-function RenderClassDetails(tagName,cls,subcls) 
+
+function RenderClassDetails(cls,subcls) 
 {
   let hitDice = "—";
 
@@ -65,17 +68,16 @@ function RenderClassDetails(tagName,cls,subcls)
     
   }
 
-  const div = document.createElement(tagName);
+
+  const div = document.createElement("h2");
   div.style.marginTop = "20px";
   div.innerHTML = `
     <h3>${cls.name}</h3>
     <p><strong>Hit Dice:</strong> ${hitDice}</p>
     <p><strong>Fonte:</strong> ${Parser.sourceJsonToAbv(cls.source)}</p>
   `;
-
-  document.body.appendChild(div);
+  const container = document.getElementById(classTitleID);
+  container.appendChild(div);
 
   RenderSubClassList(subcls);
 }
-
-

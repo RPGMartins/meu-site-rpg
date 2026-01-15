@@ -1,12 +1,17 @@
+var subclassTitleID = "subClassSelection" ;
+var subclasStatick = "subClass-details" ;
+
+
 function RenderSubClassList(subcls) 
 {
-    const subclassTitle = "subClassTitle" 
+    CleanContainer(subclasStatick);
+    CleanContainer(subclassTitleID);
 
-    Clean(subclassTitle);
-
-    const title = document.createElement(subclassTitle);
+    const title = document.createElement("h3");
     title.textContent = "Sub Classes disponíveis";
-    document.body.appendChild(title);
+    const container = document.getElementById(subclasStatick);
+
+    container.appendChild(title);
 
 
     OrganizeSubclasses(subcls).forEach(sc => 
@@ -17,18 +22,16 @@ function RenderSubClassList(subcls)
 
         btn.onclick = () => 
         {
-            const tagName = "subClassSelection"
-
-            Clean(tagName)
-            RenderSubClassDetails(tagName,sc)
+            CleanContainer(subclassTitleID);
+            RenderSubClassDetails(sc)
         };
 
-    document.body.appendChild(btn);
+    container.appendChild(btn);
     });
 }
 
 
-function RenderSubClassDetails(tagName,subcls) 
+function RenderSubClassDetails(subcls) 
 {
     var subclass;
     var source = "One";
@@ -44,14 +47,15 @@ function RenderSubClassDetails(tagName,subcls)
     }
 
     console.log("AA" +subclass)
-    const div = document.createElement(tagName);
+    const div = document.createElement("h2");
     div.style.marginTop = "20px";
     div.innerHTML = `
         <h3>${subcls.name}</h3>
         <p><strong>Fonte:</strong> ${Parser.sourceJsonToAbv(source)}</p>
     `;
+    const container = document.getElementById(subclassTitleID);
 
-    document.body.appendChild(div);
+    container.appendChild(div);
 }
 
 function OrganizeSubclasses(subclasses) {
