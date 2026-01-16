@@ -1,15 +1,13 @@
-var subclassTitleID = "subClassSelection" ;
-var subclasStatick = "subClass-details" ;
-
+var subClassListID = "subClassSection";
+var subClassInfoID = "subClassInfo"
 
 function RenderSubClassList(subcls) 
 {
-    CleanContainer(subclasStatick);
-    CleanContainer(subclassTitleID);
+    CleanContainer(subClassListID);
 
     const title = document.createElement("h3");
     title.textContent = "Sub Classes disponíveis";
-    const container = document.getElementById(subclasStatick);
+    const container = document.getElementById(subClassListID);
 
     container.appendChild(title);
 
@@ -22,7 +20,7 @@ function RenderSubClassList(subcls)
 
         btn.onclick = () => 
         {
-            CleanContainer(subclassTitleID);
+            CleanContainer(subClassInfoID);
             RenderSubClassDetails(sc)
         };
 
@@ -46,14 +44,13 @@ function RenderSubClassDetails(subcls)
         subclass = subcls.one;
     }
 
-    console.log("AA" +subclass)
     const div = document.createElement("h2");
     div.style.marginTop = "20px";
     div.innerHTML = `
         <h3>${subcls.name}</h3>
         <p><strong>Fonte:</strong> ${Parser.sourceJsonToAbv(source)}</p>
     `;
-    const container = document.getElementById(subclassTitleID);
+    const container = document.getElementById(subClassInfoID);
 
     CharacterState.subclass = subcls;
     UpdateClassHeader();

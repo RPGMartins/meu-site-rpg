@@ -1,8 +1,9 @@
 var buttonListID = "ButtonsEditions";
 
-var raceListID = "raceGeneral";
-var subRaceID = "subRace";
-var raceInfoID = "raceInfo";
+var raceListID    = "raceGeneral";
+var subRaceListID = "raceSub";
+var raceInfoID    = "raceInfo";
+
 
 let RACES_ONE = [];
 let RACES_UPDATED = [];
@@ -43,9 +44,9 @@ async function loadRacesData() {
 
 
 function renderRaceVersionButtons() {
-  CleanContainer(buttonListID);
+  CleanContainer(raceInfoID);
 
-  const container = document.getElementById(buttonListID);
+  const container = document.getElementById(raceInfoID);
 
   const title = document.createElement("h2");
   title.textContent = "Raças";
@@ -57,7 +58,8 @@ function renderRaceVersionButtons() {
     { label: "Originais", data: RACES_ORIGINAL }
   ];
 
-  buttons.forEach(b => {
+  buttons.forEach(b => 
+    {
     const btn = document.createElement("button");
     btn.textContent = b.label;
     btn.style.display = "block";
@@ -65,7 +67,7 @@ function renderRaceVersionButtons() {
     btn.onclick = () => 
       {
       CleanContainer(raceListID);
-      CleanContainer(subRaceID);
+      CleanContainer(subRaceListID);
       CleanContainer(raceInfoID);
 
       renderRaceList(b.data);
@@ -90,7 +92,7 @@ function renderRaceList(races) {
 
       UpdateRaceHeader();
 
-      CleanContainer(subRaceID);
+      CleanContainer(subRaceListID);
       CleanContainer(raceInfoID);
 
       const subraces = getSubRacesFor(race, ALL_SUBRACES);
@@ -117,12 +119,12 @@ function getSubRacesFor(race, subraces) {
 
 
 function renderSubRaceList(race, subraces) {
-  CleanContainer(subRaceID);
+  CleanContainer(subRaceListID);
 
   const title = document.createElement("h3");
   title.textContent = `Sub-raças de ${race.name}`;
 
-  const container = document.getElementById(subRaceID);
+  const container = document.getElementById(subRaceListID);
   container.appendChild(title);
 
   subraces.forEach(sr => {

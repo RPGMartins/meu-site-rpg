@@ -1,5 +1,6 @@
-var classTitleID = "classSelection";
-var classStatick = "class-details";
+var classListID    = "classGeneral";
+var classInfoID    = "classInfo";
+
 (
   async function init() 
   {
@@ -18,10 +19,10 @@ async function loadRacesIndex()
 
 function renderClassList(classIndex) 
 {
-  CleanContainer(classStatick);
+  CleanContainer(classListID);
   const title = document.createElement("h2");
   title.textContent = "Classes disponíveis";
-  const container = document.getElementById(classStatick);
+  const container = document.getElementById(classListID);
   container.appendChild(title);
 
   
@@ -36,7 +37,7 @@ function renderClassList(classIndex)
     btn.onclick = () => 
       {
 
-        CleanContainer(classTitleID);
+        CleanContainer(classInfoID);
         LoadSubClass(classIndex,key)
       };
 
@@ -65,6 +66,7 @@ async function LoadSubClass(index,key)
 
 function RenderClassDetails(cls,subcls) 
 {
+  CleanContainer(classInfoID);
   let hitDice = "—";
 
   if (cls.hd && cls.hd.faces) 
@@ -81,7 +83,7 @@ function RenderClassDetails(cls,subcls)
     <p><strong>Hit Dice:</strong> ${hitDice}</p>
     <p><strong>Fonte:</strong> ${Parser.sourceJsonToAbv(cls.source)}</p>
   `;
-  const container = document.getElementById(classTitleID);
+  const container = document.getElementById(classInfoID);
   container.appendChild(div);
 
   RenderSubClassList(subcls);

@@ -1,5 +1,8 @@
 let FeatCache = null;
 
+var featControlsID = "featControls";
+var featListID     = "featContainer";
+
 (
     async function initFeatLoader() 
     {
@@ -19,7 +22,7 @@ async function loadAllFeats() {
 }
 
 function renderFeatCategories(feats) {
-  CleanContainer("featCategories");
+  CleanContainer(featControlsID);
 
   const categories = 
   {
@@ -36,12 +39,12 @@ function renderFeatCategories(feats) {
 
     btn.onclick = () => renderFeatList(categories[cat]);
 
-    document.getElementById("featCategories").appendChild(btn);
+    document.getElementById(featControlsID).appendChild(btn);
   });
 }
 
 function renderFeatList(feats) {
-  CleanContainer("featList");
+  CleanContainer(featListID);
 
   feats.forEach(feat => {
 
@@ -57,7 +60,7 @@ function renderFeatList(feats) {
     btn.onclick = () => toggleFeat(feat,btn);
     btn.style.backgroundColor = "LightGray";
 
-    document.getElementById("featList").appendChild(btn);
+    document.getElementById(featListID).appendChild(btn);
   });
 }
 

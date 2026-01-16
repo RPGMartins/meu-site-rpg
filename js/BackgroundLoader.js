@@ -1,6 +1,5 @@
-var backgroundListID = "backgroundList";
-var backgroundDetailsID = "backgroundDetails";
-var headerBackgroundID = "headerBackground";
+var backgroundListID = "backgroundContainer";
+var backgroundInfoID = "backgroundInfo";
 
 let ALL_BACKGROUNDS = [];
 
@@ -17,7 +16,7 @@ async function loadBackgrounds() {
 
 function renderBackgroundList(backgrounds) {
   CleanContainer(backgroundListID);
-  CleanContainer(backgroundDetailsID);
+  CleanContainer(backgroundInfoID);
 
   const container = document.getElementById(backgroundListID);
 
@@ -47,17 +46,14 @@ function selectBackground(bg)
 }
 
 function renderBackgroundDetails(bg) {
-  CleanContainer(backgroundDetailsID);
+  CleanContainer(backgroundInfoID);
 
-  const container = document.getElementById(backgroundDetailsID);
+  const container = document.getElementById(backgroundInfoID);
 
   const div = document.createElement("div");
   div.innerHTML = `
     <h3>${bg.name}</h3>
     <p><strong>Fonte:</strong> ${Parser.sourceJsonToAbv(bg.source)}</p>
-    ${renderBgArray("Perícias", bg.skillProficiencies)}
-    ${renderBgArray("Ferramentas", bg.toolProficiencies)}
-    ${renderBgArray("Idiomas", bg.languageProficiencies)}
   `;
 
   container.appendChild(div);
