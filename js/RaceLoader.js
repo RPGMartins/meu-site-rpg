@@ -1,5 +1,3 @@
-var buttonListID = "ButtonsEditions";
-
 var raceListID    = "raceGeneral";
 var subRaceListID = "raceSub";
 var raceInfoID    = "raceInfo";
@@ -44,14 +42,7 @@ async function loadRacesData() {
 
 
 function renderRaceVersionButtons() {
-  CleanContainer(raceInfoID);
-
-  const container = document.getElementById(raceInfoID);
-
-  const title = document.createElement("h2");
-  title.textContent = "Raças";
-  container.appendChild(title);
-
+  const container = document.getElementById("raceToggle");
   const buttons = [
     { label: "One D&D", data: RACES_ONE },
     { label: "Atualizadas", data: RACES_UPDATED },
@@ -64,8 +55,9 @@ function renderRaceVersionButtons() {
     btn.textContent = b.label;
     btn.style.display = "block";
 
-    btn.onclick = () => 
+    btn.onclick = (e) => 
       {
+      e.stopPropagation();
       CleanContainer(raceListID);
       CleanContainer(subRaceListID);
       CleanContainer(raceInfoID);
