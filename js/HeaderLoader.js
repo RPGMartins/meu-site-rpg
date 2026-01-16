@@ -8,9 +8,9 @@ window.CharacterState =
 
   class: null,
   subclass: null,
-
   race: null,
-  subrace: null
+  subrace: null,
+  feats: []
 };
 
 function UpdateClassHeader() 
@@ -43,4 +43,15 @@ function UpdateRaceHeader()
   }
 
   container.innerHTML = html;
+}
+
+function UpdateFeatHeader() 
+{
+  const div = document.getElementById("HeaderFeats");
+  CleanContainer("HeaderFeats");
+
+  if (!CharacterState.feats.length) return;
+
+  div.textContent =
+    "Feats: " + CharacterState.feats.map(f => f.name).join(", ");
 }

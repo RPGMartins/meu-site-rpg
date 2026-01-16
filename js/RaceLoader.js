@@ -11,7 +11,8 @@ let RACES_ORIGINAL = [];
 let ALL_SUBRACES = [];
 
 
-(async function init() {
+(async function init() 
+{
   const data = await loadRacesData();
 
   ALL_SUBRACES = data.subrace ?? [];
