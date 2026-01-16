@@ -1,0 +1,50 @@
+.section {
+  border: 1px solid #999;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+/* Cabeçalho clicável */
+.section-header {
+  background-color: #2b2b2b;
+  color: #ffffff;
+  padding: 10px 12px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+/* Corpo colapsável */
+.section-body {
+  padding: 10px;
+  display: none;
+}
+
+/* Aberto */
+.section.open > .section-body {
+  display: block;
+}
+
+/* Setinha */
+.section .arrow {
+  transition: transform 0.2s ease;
+}
+
+.section.open > .section-header .arrow {
+  transform: rotate(90deg);
+}
+
+/* ===== Sub-seções (Sub-raça / Subclasse) ===== */
+.section.nested {
+  margin-top: 10px;
+  border-color: #666;
+}
+
+.section.nested .section-header {
+  background-color: #3a3a3a;
+  font-size: 0.9em;
+}

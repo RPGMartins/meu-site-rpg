@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>RPG Builder</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="sections.css">
 
 </head>
 <body>
@@ -26,25 +27,71 @@
 
 
 
-  <!-- Class -->
-  <div id="class-details"></div>
-  <div id="classSelection"></div>
-  <div id="subClass-details"></div>
-  <div id="subClassSelection"></div>
-  
-  <!-- Races -->
-  <div id="ButtonsEditions"></div>
-  <div id="raceGeneral"></div>
-  <div id="subRace"></div>
-  <div id="raceInfo"></div>
+<!-- ================== RAÇA ================== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection('raceSection')">
+    <span class="arrow">▶</span> Raça
+  </div>
+  <div id="raceSection" class="section-body">
+    <div id="raceGeneral"></div>
 
-  <!-- Feats -->
-  <div id="featCategories"></div>
-  <div id="featList"></div>
+    <!-- SUB-RAÇA -->
+    <div class="section nested">
+      <div class="section-header" onclick="toggleSection('subRaceSection')">
+        <span class="arrow">▶</span> Sub-Raça
+      </div>
+      <div id="subRaceSection" class="section-body">
+        <div id="raceSub"></div>
+      </div>
+    </div>
 
-  <!-- Background -->
-  <div id="backgroundList"></div>
-  <div id="backgroundDetails"></div>
+    <div id="raceInfo"></div>
+  </div>
+</div>
+
+<!-- ================== CLASSE ================== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection('classSection')">
+    <span class="arrow">▶</span> Classe
+  </div>
+  <div id="classSection" class="section-body">
+    <div id="classGeneral"></div>
+
+    <!-- SUBCLASSE -->
+    <div class="section nested">
+      <div class="section-header" onclick="toggleSection('subClassSection')">
+        <span class="arrow">▶</span> Subclasse
+      </div>
+      <div id="subClassSection" class="section-body">
+        <div id="classSub"></div>
+      </div>
+    </div>
+
+    <div id="classInfo"></div>
+  </div>
+</div>
+
+<!-- ================== BACKGROUND ================== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection('backgroundSection')">
+    <span class="arrow">▶</span> Background
+  </div>
+  <div id="backgroundSection" class="section-body">
+    <div id="backgroundContainer"></div>
+    <div id="backgroundInfo"></div>
+  </div>
+</div>
+
+<!-- ================== FEATS ================== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection('featsSection')">
+    <span class="arrow">▶</span> Feats
+  </div>
+  <div id="featsSection" class="section-body">
+    <div id="featControls"></div>
+    <div id="featContainer"></div>
+  </div>
+</div>
 
   <!-- BASE 5E TOOLS -->
   <script src="./js/parser.js"></script>
@@ -53,6 +100,7 @@
   <script src="js/ExtraUtils.js"></script>
   <script src="js/HeaderLoader.js"></script>
   <script src="js/ExportCharacter"></script>
+  <script src="js/ui.js"></script>
 
 
   <script src="js/ClassLoader.js"></script>
