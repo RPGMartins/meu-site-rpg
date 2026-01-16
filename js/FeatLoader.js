@@ -24,24 +24,10 @@ async function loadAllFeats() {
 function renderFeatCategories(feats) {
   CleanContainer(featControlsID);
 
-  const categories = 
-  {
-    All: feats,
-    Origin: feats.filter(f => f.category === "Origin"),
-    Racial: feats.filter(f => f.raceName),
-    Half: feats.filter(f => f.ability)
-  };
-
-  Object.keys(categories).forEach(cat => 
-    {
-    const btn = document.createElement("button");
-    btn.textContent = cat;
-
-    btn.onclick = () => renderFeatList(categories[cat]);
-
-    document.getElementById(featControlsID).appendChild(btn);
-  });
+  const generalFeats = feats.filter(isGeneralFeat);
+  renderFeatList(generalFeats);
 }
+
 
 function renderFeatList(feats) {
   CleanContainer(featListID);
@@ -92,4 +78,18 @@ function isFeatSelected(feat) {
   return CharacterState.feats.some(f =>
     f.name === feat.name && f.source === feat.source
   );
+}
+
+function isGeneralFeat(feat) {
+  // Remove sistemas de classe (Fighting Style, Invocation, etc)
+  if (feat.category) return false;
+
+  // Remove feats raciais / especiais
+  if (feat.raceName) return false;
+  if (feat.origin) return false;
+
+  // Remove coisas estranhas que não são escolhas normais
+  if (feat.ability) return false;
+
+  return true;
 }
