@@ -10,7 +10,8 @@ window.CharacterState =
   subclass: null,
   race: null,
   subrace: null,
-  feats: []
+  feats: [],
+  background: null
 };
 
 function UpdateClassHeader() 
@@ -22,7 +23,8 @@ function UpdateClassHeader()
 
   let html = `<strong>Classe:</strong> ${CharacterState.class.name}`;
 
-  if (CharacterState.subclass) {
+  if (CharacterState.subclass) 
+  {
     html += `<br><strong>Subclasse:</strong> ${CharacterState.subclass.name}`;
   }
 
@@ -38,7 +40,8 @@ function UpdateRaceHeader()
 
   let html = `<strong>Raça:</strong> ${CharacterState.race.name}`;
 
-  if (CharacterState.subrace) {
+  if (CharacterState.subrace)
+  {
     html += `<br><strong>Sub-raça:</strong> ${CharacterState.subrace.name}`;
   }
 
@@ -54,4 +57,18 @@ function UpdateFeatHeader()
 
   div.textContent =
     "Feats: " + CharacterState.feats.map(f => f.name).join(", ");
+}
+
+function updateBackgroundHeader() 
+{
+  CleanContainer("headerBackground");
+
+  if (!CharacterState.background) return;
+
+  const container = document.getElementById("headerBackground");
+
+  const p = document.createElement("p");
+  p.textContent = `Background: ${CharacterState.background.name}`;
+
+  container.appendChild(p);
 }

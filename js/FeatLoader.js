@@ -79,7 +79,6 @@ function toggleFeat(feat,btn)
       CharacterState.feats.push({
       name: feat.name,
       source: feat.source,
-      entries: feat.entries
     });
   }
 

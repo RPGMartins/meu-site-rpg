@@ -1,6 +1,6 @@
 function exportCharacter() 
 {
-    if(CharacterState.class == undefined || CharacterState.subclass == undefined || CharacterState.race == undefined)
+    if(CharacterState.class == undefined && CharacterState.subclass == undefined && CharacterState.race == undefined && CharacterState.subrace == undefined && CharacterState.feats == undefined && CharacterState.background == undefined)
     {
         return;
     }
@@ -39,7 +39,11 @@ function exportCharacter()
           name: CharacterState.subrace.name,
           source: CharacterState.subrace.source
         }
-      : null
+      : null,
+
+    background: CharacterState.background ?? null,
+    feats: CharacterState.feats ?? []
+      
   };
 
   downloadJson(exportData, "personagem.json");
