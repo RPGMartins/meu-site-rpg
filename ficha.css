@@ -1,0 +1,97 @@
+/* ================= RESET ================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #ccc;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* ================= PÁGINA ================= */
+.page {
+  width: 210mm;
+  height: 297mm;
+  margin: auto;
+  background: #fff;
+  padding: 14mm;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* ================= HEADER ================= */
+.sheet-header {
+  border-bottom: 2px solid #000;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+}
+
+.char-name {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.char-meta {
+  display: flex;
+  gap: 20px;
+  font-size: 0.95rem;
+}
+
+/* ================= BLOCOS ================= */
+.block {
+  padding: 6px;
+  overflow: hidden;
+}
+
+.block h2 {
+  margin: 0 0 4px 0;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #444;
+}
+
+.block p,
+.block li {
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+/* ================= PESOS ================= */
+.race {
+  flex: 4;
+  min-height: 25%;
+}
+
+.background {
+  flex: 2;
+  min-height: 15%;
+}
+
+.feats {
+  flex: 3;
+  min-height: 20%;
+}
+
+/* ================= ESPAÇADOR ================= */
+.spacer {
+  flex: 1;
+}
+
+/* ================= LISTA ================= */
+ul {
+  padding-left: 18px;
+  margin: 4px 0 0 0;
+}
+
+/* ================= PRINT ================= */
+@media print {
+  body {
+    background: none;
+  }
+
+  .page {
+    margin: 0;
+  }
+}
