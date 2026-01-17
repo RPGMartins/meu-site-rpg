@@ -64,4 +64,7 @@ function ResetUI() {
   CleanContainer("raceSub");
   CleanContainer("backgroundInfo");
   CleanContainer("featContainer");
+
+  ClearAllBackgroundButtonsBackground();
+  toggleSection('backgroundSection')
 }

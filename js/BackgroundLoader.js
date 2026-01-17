@@ -4,6 +4,7 @@ var backgroundInfoID = "backgroundInfo";
 var selectedBackground = null;
 
 let ALL_BACKGROUNDS = [];
+let backgroundButtons = []; 
 
 (async function initBackgroundLoader() 
 {
@@ -23,35 +24,39 @@ function renderBackgroundList(backgrounds)
   CleanContainer(backgroundListID);
   CleanContainer(backgroundInfoID);
 
+  backgroundButtons = [];
+
   const container = document.getElementById(backgroundListID);
 
   backgrounds
     .sort((a, b) => a.name.localeCompare(b.name))
-    .forEach(bg => {
+    .forEach(bg => 
+      {
       const btn = document.createElement("button");
       btn.textContent = bg.name;
       btn.style.display = "block";
+      clearBackgroundButton(btn);
 
       btn.onclick = () => selectBackground(bg,btn);
-      btn.style.backgroundColor = "LightGray";
 
       container.appendChild(btn);
+      backgroundButtons.push(btn);
+
     });
 }
 
 function selectBackground(bg,btn) 
 {
- if(CharacterState.background)
- {
-    selectedBackground.style.backgroundColor = "LightGray";
+  ClearAllBackgroundButtonsBackground();
+  CleanContainer(backgroundInfoID);
 
-    if(CharacterState.background.name == bg.name && CharacterState.background.source == bg.source)
-    {
+   if (CharacterState.background && CharacterState.background.name === bg.name && CharacterState.background.source === bg.source) 
+  {
       CharacterState.background = null;
+      selectedBackground = null;
       UpdateBackgroundHeader();
       return;
-    }
- }
+  }
   
   btn.style.backgroundColor = "green";
 
@@ -88,3 +93,19 @@ function renderBgArray(title, arr) {
   `;
 }
 
+function ClearAllBackgroundButtonsBackground() 
+{
+  backgroundButtons.forEach(btn => 
+  {
+    clearBackgroundButton(btn);
+  });
+
+  selectedBackgroundBtn = null;
+}
+
+
+function clearBackgroundButton(btn) 
+{
+  if (!btn) return;
+  btn.style.backgroundColor = "LightGray";
+}
