@@ -2,20 +2,20 @@ var raceListID    = "raceGeneral";
 var subRaceListID = "raceSub";
 var raceInfoID    = "raceInfo";
 
-var selectedButton;
-var selectedRace;
-var selectedSubRace;
+let raceVersionButtons = []; // { btn, races }
+let raceButtons = [];        // { race, btn }
+let subRaceButtons = [];     // { subrace, btn }
 
+let selectedRaceBtn = null;
+let selectedSubRaceBtn = null;
+let selectedVersionBtn = null;
 
 let RACES_ONE = [];
 let RACES_UPDATED = [];
 let RACES_ORIGINAL = [];
-
 let ALL_SUBRACES = [];
 
-
-(async function init() 
-{
+(async function init() {
   const data = await loadRacesData();
 
   ALL_SUBRACES = data.subrace ?? [];
@@ -38,121 +38,108 @@ let ALL_SUBRACES = [];
   renderRaceVersionButtons();
 })();
 
-
 async function loadRacesData() {
   const res = await fetch("./data/races.json");
   return await res.json();
 }
 
 
+
 function renderRaceVersionButtons() {
   const container = document.getElementById("raceToggle");
-  const buttons = [
-    { label: "One D&D", data: RACES_ONE },
-    { label: "Atualizadas", data: RACES_UPDATED },
-    { label: "Originais", data: RACES_ORIGINAL }
+
+  const versions = [
+    { label: "One D&D", races: RACES_ONE },
+    { label: "Atualizadas", races: RACES_UPDATED },
+    { label: "Originais", races: RACES_ORIGINAL }
   ];
 
-  buttons.forEach(b => 
-    {
+  versions.forEach(v => {
     const btn = document.createElement("button");
-    btn.textContent = b.label;
-    btn.style.display = "block";
-    btn.style.backgroundColor = "LightGray";
+    btn.textContent = v.label;
 
-    btn.onclick = (e) => 
-    {
+    clearRaceButton(btn);
+
+    btn.onclick = e => {
       e.stopPropagation();
-      if(selectedButton && selectedButton == btn)
-      {
-        selectedButton = null;
-
-        CleanContainer(raceListID);
-        CleanContainer(subRaceListID);
-        CleanContainer(raceInfoID);
-        btn.style.backgroundColor = "LightGray";
-
-        return;
-      }
-      else
-      {
-        if(selectedButton)
-        {
-          selectedButton.style.backgroundColor = "LightGray";
-        }
-        
-        btn.style.backgroundColor = "green";
-      }
-      selectedButton = btn;
-
-      CleanContainer(raceListID);
-      CleanContainer(subRaceListID);
-      CleanContainer(raceInfoID);
-
-      renderRaceList(b.data);
+      onRaceVersionClicked(v, btn);
     };
 
     container.appendChild(btn);
+    raceVersionButtons.push({ btn, races: v.races });
   });
 }
 
+function onRaceVersionClicked(version, btn) {
+  if (selectedVersionBtn === btn) {
+    clearAllRaceVersionButtons();
+    clearAllRaceUI();
+    return;
+  }
 
-function renderRaceList(races) 
-{
+  clearAllRaceVersionButtons();
+  markRaceButton(btn);
+  selectedVersionBtn = btn;
+
+  clearAllRaceUI();
+  renderRaceList(version.races);
+}
+
+
+function renderRaceList(races) {
+  CleanContainer(raceListID);
+  raceButtons = [];
+
   const container = document.getElementById(raceListID);
 
-  races.forEach(race => 
-    {
+  races.forEach(race => {
     const btn = document.createElement("button");
     btn.textContent = race.name;
-    btn.style.display = "block";
-    btn.style.backgroundColor = "LightGray";
 
-    btn.onclick = () => 
-    {
-     
-      const subraces = getSubRacesFor(race, ALL_SUBRACES);
+    clearRaceButton(btn);
 
-      CleanContainer(subRaceListID);
-      CleanContainer(raceInfoID);
-
-
-      if(CharacterState.race)
-      {
-          selectedRace.style.backgroundColor = "LightGray";
-
-          if(CharacterState.race.name == race.name && CharacterState.race.source == race.source)
-          {
-              CharacterState.race = null;
-              UpdateRaceHeader();
-              return;
-          }
-      }
-
-      btn.style.backgroundColor = "green";
-      
-      CharacterState.race = race;
-      CharacterState.subrace = null;
-
-      selectedRace = btn;
-      UpdateRaceHeader();
-
-
-      if (subraces.length > 0) 
-      {
-        renderSubRaceList(race, subraces);
-      } 
-      else 
-      {
-        renderRaceInfo(race);
-      }
-    };
+    btn.onclick = () => onRaceClicked(race, btn);
 
     container.appendChild(btn);
+    raceButtons.push({ race, btn });
   });
+
+  syncRaceButtonsFromState();
 }
 
+function onRaceClicked(race, btn) {
+  CleanContainer(subRaceListID);
+  CleanContainer(raceInfoID);
 
+  if (
+    CharacterState.race &&
+    CharacterState.race.name === race.name &&
+    CharacterState.race.source === race.source
+  ) {
+    CharacterState.race = null;
+    CharacterState.subrace = null;
+    clearAllRaceButtons();
+    UpdateRaceHeader();
+    return;
+  }
+
+  CharacterState.race = race;
+  CharacterState.subrace = null;
+
+  clearAllRaceButtons();
+  markRaceButton(btn);
+  selectedRaceBtn = btn;
+
+  UpdateRaceHeader();
+
+  const subraces = getSubRacesFor(race, ALL_SUBRACES);
+
+  if (subraces.length > 0) {
+    renderSubRaceList(race, subraces);
+  } else {
+    renderRaceInfo(race);
+  }
+}
 
 function getSubRacesFor(race, subraces) {
   return subraces.filter(sr =>
@@ -164,48 +151,49 @@ function getSubRacesFor(race, subraces) {
 
 function renderSubRaceList(race, subraces) {
   CleanContainer(subRaceListID);
-
-  const title = document.createElement("h3");
-  title.textContent = `Sub-raças de ${race.name}`;
+  subRaceButtons = [];
 
   const container = document.getElementById(subRaceListID);
-  container.appendChild(title);
 
   subraces.forEach(sr => {
     const btn = document.createElement("button");
     btn.textContent = sr.name;
-    btn.style.display = "block";
-    btn.style.backgroundColor = "LightGray";
 
-    btn.onclick = () => 
-    {
-      if(CharacterState.subrace)
-      {
-        selectedSubRace.style.backgroundColor = "LightGray";
+    clearRaceButton(btn);
 
-        if(CharacterState.subrace.name == sr.name && CharacterState.subrace.source == sr.source)
-        {
-            CharacterState.subrace = null;
-            UpdateRaceHeader();
-            CleanContainer(raceInfoID);
-            return;
-        }
-      }
-
-      selectedSubRace = btn
-      btn.style.backgroundColor = "green";
-
-      CharacterState.subrace = sr;
-
-      UpdateRaceHeader();
-
-      CleanContainer(raceInfoID);
-      renderSubRaceInfo(sr,btn);
-    };
+    btn.onclick = () => onSubRaceClicked(sr, btn);
 
     container.appendChild(btn);
+    subRaceButtons.push({ subrace: sr, btn });
   });
+
+  syncSubRaceButtonsFromState();
 }
+
+function onSubRaceClicked(sr, btn) {
+  CleanContainer(raceInfoID);
+
+  if (
+    CharacterState.subrace &&
+    CharacterState.subrace.name === sr.name &&
+    CharacterState.subrace.source === sr.source
+  ) {
+    CharacterState.subrace = null;
+    clearAllSubRaceButtons();
+    UpdateRaceHeader();
+    return;
+  }
+
+  CharacterState.subrace = sr;
+
+  clearAllSubRaceButtons();
+  markRaceButton(btn);
+  selectedSubRaceBtn = btn;
+
+  UpdateRaceHeader();
+  renderSubRaceInfo(sr);
+}
+
 
 function renderRaceInfo(race) {
   CleanContainer(raceInfoID);
@@ -219,9 +207,10 @@ function renderRaceInfo(race) {
   document.getElementById(raceInfoID).appendChild(div);
 }
 
-function renderSubRaceInfo(sr,btn) 
-{
+
+function renderSubRaceInfo(sr) {
   CleanContainer(raceInfoID);
+
   const div = document.createElement("div");
   div.innerHTML = `
     <h3>${sr.name}</h3>
@@ -231,8 +220,77 @@ function renderSubRaceInfo(sr,btn)
   document.getElementById(raceInfoID).appendChild(div);
 }
 
-function getRaceKey(race) {
-  return race.name;
+function clearRaceButton(btn) {
+  if (!btn) return;
+  btn.style.backgroundColor = "LightGray";
+}
+
+function markRaceButton(btn) {
+  if (!btn) return;
+  btn.style.backgroundColor = "green";
+}
+
+function ClearAllBackgroundButtonsRaces()
+{
+  clearAllRaceButtons();
+  clearAllSubRaceButtons();
+  clearAllRaceVersionButtons();
+  clearAllRaceUI();
+}
+
+function clearAllRaceButtons() {
+  raceButtons.forEach(({ btn }) => clearRaceButton(btn));
+  selectedRaceBtn = null;
+}
+
+function clearAllSubRaceButtons() {
+  subRaceButtons.forEach(({ btn }) => clearRaceButton(btn));
+  selectedSubRaceBtn = null;
+}
+
+function clearAllRaceVersionButtons() {
+  raceVersionButtons.forEach(({ btn }) => clearRaceButton(btn));
+  selectedVersionBtn = null;
+}
+
+function clearAllRaceUI() {
+  CleanContainer(raceListID);
+  CleanContainer(subRaceListID);
+  CleanContainer(raceInfoID);
+
+  raceButtons = [];
+  subRaceButtons = [];
+
+  selectedRaceBtn = null;
+  selectedSubRaceBtn = null;
+}
+
+function syncRaceButtonsFromState() {
+  if (!CharacterState.race) return;
+
+  raceButtons.forEach(({ race, btn }) => {
+    if (
+      race.name === CharacterState.race.name &&
+      race.source === CharacterState.race.source
+    ) {
+      markRaceButton(btn);
+      selectedRaceBtn = btn;
+    }
+  });
+}
+
+function syncSubRaceButtonsFromState() {
+  if (!CharacterState.subrace) return;
+
+  subRaceButtons.forEach(({ subrace, btn }) => {
+    if (
+      subrace.name === CharacterState.subrace.name &&
+      subrace.source === CharacterState.subrace.source
+    ) {
+      markRaceButton(btn);
+      selectedSubRaceBtn = btn;
+    }
+  });
 }
 
 function dedupeRaces(races) {
@@ -251,4 +309,8 @@ function dedupeRaces(races) {
   });
 
   return [...map.values()];
+}
+
+function getRaceKey(race) {
+  return race.name;
 }

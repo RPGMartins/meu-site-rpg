@@ -3,11 +3,14 @@ let FeatCache = null;
 var featControlsID = "featControls";
 var featListID     = "featContainer";
 
+let ALL_FEATS = [];
+let featButtons = [];
+
 (
     async function initFeatLoader() 
     {
-        const feats = await loadAllFeats();
-        renderFeatCategories(feats);
+        ALL_FEATS = await loadAllFeats();
+        renderFeatCategories(ALL_FEATS);
     }
 )();
 
@@ -31,48 +34,49 @@ function renderFeatCategories(feats) {
 
 function renderFeatList(feats) {
   CleanContainer(featListID);
+  featButtons = [];
 
-  feats.forEach(feat => {
+  const container = document.getElementById(featListID);
 
+  feats.forEach(feat => 
+    {
     const btn = document.createElement("button");
     btn.textContent = feat.name;
     btn.style.display = "block";
 
-    if (isFeatSelected(feat)) 
-    {
-      btn.classList.add("selected");
+    clearFeatButton(btn);
+
+    if (isFeatSelected(feat)) {
+      markFeatButton(btn);
     }
 
-    btn.onclick = () => toggleFeat(feat,btn);
-    btn.style.backgroundColor = "LightGray";
+    btn.onclick = () => toggleFeat(feat, btn);
 
-    document.getElementById(featListID).appendChild(btn);
+    container.appendChild(btn);
+    featButtons.push({ feat, btn });
   });
 }
 
-function toggleFeat(feat,btn) 
-{
+
+function toggleFeat(feat, btn) {
   const idx = CharacterState.feats.findIndex(f =>
     f.name === feat.name && f.source === feat.source
   );
 
-  if (idx >= 0) 
-  {
+  if (idx >= 0) {
     CharacterState.feats.splice(idx, 1);
-    btn.style.backgroundColor = "LightGray";
-
-  } 
-  else 
-    {
-      btn.style.backgroundColor = "green";
-      CharacterState.feats.push({
+    clearFeatButton(btn);
+  } else {
+    CharacterState.feats.push({
       name: feat.name,
       source: feat.source,
     });
+    markFeatButton(btn);
   }
 
   UpdateFeatHeader();
 }
+
 
 function isFeatSelected(feat) {
   return CharacterState.feats.some(f =>
@@ -92,4 +96,23 @@ function isGeneralFeat(feat) {
   if (feat.ability) return false;
 
   return true;
+}
+
+function clearFeatButton(btn) {
+  if (!btn) return;
+  btn.style.backgroundColor = "LightGray";
+}
+
+function markFeatButton(btn) {
+  if (!btn) return;
+  btn.style.backgroundColor = "green";
+}
+
+function ClearAllBackgroundButtonsFeats() 
+{
+  featButtons.forEach(({ feat, btn }) => 
+    {
+      clearFeatButton(btn);
+
+  });
 }

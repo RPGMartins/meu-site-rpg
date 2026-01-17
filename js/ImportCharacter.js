@@ -59,12 +59,22 @@ function ApplyImportedCharacter(data) {
 
 function ResetUI() {
   CleanContainer("classInfo");
-  CleanContainer("classSub");
+  CleanContainer("subClassInfo");
   CleanContainer("raceInfo");
-  CleanContainer("raceSub");
   CleanContainer("backgroundInfo");
-  CleanContainer("featContainer");
+  CleanContainer("classSub");
+  CleanContainer("raceSub");
 
   ClearAllBackgroundButtonsBackground();
-  toggleSection('backgroundSection')
+  ClearAllBackgroundButtonsClass();
+  ClearAllBackgroundButtonsFeats();
+  ClearAllBackgroundButtonsSubClass();
+  ClearAllBackgroundButtonsRaces();
+  clearAllRaceUI();
+
+  toggleSection('backgroundSection',false);
+  toggleSection('featsSection',false);
+  toggleSection('subClassSection',false);
+  toggleSection('classSection',false)
+  toggleSection('subClassSection',false)
 }
