@@ -5,18 +5,21 @@ var selectedBackground = null;
 
 let ALL_BACKGROUNDS = [];
 
-(async function initBackgroundLoader() {
+(async function initBackgroundLoader() 
+{
   ALL_BACKGROUNDS = await loadBackgrounds();
   renderBackgroundList(ALL_BACKGROUNDS);
 })();
 
-async function loadBackgrounds() {
+async function loadBackgrounds() 
+{
   const res = await fetch("./data/backgrounds.json");
   const data = await res.json();
   return data.background;
 }
 
-function renderBackgroundList(backgrounds) {
+function renderBackgroundList(backgrounds) 
+{
   CleanContainer(backgroundListID);
   CleanContainer(backgroundInfoID);
 
@@ -45,7 +48,7 @@ function selectBackground(bg,btn)
     if(CharacterState.background.name == bg.name && CharacterState.background.source == bg.source)
     {
       CharacterState.background = null;
-      updateBackgroundHeader();
+      UpdateBackgroundHeader();
       return;
     }
  }
@@ -60,7 +63,7 @@ function selectBackground(bg,btn)
   };
 
   renderBackgroundDetails(bg);
-  updateBackgroundHeader();
+  UpdateBackgroundHeader();
 }
 
 function renderBackgroundDetails(bg) {

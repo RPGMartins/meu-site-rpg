@@ -59,7 +59,7 @@ function UpdateFeatHeader()
     "Feats: " + CharacterState.feats.map(f => f.name).join(", ");
 }
 
-function updateBackgroundHeader() 
+function UpdateBackgroundHeader() 
 {
   CleanContainer("headerBackground");
 
@@ -71,4 +71,15 @@ function updateBackgroundHeader()
   p.textContent = `Background: ${CharacterState.background.name}`;
 
   container.appendChild(p);
+}
+
+function HasCharacterProgress() {
+  return (
+    CharacterState.class ||
+    CharacterState.subclass ||
+    CharacterState.race ||
+    CharacterState.subrace ||
+    CharacterState.background ||
+    (Array.isArray(CharacterState.feats) && CharacterState.feats.length > 0)
+  );
 }
