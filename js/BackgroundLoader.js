@@ -1,6 +1,8 @@
 var backgroundListID = "backgroundContainer";
 var backgroundInfoID = "backgroundInfo";
 
+var selectedBackground = null;
+
 let ALL_BACKGROUNDS = [];
 
 (async function initBackgroundLoader() {
@@ -27,14 +29,30 @@ function renderBackgroundList(backgrounds) {
       btn.textContent = bg.name;
       btn.style.display = "block";
 
-      btn.onclick = () => selectBackground(bg);
+      btn.onclick = () => selectBackground(bg,btn);
+      btn.style.backgroundColor = "LightGray";
 
       container.appendChild(btn);
     });
 }
 
-function selectBackground(bg) 
+function selectBackground(bg,btn) 
 {
+ if(CharacterState.background)
+ {
+    selectedBackground.style.backgroundColor = "LightGray";
+
+    if(CharacterState.background.name == bg.name && CharacterState.background.source == bg.source)
+    {
+      CharacterState.background = null;
+      updateBackgroundHeader();
+      return;
+    }
+ }
+  
+  btn.style.backgroundColor = "green";
+
+  selectedBackground = btn;
   CharacterState.background = 
   {
     name: bg.name,

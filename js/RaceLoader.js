@@ -2,6 +2,10 @@ var raceListID    = "raceGeneral";
 var subRaceListID = "raceSub";
 var raceInfoID    = "raceInfo";
 
+var selectedButton;
+var selectedRace;
+var selectedSubRace;
+
 
 let RACES_ONE = [];
 let RACES_UPDATED = [];
@@ -54,10 +58,33 @@ function renderRaceVersionButtons() {
     const btn = document.createElement("button");
     btn.textContent = b.label;
     btn.style.display = "block";
+    btn.style.backgroundColor = "LightGray";
 
     btn.onclick = (e) => 
-      {
+    {
       e.stopPropagation();
+      if(selectedButton && selectedButton == btn)
+      {
+        selectedButton = null;
+
+        CleanContainer(raceListID);
+        CleanContainer(subRaceListID);
+        CleanContainer(raceInfoID);
+        btn.style.backgroundColor = "LightGray";
+
+        return;
+      }
+      else
+      {
+        if(selectedButton)
+        {
+          selectedButton.style.backgroundColor = "LightGray";
+        }
+        
+        btn.style.backgroundColor = "green";
+      }
+      selectedButton = btn;
+
       CleanContainer(raceListID);
       CleanContainer(subRaceListID);
       CleanContainer(raceInfoID);
@@ -69,29 +96,54 @@ function renderRaceVersionButtons() {
   });
 }
 
-function renderRaceList(races) {
+
+function renderRaceList(races) 
+{
   const container = document.getElementById(raceListID);
 
-  races.forEach(race => {
+  races.forEach(race => 
+    {
     const btn = document.createElement("button");
     btn.textContent = race.name;
     btn.style.display = "block";
+    btn.style.backgroundColor = "LightGray";
 
-    btn.onclick = () => {
-
-      CharacterState.race = race;
-      CharacterState.subrace = null;
-
-      UpdateRaceHeader();
+    btn.onclick = () => 
+    {
+     
+      const subraces = getSubRacesFor(race, ALL_SUBRACES);
 
       CleanContainer(subRaceListID);
       CleanContainer(raceInfoID);
 
-      const subraces = getSubRacesFor(race, ALL_SUBRACES);
 
-      if (subraces.length > 0) {
+      if(CharacterState.race)
+      {
+          selectedRace.style.backgroundColor = "LightGray";
+
+          if(CharacterState.race.name == race.name && CharacterState.race.source == race.source)
+          {
+              CharacterState.race = null;
+              UpdateRaceHeader();
+              return;
+          }
+      }
+
+      btn.style.backgroundColor = "green";
+      
+      CharacterState.race = race;
+      CharacterState.subrace = null;
+
+      selectedRace = btn;
+      UpdateRaceHeader();
+
+
+      if (subraces.length > 0) 
+      {
         renderSubRaceList(race, subraces);
-      } else {
+      } 
+      else 
+      {
         renderRaceInfo(race);
       }
     };
@@ -123,15 +175,32 @@ function renderSubRaceList(race, subraces) {
     const btn = document.createElement("button");
     btn.textContent = sr.name;
     btn.style.display = "block";
+    btn.style.backgroundColor = "LightGray";
 
     btn.onclick = () => 
     {
+      if(CharacterState.subrace)
+      {
+        selectedSubRace.style.backgroundColor = "LightGray";
+
+        if(CharacterState.subrace.name == sr.name && CharacterState.subrace.source == sr.source)
+        {
+            CharacterState.subrace = null;
+            UpdateRaceHeader();
+            CleanContainer(raceInfoID);
+            return;
+        }
+      }
+
+      selectedSubRace = btn
+      btn.style.backgroundColor = "green";
+
       CharacterState.subrace = sr;
 
       UpdateRaceHeader();
 
       CleanContainer(raceInfoID);
-      renderSubRaceInfo(sr);
+      renderSubRaceInfo(sr,btn);
     };
 
     container.appendChild(btn);
@@ -150,9 +219,9 @@ function renderRaceInfo(race) {
   document.getElementById(raceInfoID).appendChild(div);
 }
 
-function renderSubRaceInfo(sr) {
+function renderSubRaceInfo(sr,btn) 
+{
   CleanContainer(raceInfoID);
-
   const div = document.createElement("div");
   div.innerHTML = `
     <h3>${sr.name}</h3>

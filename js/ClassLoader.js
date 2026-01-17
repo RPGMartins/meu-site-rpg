@@ -1,6 +1,8 @@
 var classListID    = "classGeneral";
 var classInfoID    = "classInfo";
 
+var selectedClass = null;
+
 (
   async function init() 
   {
@@ -20,10 +22,7 @@ async function loadRacesIndex()
 function renderClassList(classIndex) 
 {
   CleanContainer(classListID);
-  const title = document.createElement("h2");
-  title.textContent = "Classes disponíveis";
   const container = document.getElementById(classListID);
-  container.appendChild(title);
 
   
   Object.keys(classIndex).forEach(key => 
@@ -31,14 +30,13 @@ function renderClassList(classIndex)
     const btn = document.createElement("button");
     btn.textContent = key;
     btn.style.display = "block";
-
-    console.log("ID: "+btn.id);
+    btn.style.backgroundColor = "LightGray";
 
     btn.onclick = () => 
       {
 
         CleanContainer(classInfoID);
-        LoadSubClass(classIndex,key)
+        LoadSubClass(classIndex,key,btn)
       };
 
     container.appendChild(btn);
@@ -46,7 +44,7 @@ function renderClassList(classIndex)
 }
 
 
-async function LoadSubClass(index,key) 
+async function LoadSubClass(index,key,btn) 
 {
   const file = index[key];
 
@@ -56,17 +54,40 @@ async function LoadSubClass(index,key)
   const cls = data.class[0];
   const subcls = data.subclass;
 
+
+  if(CharacterState.class)
+  {
+    selectedClass.style.backgroundColor = "LightGray";
+
+    if(CharacterState.class.name == cls.name && CharacterState.class.source == cls.source)
+    {
+      CharacterState.class = null;
+      CharacterState.subclass = null;
+      RenderClassDetails(null,null);
+      UpdateClassHeader();
+      return;
+    }
+  }
+
   CharacterState.class = cls;
   CharacterState.subclass = null;
-  UpdateClassHeader();
-
+  btn.style.backgroundColor = "green";
+  selectedClass = btn;
   RenderClassDetails(cls,subcls);
+  UpdateClassHeader();
 }
 
 
 function RenderClassDetails(cls,subcls) 
 {
+  CleanSubClass();
   CleanContainer(classInfoID);
+
+  if(cls == null)
+  {
+    return;
+  }
+
   let hitDice = "—";
 
   if (cls.hd && cls.hd.faces) 

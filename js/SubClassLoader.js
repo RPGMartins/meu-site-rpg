@@ -1,27 +1,29 @@
 var subClassListID = "subClassSection";
 var subClassInfoID = "subClassInfo"
 
-function RenderSubClassList(subcls) 
+var selectedSubClass = null;
+
+function CleanSubClass()
 {
     CleanContainer(subClassListID);
+    CleanContainer(subClassInfoID);
+}
 
-    const title = document.createElement("h3");
-    title.textContent = "Sub Classes disponíveis";
+function RenderSubClassList(subcls) 
+{
+    CleanSubClass();
     const container = document.getElementById(subClassListID);
-
-    container.appendChild(title);
-
-
     OrganizeSubclasses(subcls).forEach(sc => 
     {
         const btn = document.createElement("button");
         btn.textContent = sc.name;
         btn.style.display = "block";
+        btn.style.backgroundColor = "LightGray";
 
         btn.onclick = () => 
         {
             CleanContainer(subClassInfoID);
-            RenderSubClassDetails(sc)
+            RenderSubClassDetails(sc,btn)
         };
 
     container.appendChild(btn);
@@ -29,7 +31,7 @@ function RenderSubClassList(subcls)
 }
 
 
-function RenderSubClassDetails(subcls) 
+function RenderSubClassDetails(subcls,btn) 
 {
     var subclass;
     var source = "One";
@@ -44,6 +46,18 @@ function RenderSubClassDetails(subcls)
         subclass = subcls.one;
     }
 
+    if(CharacterState.subclass)
+    {
+        selectedSubClass.style.backgroundColor = "LightGray";
+
+        if(CharacterState.subclass.name == subcls.name && CharacterState.subclass.source == subcls.source)
+        {
+            CharacterState.subclass = null;
+            UpdateClassHeader();
+            return;
+        }
+    }
+
     const div = document.createElement("h2");
     div.style.marginTop = "20px";
     div.innerHTML = `
@@ -52,9 +66,10 @@ function RenderSubClassDetails(subcls)
     `;
     const container = document.getElementById(subClassInfoID);
 
+    btn.style.backgroundColor = "green";
     CharacterState.subclass = subcls;
+    selectedSubClass = btn;
     UpdateClassHeader();
-
     container.appendChild(div);
 }
 
