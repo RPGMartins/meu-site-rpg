@@ -2,21 +2,27 @@ async function gerarFichaHTML() {
   const res = await fetch("./ficha/ficha.html");
   let html = await res.text();
 
-
-  const classKey = CharacterState.class.name.toLowerCase();
-
-  var textclass = await GetClass(classKey);
+  var textclass = await GetClass();
   var textRace = await GetRace(CharacterState.race);
+  var textSubrace = await GetSubrace(CharacterState.subrace);
+
+  debugger;
 
   html = html
   .replace("{{CLASSE}}", textclass || "—")
-  .replace("{{RACA}}", textRace || "—");
+  .replace("{{RACA}}", textRace + textSubrace || "—");
 
   baixarArquivo(html, "ficha_personagem.html");
 }
 
 
-async function GetClass(classKey) {
+async function GetClass() {
+  if(!CharacterState.class)
+  {
+    return;
+  }
+
+  var classKey = CharacterState.class.name.toLowerCase();
   let finalText = "";
   const file = ALL_CLASSES_INDEX[classKey];
 
@@ -33,6 +39,27 @@ async function GetClass(classKey) {
   return finalText;
 }
 
+function GetSubRacesFor(raceName,raceSource,nameRace) {
+  return ALL_SUBRACES.filter(sr =>
+    sr.name === raceName &&
+    sr.raceSource === raceSource &&
+    sr.raceName === nameRace
+  );
+}
+
+async function GetSubrace(subrace) {
+  
+  var finalText="";
+  
+  if(subrace)
+  { 
+      var subRaceEntries = GetSubRacesFor(subrace.name,subrace.source,subrace.raceName)      
+      finalText =  renderTraits(subRaceEntries[0].entries);
+      debugger;
+  }
+
+  return finalText;
+}
 
 async function GetRace(race) {
 
@@ -51,6 +78,8 @@ async function GetRace(race) {
 
   return finalText;
 }
+
+
 
 function baixarArquivo(conteudo, nomeArquivo) {
   const blob = new Blob([conteudo], { type: "text/html;charset=utf-8;" });
@@ -192,7 +221,7 @@ function abilityToFullName(abbr) {
 function renderTraits(traits) {
   if (!traits || traits.length === 0) return "";
 
-  return traits.map(trait => {
+  const content = traits.map(trait => {
     const entriesText = Array.isArray(trait.entries)
       ? parse5eText(trait.entries.join(" "))
       : parse5eText(trait.entries ?? "");
@@ -204,4 +233,10 @@ function renderTraits(traits) {
       </p>
     `;
   }).join("");
+
+  return `
+    <div class="trait-box">
+      ${content}
+    </div>
+  `;
 }

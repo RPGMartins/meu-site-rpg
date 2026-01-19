@@ -110,3 +110,14 @@ li {
     margin: 0;
   }
 }
+
+.trait-box {
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 8px 10px;
+  background: #fafafa;
+}
+
+.trait-box p {
+  margin: 4px 0;
+}
