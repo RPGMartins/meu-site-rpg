@@ -11,7 +11,8 @@ window.CharacterState =
   race: null,
   subrace: null,
   feats: [],
-  background: null
+  background: null,
+  classFeature: null
 };
 
 function UpdateClassHeader() 

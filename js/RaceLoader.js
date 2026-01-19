@@ -14,10 +14,11 @@ let RACES_ONE = [];
 let RACES_UPDATED = [];
 let RACES_ORIGINAL = [];
 let ALL_SUBRACES = [];
+let ALL_RACES = [];
 
 (async function init() {
   const data = await loadRacesData();
-
+  ALL_RACES = data;
   ALL_SUBRACES = data.subrace ?? [];
 
   const deduped = dedupeRaces(data.race);

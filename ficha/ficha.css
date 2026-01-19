@@ -42,36 +42,40 @@ body {
 
 /* ================= BLOCOS ================= */
 .block {
-  padding: 6px;
-  overflow: hidden;
+  padding: 6px 4px;
 }
 
 .block h2 {
-  margin: 0 0 4px 0;
+  margin: 0 0 6px 0;
   font-size: 1.1rem;
   border-bottom: 1px solid #444;
 }
 
-.block p,
-.block li {
+/* ================= TEXTO ================= */
+.block p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* ================= SUB-ENTRADAS (sem nível) ================= */
+.class-sub-entry {
+  margin: 4px 0 4px 24px;
+  padding-left: 10px;
+  border-left: 2px solid #666;
+  font-size: 0.88rem;
+  color: #222;
+}
+
+/* ================= LISTAS ================= */
+ul {
+  padding-left: 18px;
+  margin: 4px 0 0 0;
+}
+
+li {
   font-size: 0.9rem;
   line-height: 1.35;
-}
-
-/* ================= PESOS ================= */
-.race {
-  flex: 4;
-  min-height: 25%;
-}
-
-.background {
-  flex: 2;
-  min-height: 15%;
-}
-
-.feats {
-  flex: 3;
-  min-height: 20%;
 }
 
 /* ================= ESPAÇADOR ================= */
@@ -79,10 +83,21 @@ body {
   flex: 1;
 }
 
-/* ================= LISTA ================= */
-ul {
-  padding-left: 18px;
-  margin: 4px 0 0 0;
+/* ================= PESOS ================= */
+.class {
+  flex: 4;
+}
+
+.race {
+  flex: 3;
+}
+
+.background {
+  flex: 2;
+}
+
+.feats {
+  flex: 3;
 }
 
 /* ================= PRINT ================= */
