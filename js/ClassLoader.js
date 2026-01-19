@@ -59,7 +59,6 @@ async function onClassClicked(index, key, btn) {
   ) {
     CharacterState.class = null;
     CharacterState.subclass = null;
-    CharacterState.classFeature = null;
 
     ClearAllBackgroundButtonsClass();
     RenderClassDetails(null, null);
@@ -68,7 +67,6 @@ async function onClassClicked(index, key, btn) {
   }
 
   // Select new class
-  CharacterState.classFeature = data.classFeature;
   CharacterState.class = cls;
   CharacterState.subclass = null;
 

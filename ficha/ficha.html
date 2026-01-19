@@ -2,7 +2,6 @@
 <html lang="pt-BR">
 <head>
 
-  /* #region Header */
   <style>
     /* ================= RESET ================= */
 * {
@@ -128,9 +127,82 @@ li {
   margin: 4px 0;
 }
 
-  </style>
+.bg-section {
+  margin-bottom: 10px;
+}
 
-  /* #endregion */
+.bg-section h3 {
+  margin: 6px 0 4px;
+  font-size: 1rem;
+  border-bottom: 1px solid #666;
+}
+
+.bg-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.bg-table th,
+.bg-table td {
+  border: 1px solid #444;
+  padding: 4px 6px;
+}
+
+.bg-table th {
+  background: #eee;
+  text-align: center;
+}
+
+/* ===== FEATS ===== */
+
+.feat-block {
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  background: #f8f8f8;
+}
+
+.feat-block h3 {
+  margin: 0 0 6px 0;
+  font-size: 1rem;
+  border-bottom: 1px solid #aaa;
+  padding-bottom: 3px;
+}
+
+.feat-sub {
+  margin-left: 12px;
+  margin-top: 4px;
+}
+
+.feat-list {
+  margin: 6px 0 6px 18px;
+  padding: 0;
+}
+
+.feat-item {
+  margin-top: 4px;
+}
+/* ===== SUBCLASSE ===== */
+
+.subclass-block {
+  margin-top: 10px;
+  padding: 8px;
+  border: 2px dashed #555;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+.subclass-block h2 {
+  margin: 0 0 6px 0;
+  font-size: 1.15rem;
+  border-bottom: 1px solid #777;
+}
+
+
+
+  </style>
 
   <meta charset="UTF-8" />
   <title>Ficha de Personagem</title>
@@ -156,6 +228,15 @@ li {
 
   <div class="spacer"></div>
 
+  <!-- ===== CLASSE ===== -->
+  <section class="block subclass">
+    <p>
+        <span><strong>SubClasse:</strong> {{SUBCLASSE}}</span>
+    </p>
+  </section>
+
+  <div class="spacer"></div>
+
   <!-- ===== RAÇA ===== -->
   <section class="block race">
     <p>
@@ -167,11 +248,8 @@ li {
 
   <!-- ===== BACKGROUND ===== -->
   <section class="block background">
-    <h2>Background</h2>
     <p>
-      Você cresceu entre a nobreza, aprendendo etiqueta, diplomacia
-      e administração. Possui contatos influentes e entende o jogo
-      político dos reinos.
+        <span><strong>Background:</strong> {{BACKGROUND}}</span>
     </p>
   </section>
 
@@ -179,12 +257,9 @@ li {
 
   <!-- ===== FEATS ===== -->
   <section class="block feats">
-    <h2>Feats</h2>
-    <ul>
-      <li><strong>Sentinel:</strong> Inimigos provocam ataques de oportunidade mesmo ao usar Disengage.</li>
-      <li><strong>Sharpshooter:</strong> Ataques à distância ignoram cobertura.</li>
-      <li><strong>Alert:</strong> +5 na iniciativa, não pode ser surpreendido.</li>
-    </ul>
+    <p>
+        <span><strong>Feats:</strong> {{FEATS}}</span>
+    </p>
   </section>
 
 </div>

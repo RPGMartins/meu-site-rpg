@@ -3,17 +3,223 @@ async function gerarFichaHTML() {
   let html = await res.text();
 
   var textclass = await GetClass();
+  var textSubclass = await GetSubclass();
   var textRace = await GetRace(CharacterState.race);
   var textSubrace = await GetSubrace(CharacterState.subrace);
-
-  debugger;
+  var textBackground = GetBackground(CharacterState.background,true,true); //Pra tabela aparecer é necessario que o segundo e terceiro seja true
+  var featsHTML = GetFeats(CharacterState.feats);
 
   html = html
   .replace("{{CLASSE}}", textclass || "—")
-  .replace("{{RACA}}", textRace + textSubrace || "—");
+  .replace("{{SUBCLASSE}}", textSubclass || "—")
+  .replace("{{RACA}}", textRace + textSubrace || "—")
+  .replace("{{BACKGROUND}}", textBackground || "—")
+  .replace("{{FEATS}}", featsHTML || "—");
+
 
   baixarArquivo(html, "ficha_personagem.html");
 }
+
+function GetBackground(selectedBackground,Characteristics,Table)
+{
+  if(!CharacterState.background)
+  {
+    return "";
+  }
+  const bg = ALL_BACKGROUNDS.find(b =>
+  b.name === selectedBackground.name &&
+  b.source === selectedBackground.source
+  );
+
+  const entries = bg.entries;
+  if (!entries || entries.length === 0) return "";
+
+  return entries.map(entry => renderBgEntry(entry,Characteristics,Table)).join("");
+}
+
+async function GetSubclass() {
+  if (!CharacterState.subclass || !CharacterState.class) {
+    return "";
+  }
+
+  const classKey = CharacterState.class.name.toLowerCase();
+  const subclass = CharacterState.subclass;
+
+  const file = ALL_CLASSES_INDEX[classKey];
+  if (!file) return "";
+
+  const res = await fetch(`./data/class/${file}`);
+  const data = await res.json();
+
+  const subclassFeatures = data.subclassFeature?.filter(f =>
+    f.subclassShortName === subclass.shortName &&
+    f.subclassSource === subclass.source
+  );
+
+  if (!subclassFeatures || subclassFeatures.length === 0) return "";
+
+  const blocks = collectEntriesText(subclassFeatures);
+
+  return `
+    <div class="subclass-block">
+      <h2>${subclass.name}</h2>
+      ${blocks.map(parse5eText).join("\n")}
+    </div>
+  `;
+}
+
+
+function renderFeat(feat) {
+  const body = feat.entries
+    ? feat.entries.map(e => renderFeatEntry(e)).join("")
+    : "";
+
+  return `
+    <div class="feat-block">
+      <h3>${feat.name}</h3>
+      ${body}
+    </div>
+  `;
+}
+
+function GetFeats(featRefs) {
+  if (!featRefs || featRefs.length === 0) {
+    return "<p>—</p>";
+  }
+
+  return featRefs.map(ref => {
+    const feat = getFeatData(ref);
+    if (!feat) return "";
+
+    return renderFeat(feat);
+  }).join("");
+}
+
+function getFeatData(featRef) {
+  return ALL_FEATS.find(f =>
+    f.name === featRef.name &&
+    f.source === featRef.source
+  );
+}
+
+
+function renderFeatEntry(entry) {
+  // Texto simples
+  if (typeof entry === "string") {
+    return `<p>${parse5eText(entry)}</p>`;
+  }
+
+  // Item nomeado (como Ambitious Magic)
+  if (entry.type === "item") {
+    const body = entry.entries
+      ? entry.entries.map(e => renderFeatEntry(e)).join("")
+      : "";
+
+    return `
+      <div class="feat-item">
+        <strong>${entry.name}.</strong>
+        ${body}
+      </div>
+    `;
+  }
+
+  // Lista
+  if (entry.type === "list") {
+    return `
+      <ul class="feat-list">
+        ${entry.items.map(i => `
+          <li>${renderFeatEntry(i)}</li>
+        `).join("")}
+      </ul>
+    `;
+  }
+
+  // Entries genérico
+  if (entry.type === "entries") {
+    const body = entry.entries
+      ? entry.entries.map(e => renderFeatEntry(e)).join("")
+      : "";
+
+    return `
+      <div class="feat-sub">
+        ${entry.name ? `<strong>${entry.name}</strong>` : ""}
+        ${body}
+      </div>
+    `;
+  }
+
+  return "";
+}
+
+
+
+function renderBgEntry(entry,Characteristics,Table) {
+  // Texto simples
+  if (typeof entry === "string") {
+    return `<p>${parse5eText(entry)}</p>`;
+  }
+
+  // Lista (Skill / Languages / Equipment)
+  if (entry.type === "list") {
+    return `
+      <div class="bg-section">
+        ${entry.items.map(item => `
+          <p>
+            <strong>${item.name}</strong>
+            ${parse5eText(item.entry)}
+          </p>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  if(Characteristics == true){
+    // Bloco com nome (Feature, Suggested Characteristics)
+    if (entry.type === "entries") {
+      const body = entry.entries
+        ? entry.entries.map(e => renderBgEntry(e,Characteristics,Table)).join("")
+        : "";
+
+      return `
+        <div class="bg-section">
+          ${entry.name ? `<h3>${entry.name}</h3>` : ""}
+          ${body}
+        </div>
+      `;
+    }
+  }
+
+  if(Table == true){
+    // Tabela
+    if (entry.type === "table") {
+      return renderBgTable(entry);
+    }
+  }
+
+  return "";
+}
+
+function renderBgTable(table) {
+  const headers = table.colLabels || [];
+
+  return `
+    <table class="bg-table">
+      <thead>
+        <tr>
+          ${headers.map(h => `<th>${h}</th>`).join("")}
+        </tr>
+      </thead>
+      <tbody>
+        ${table.rows.map(row => `
+          <tr>
+            ${row.map(cell => `<td>${parse5eText(cell)}</td>`).join("")}
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  `;
+}
+
 
 
 async function GetClass() {
@@ -39,6 +245,37 @@ async function GetClass() {
   return finalText;
 }
 
+function renderBackgroundEntries(entries) {
+  if (!entries || entries.length === 0) return "";
+
+  return entries.map(entry => {
+    // Caso simples: string
+    if (typeof entry === "string") {
+      return `<p>${parse5eText(entry)}</p>`;
+    }
+
+    // Caso objeto com nome + entries
+    if (typeof entry === "object") {
+      const body = entry.entries
+        ? entry.entries.map(e =>
+            typeof e === "string"
+              ? parse5eText(e)
+              : parse5eText(e.entries?.join(" ") ?? "")
+          ).join(" ")
+        : "";
+
+      return `
+        <p>
+          ${entry.name ? `<strong>${entry.name}:</strong> ` : ""}
+          ${body}
+        </p>
+      `;
+    }
+
+    return "";
+  }).join("");
+}
+
 function GetSubRacesFor(raceName,raceSource,nameRace) {
   return ALL_SUBRACES.filter(sr =>
     sr.name === raceName &&
@@ -55,7 +292,6 @@ async function GetSubrace(subrace) {
   { 
       var subRaceEntries = GetSubRacesFor(subrace.name,subrace.source,subrace.raceName)      
       finalText =  renderTraits(subRaceEntries[0].entries);
-      debugger;
   }
 
   return finalText;
@@ -151,7 +387,6 @@ function collectEntriesText(entry, output = []) {
 
 function parse5eText(text) {
   if (!text) return "";
-
   return text.replace(/\{@(\w+)\s([^}]+)\}/gi, (match, tag, content) => {
     return render5eTag(tag.toLowerCase(), content);
   });
