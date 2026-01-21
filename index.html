@@ -3,122 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <title>RPG Builder</title>
-  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="sections.css">
 
 </head>
 <body>
-<header>
-  <nav>
-    <div id = "HeaderEscolhas">
-          <div id = "HeaderClasse"></div>
-          <div id = "HeaderRaca"></div>
-          <div id = "HeaderFeats"></div>
-          <div id = "headerBackground"></div>
-
-        <button onclick="exportCharacter()">
-          Exportar Personagem
-        </button>
-        <button onclick="importCharacter()">
-          Importar Personagem
-        </button>
-        <button onclick="gerarFichaHTML()">
-         Exportar Ficha
-        </button>
-
-        <input type="file" id="importFileInput" accept=".json" style="display:none">
-    </div>
-  </nav>
-</header>
 
 
+<section class="panel">
+  <h2 class="panel-title">Classes</h2>
 
-<!-- ================== RAÇA ================== -->
-<div class="section">
-  <div id="raceToggle" class="section-header" onclick="toggleSection('raceSection')">
-    <span class="arrow">▶</span> Raça
-  </div>
-  <div id="raceSection" class="section-body">
-    <div id="raceGeneral"></div>
-
-    <!-- SUB-RAÇA -->
-    <div class="section nested">
-      <div class="section-header" onclick="toggleSection('subRaceSection')">
-        <span class="arrow">▶</span> Sub-Raça
-      </div>
-      <div id="subRaceSection" class="section-body">
-        <div id="raceSub"></div>
-      </div>
+  <div class="class-controls">
+    <div class="field">
+      <label for="classSelect">Classe</label>
+      <select id="classSelect"></select>
     </div>
 
-    <div id="raceInfo"></div>
-  </div>
-</div>
-
-<!-- ================== CLASSE ================== -->
-<div class="section">
-  <div class="section-header" onclick="toggleSection('classSection')">
-    <span class="arrow">▶</span> Classe
-  </div>
-  <div id="classSection" class="section-body">
-    <div id="classGeneral"></div>
-
-    <!-- SUBCLASSE -->
-    <div class="section nested">
-      <div class="section-header" onclick="toggleSection('subClassSection')">
-        <span class="arrow">▶</span> Subclasse
-      </div>
-      <div id="subClassSection" class="section-body">
-        <div id="classSub"></div>
-      </div>
+    <div class="field">
+      <label for="editionSelect">Edição</label>
+      <select id="editionSelect"></select>
     </div>
 
-    <div id="classInfo"></div>
-    <div id="subClassInfo"></div>
-    
+    <div class="field">
+      <label for="sourceSelect">Fonte</label>
+      <select id="sourceSelect"></select>
+    </div>
+
+    <div class="field">
+      <label for="subclassSelect">Subclasse</label>
+      <select id="subclassSelect"></select>
+    </div>
   </div>
-</div>
 
-<!-- ================== BACKGROUND ================== -->
-<div class="section">
-  <div class="section-header" onclick="toggleSection('backgroundSection')">
-    <span class="arrow">▶</span> Background
-  </div>
-  <div id="backgroundSection" class="section-body">
-    <div id="backgroundContainer"></div>
-    <div id="backgroundInfo"></div>
-  </div>
-</div>
-
-<!-- ================== FEATS ================== -->
-<div class="section">
-  <div class="section-header" onclick="toggleSection('featsSection')">
-    <span class="arrow">▶</span> Feats
-  </div>
-  <div id="featsSection" class="section-body">
-    <div id="featControls"></div>
-    <div id="featContainer"></div>
-  </div>
-</div>
-
-  <!-- BASE 5E TOOLS -->
-  <script src="./js/parser.js"></script>
-
-  <!-- SEU CÓDIGO -->
-  <script src="js/ExtraUtils.js"></script>
-  <script src="js/HeaderLoader.js"></script>
-  <script src="js/ExportCharacter"></script>
-  <script src="js/ImportCharacter.js"></script>
-  <script src="js/SheetGenerator.js"></script>
-  <script src="js/ui.js"></script>
+  <div id="classInfo" class="class-info"></div>
+</section>
 
 
-  <script src="js/ClassLoader.js"></script>
-  <script src="js/SubClassLoader.js"></script>
-  <script src="./js/RaceLoader.js"></script>
-  <script src="./js/FeatLoader.js"></script>
-  <script src="./js/BackgroundLoader.js"></script>
 
+
+  <!-- SCRIPTS -->
+  <script type="module" src="js/main.js"></script>
 
 </body>
 </html>

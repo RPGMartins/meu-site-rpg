@@ -26,28 +26,72 @@ function detectEditionFromSource(source) {
 export function registerClassFile(classData) {
   if (!classData?.class?.length) return;
 
-  const baseClass = classData.class[0];
-  const classKey = baseClass.name.toLowerCase();
-  const source = baseClass.source;
+  Array.isArray(classData.class) 
+  {
+    classData.class.forEach(baseClass => {
+  
+    const classKey = baseClass.name.toLowerCase();
+    const source = baseClass.source;
+    const edition = detectEditionFromSource(source);
+    
+    // Inicializações
+    ALL_CLASSES[classKey] ??= {};
+    ALL_CLASSES[classKey][edition] ??= {};
+    ALL_CLASSES[classKey][edition][source] ??= {
+      class: null,
+      subclasses: {}
+    };
+
+    // Classe base
+    ALL_CLASSES[classKey][edition][source].class = baseClass;
+
+    // Subclasses
+    if (Array.isArray(classData.subclass)) {
+      classData.subclass.forEach(sc => {
+        ALL_CLASSES[classKey][edition][source].subclasses[sc.name] = sc;
+      });
+    }});
+  }
+}
+
+export function registerFeat(feat) {
+  const key = feat.name;
+  const source = feat.source;
   const edition = detectEditionFromSource(source);
 
-  // Inicializações
-  ALL_CLASSES[classKey] ??= {};
-  ALL_CLASSES[classKey][edition] ??= {};
-  ALL_CLASSES[classKey][edition][source] ??= {
-    class: null,
-    subclasses: {}
-  };
+  ALL_FEATS[key] ??= {};
+  ALL_FEATS[key][edition] ??= {};
+  ALL_FEATS[key][edition][source] = feat;
+}
 
-  // Classe base
-  ALL_CLASSES[classKey][edition][source].class = baseClass;
+export function registerRaceFile(raceData) {
+  raceData.race?.forEach(race => {
+    const key = race.name.toLowerCase();
+    const source = race.source;
+    const edition = detectEditionFromSource(source);
 
-  // Subclasses
-  if (Array.isArray(classData.subclass)) {
-    classData.subclass.forEach(sc => {
-      ALL_CLASSES[classKey][edition][source].subclasses[sc.name] = sc;
-    });
-  }
+    ALL_RACES[key] ??= {};
+    ALL_RACES[key][edition] ??= {};
+    ALL_RACES[key][edition][source] ??= {
+      race: race,
+      subraces: {}
+    };
+  });
+
+  raceData.subrace?.forEach(sr => {
+    const key = sr.raceName.toLowerCase();
+    const source = sr.source;
+    const edition = detectEditionFromSource(source);
+
+    ALL_RACES[key] ??= {};
+    ALL_RACES[key][edition] ??= {};
+    ALL_RACES[key][edition][source] ??= {
+      race: null,
+      subraces: {}
+    };
+
+    ALL_RACES[key][edition][source].subraces[sr.name] = sr;
+  });
 }
 
 export function getClass({
@@ -81,15 +125,7 @@ export function getAvailableSubclasses(classKey, edition, source) {
   );
 }
 
-export function registerFeat(feat) {
-  const key = feat.name;
-  const source = feat.source;
-  const edition = detectEditionFromSource(source);
 
-  ALL_FEATS[key] ??= {};
-  ALL_FEATS[key][edition] ??= {};
-  ALL_FEATS[key][edition][source] = feat;
-}
 
 export function getFeat({ name, edition, source }) {
   return ALL_FEATS?.[name]?.[edition]?.[source] ?? null;
@@ -103,27 +139,4 @@ export function registerBackground(bg) {
   ALL_BACKGROUNDS[key] ??= {};
   ALL_BACKGROUNDS[key][edition] ??= {};
   ALL_BACKGROUNDS[key][edition][source] = bg;
-}
-
-export function registerRaceFile(raceData) {
-  raceData.race?.forEach(race => {
-    const key = race.name.toLowerCase();
-    const source = race.source;
-    const edition = detectEditionFromSource(source);
-
-    ALL_RACES[key] ??= {};
-    ALL_RACES[key][edition] ??= {};
-    ALL_RACES[key][edition][source] ??= {
-      race: race,
-      subraces: {}
-    };
-  });
-
-  raceData.subrace?.forEach(sr => {
-    const key = sr.raceName.toLowerCase();
-    const source = sr.source;
-    const edition = detectEditionFromSource(source);
-
-    ALL_RACES?.[key]?.[edition]?.[source]?.subraces?.[sr.name] = sr;
-  });
 }
