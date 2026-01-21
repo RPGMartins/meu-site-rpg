@@ -5,9 +5,11 @@ let ALL_CLASSES_INDEX = null;
 export  async function initClassLoader() {
 
   ALL_CLASSES_INDEX = await loadClassesIndex();
-  Object.keys(ALL_CLASSES_INDEX).forEach(classIndex => {
-    initClass(classIndex);
-  });}
+
+  await Promise.all(
+    Object.keys(ALL_CLASSES_INDEX).map(initClass)
+  );  
+}
 
 async function initClass(key) {
   const file = ALL_CLASSES_INDEX[key];
