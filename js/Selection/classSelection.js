@@ -1,6 +1,6 @@
-import { ALL_CLASSES, getAvailableClassEditions, getAvailableClassSources, getAvailableSubclasses, getClass} from "../data/dataRegistry.js";
-import {fillSelect} from "./uiUtils.js";
-import {classSelected, classEditionSelected, classSourceSelected, subClassSelected} from "./characterState.js"
+import { ALL_CLASSES, getAvailableClassEditions, getAvailableClassSources, getAvailableSubclasses } from "../data/dataRegistry.js";
+import { fillSelect } from "./uiUtils.js";
+import { classSelected, classEditionSelected, classSourceSelected, subClassSelected } from "../state/characterState.js"
 
 const classSelect    = document.getElementById("classSelect");
 const editionSelect  = document.getElementById("editionSelect");
@@ -18,6 +18,21 @@ export function initClassUI() {
   fillSelect(classSelect, classKeys);
 }
 
+export function loadCharacter(classGeneral)
+{
+    classSelect.value = classGeneral.class;
+    classSelectedEvent(classGeneral.class);
+
+    editionSelect.value = classGeneral.edition;
+    classEditionSelectedEvent(classGeneral.class, classGeneral.edition);
+
+    sourceSelect.value = classGeneral.source;
+    classSourceSelectedEvent(classGeneral.class, classGeneral.edition, classGeneral.source);
+
+    subclassSelect.value = classGeneral.subclass;
+    subClasslectedEvent(classGeneral.subclass);
+}
+
 function classSelectedEvent(classValue)
 {
     const classKey = classValue;
@@ -26,6 +41,8 @@ function classSelectedEvent(classValue)
     fillSelect(sourceSelect, []);
     fillSelect(subclassSelect, []);
 
+    if(classValue == false)
+        return;
 
     fillSelect(editionSelect, getAvailableClassEditions(classKey));
     classSelected(classKey);
@@ -33,12 +50,14 @@ function classSelectedEvent(classValue)
 
 function classEditionSelectedEvent(classValue,editionValue)
 {
-    const classKey = classSelect.value;
-    const edition = editionSelect.value;
+    const classKey = classValue;
+    const edition = editionValue;
 
     fillSelect(sourceSelect, []);
     fillSelect(subclassSelect, []);
 
+    if(classValue == false || editionValue == false)
+        return;
 
     fillSelect(sourceSelect, getAvailableClassSources(classKey,edition));
     classEditionSelected(edition);
@@ -52,14 +71,16 @@ function classSourceSelectedEvent(classValue,editionValue,sourceValue)
 
     fillSelect(subclassSelect, []);
 
-    const subclasses = getAvailableSubclasses(classKey, edition, source);
-    fillSelect(subclassSelect, subclasses);
+    if(classValue == false || editionValue == false || sourceValue == false)
+        return;
+
+    fillSelect(subclassSelect, getAvailableSubclasses(classKey, edition, source));
     classSourceSelected(source);
 }
 
 function subClasslectedEvent(subClassValue)
 {
-  const subclassName = ssubClassValue;
-  if (!subclassName) return;
-    subClassSelected(subclassName)
+    if (subClassValue == false)
+        return 
+    subClassSelected(subClassValue)
 }
