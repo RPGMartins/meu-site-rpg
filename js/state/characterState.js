@@ -1,3 +1,5 @@
+//import { ALL_CLASSES } from "../data/dataRegistry";
+
 export const CharacterState = {
     generalClass: {
         class : null,

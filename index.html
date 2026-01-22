@@ -4,22 +4,20 @@
   <meta charset="UTF-8">
   <title>RPG Builder</title>
   <link rel="stylesheet" href="sections.css">
+  <link rel="stylesheet" href="overlay.css">
 
 </head>
 <body>
 
 <button id="btnSave">Salvar</button>
 <button id="btnLoad">Carregar</button>
+<button id="btnClassDetails">Ver Classe</button>
+<button id="btnSubClassDetails">Ver SubClasse</button>
 
 <section class="panel">
   <h2 class="panel-title">Classes</h2>
 
   <div class="class-controls">
-    <div class="field">
-      <label for="classSelect">Classe</label>
-      <select id="classSelect"></select>
-    </div>
-
     <div class="field">
       <label for="editionSelect">Edição</label>
       <select id="editionSelect"></select>
@@ -29,6 +27,12 @@
       <label for="sourceSelect">Fonte</label>
       <select id="sourceSelect"></select>
     </div>
+
+    <div class="field">
+      <label for="classSelect">Classe</label>
+      <select id="classSelect"></select>
+    </div>
+
 
     <div class="field">
       <label for="subclassSelect">Subclasse</label>
@@ -44,6 +48,23 @@
 
   <!-- SCRIPTS -->
   <script type="module" src="js/main.js"></script>
+<!-- ===== OVERLAY / MODAL ===== -->
+
+  <div id="classOverlay" class="overlay hidden">
+  <div class="overlay-content">
+
+    <button class="overlay-close" id="closeClassOverlay">
+      ✕
+    </button>
+
+    <h2 id="overlayTitle">Classe</h2>
+
+    <div id="overlayBody">
+      <!-- Conteúdo dinâmico -->
+    </div>
+
+  </div>
+</div>
 
 </body>
 </html>

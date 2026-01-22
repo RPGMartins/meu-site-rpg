@@ -1,4 +1,4 @@
-import {registerClassFile , getAvailableClassEditions, getAvailableClassSources, getAvailableSubclasses} from "./data/dataRegistry.js"
+import {registerClassFile ,registerClassFeatures, registerSubclassFeatures} from "./data/dataRegistry.js"
 
 let ALL_CLASSES_INDEX = null;
 
@@ -15,11 +15,15 @@ async function initClass(key) {
   const file = ALL_CLASSES_INDEX[key];
   const res = await fetch(`./data/class/${file}`);
   const data = await res.json();
+  
+
   registerClassFile(data);
+  //registerClassFeatures(data.classFeature);
+  //registerSubclassFeatures(data.subclassFeature);
 }
 
 async function loadClassesIndex() {
-  const res = await fetch("./data/class/index.json");
+  const res = await fetch("./data-2014/class/index.json");
   return await res.json();
 }
 

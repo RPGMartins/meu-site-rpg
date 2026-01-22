@@ -1,86 +1,120 @@
-import { ALL_CLASSES, getAvailableClassEditions, getAvailableClassSources, getAvailableSubclasses } from "../data/dataRegistry.js";
+import { ALL_CLASSES } from "../data/dataRegistry.js";
 import { fillSelect } from "./uiUtils.js";
-import { classSelected, classEditionSelected, classSourceSelected, subClassSelected } from "../state/characterState.js"
+import {
+  classSelected,
+  classEditionSelected,
+  classSourceSelected,
+  subClassSelected
+} from "../state/characterState.js";
 
 const classSelect    = document.getElementById("classSelect");
 const editionSelect  = document.getElementById("editionSelect");
 const sourceSelect   = document.getElementById("sourceSelect");
 const subclassSelect = document.getElementById("subclassSelect");
 
-classSelect.addEventListener("change", () => classSelectedEvent(classSelect.value));
-editionSelect.addEventListener("change", () => classEditionSelectedEvent(classSelect.value, editionSelect.value));
-sourceSelect.addEventListener("change", () => classSourceSelectedEvent(classSelect.value, editionSelect.value, sourceSelect.value));
-subclassSelect.addEventListener("change", () => subClasslectedEvent(subclassSelect.value));
+// ===============================
+// EVENTOS
+// ===============================
 
+editionSelect.addEventListener("change", () => {
+  editionSelectedEvent(editionSelect.value);
+});
+
+sourceSelect.addEventListener("change", () => {
+  sourceSelectedEvent(editionSelect.value, sourceSelect.value);
+});
+
+classSelect.addEventListener("change", () => {
+  classSelectedEvent(
+    editionSelect.value,
+    sourceSelect.value,
+    classSelect.value
+  );
+});
+
+subclassSelect.addEventListener("change", () => {
+  subClassSelectedEvent(subclassSelect.value);
+});
+
+// ===============================
+// INIT
+// ===============================
 
 export function initClassUI() {
-  const classKeys = Object.keys(ALL_CLASSES);
-  fillSelect(classSelect, classKeys);
+  const editions = Object.keys(ALL_CLASSES);
+  fillSelect(editionSelect, editions);
+
+  fillSelect(sourceSelect, []);
+  fillSelect(classSelect, []);
+  fillSelect(subclassSelect, []);
 }
 
-export function loadCharacter(classGeneral)
-{
-    classSelect.value = classGeneral.class;
-    classSelectedEvent(classGeneral.class);
+// ===============================
+// LOAD CHARACTER
+// ===============================
 
-    editionSelect.value = classGeneral.edition;
-    classEditionSelectedEvent(classGeneral.class, classGeneral.edition);
+export function loadCharacter(classGeneral) {
+  editionSelect.value = classGeneral.edition;
+  editionSelectedEvent(classGeneral.edition);
 
-    sourceSelect.value = classGeneral.source;
-    classSourceSelectedEvent(classGeneral.class, classGeneral.edition, classGeneral.source);
+  sourceSelect.value = classGeneral.source;
+  sourceSelectedEvent(classGeneral.edition, classGeneral.source);
 
-    subclassSelect.value = classGeneral.subclass;
-    subClasslectedEvent(classGeneral.subclass);
+  classSelect.value = classGeneral.class;
+  classSelectedEvent(
+    classGeneral.edition,
+    classGeneral.source,
+    classGeneral.class
+  );
+
+  subclassSelect.value = classGeneral.subclass;
+  subClassSelectedEvent(classGeneral.subclass);
 }
 
-function classSelectedEvent(classValue)
-{
-    const classKey = classValue;
+// ===============================
+// HANDLERS
+// ===============================
 
-    fillSelect(editionSelect, []);
-    fillSelect(sourceSelect, []);
-    fillSelect(subclassSelect, []);
+function editionSelectedEvent(edition) {
+  fillSelect(sourceSelect, []);
+  fillSelect(classSelect, []);
+  fillSelect(subclassSelect, []);
 
-    if(classValue == false)
-        return;
+  if (!edition) return;
 
-    fillSelect(editionSelect, getAvailableClassEditions(classKey));
-    classSelected(classKey);
+  const sources = Object.keys(ALL_CLASSES[edition] ?? {});
+  fillSelect(sourceSelect, sources);
+
+  classEditionSelected(edition);
 }
 
-function classEditionSelectedEvent(classValue,editionValue)
-{
-    const classKey = classValue;
-    const edition = editionValue;
+function sourceSelectedEvent(edition, source) {
+  fillSelect(classSelect, []);
+  fillSelect(subclassSelect, []);
 
-    fillSelect(sourceSelect, []);
-    fillSelect(subclassSelect, []);
+  if (!edition || !source) return;
 
-    if(classValue == false || editionValue == false)
-        return;
+  const classes = Object.keys(
+    ALL_CLASSES?.[edition]?.[source] ?? {}
+  );
 
-    fillSelect(sourceSelect, getAvailableClassSources(classKey,edition));
-    classEditionSelected(edition);
+  fillSelect(classSelect, classes);
+  classSourceSelected(source);
 }
 
-function classSourceSelectedEvent(classValue,editionValue,sourceValue)
-{
-    const classKey = classValue;
-    const edition = editionValue;
-    const source  = sourceValue;
+function classSelectedEvent(edition, source, classKey) {
+  fillSelect(subclassSelect, []);
 
-    fillSelect(subclassSelect, []);
+  if (!edition || !source || !classKey) return;
 
-    if(classValue == false || editionValue == false || sourceValue == false)
-        return;
+  const subclasses =
+    ALL_CLASSES?.[edition]?.[source]?.[classKey]?.subclasses;
 
-    fillSelect(subclassSelect, getAvailableSubclasses(classKey, edition, source));
-    classSourceSelected(source);
+  fillSelect(subclassSelect, Object.keys(subclasses ?? {}));
+  classSelected(classKey);
 }
 
-function subClasslectedEvent(subClassValue)
-{
-    if (subClassValue == false)
-        return 
-    subClassSelected(subClassValue)
+function subClassSelectedEvent(subclassKey) {
+  if (!subclassKey) return;
+  subClassSelected(subclassKey);
 }

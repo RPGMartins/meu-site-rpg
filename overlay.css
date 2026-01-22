@@ -1,0 +1,84 @@
+/* ===== OVERLAY BASE ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Escondido */
+.overlay.hidden {
+  display: none;
+}
+
+/* ===== CONTEÚDO ===== */
+.overlay-content {
+  background: #1e1e1e;
+  color: #e0e0e0;
+  width: 90%;
+  max-width: 700px;
+  max-height: 85vh;
+  padding: 20px;
+  border-radius: 10px;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* ===== BOTÃO FECHAR ===== */
+.overlay-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.overlay-close:hover {
+  color: #fff;
+}
+
+/* ===== TÍTULO ===== */
+#overlayTitle {
+  margin-top: 0;
+  border-bottom: 1px solid #444;
+  padding-bottom: 6px;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+  .overlay-content {
+    width: 95%;
+    max-height: 90vh;
+    padding: 16px;
+  }
+}
+
+.class-feature {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px 8px;
+  margin-bottom: 8px;
+  background: #274154;
+}
+
+.class-feature-title {
+  font-weight: bold;
+  cursor: pointer;
+  list-style: none;
+}
+
+.class-feature[open] {
+  background: #363330;
+}
+
+.class-feature-body {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
