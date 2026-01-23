@@ -18,28 +18,49 @@ export const EDITIONS = {
 // REGISTRO DE CLASSES
 // ===============================
 
-export function registerClassFile(classData, forcedSource = "default", forcedEdition = "default") {
+export function registerClassFile(classData,forcedEdition,validSources = []) {
   if (!Array.isArray(classData?.class)) return;
 
+  
   classData.class.forEach(baseClass => {
-    const edition = forcedEdition;
-    const source = forcedSource;
-    const classKey = baseClass.name;
+      
+    if(validSources.length > 0)
+    {
+      if(validSources.includes(baseClass.source) == false)
+      {
+        return;
+      }
+    }
+    
 
+    const edition = forcedEdition;
+    const source = baseClass.source;
+    const classKey = baseClass.name;
+    
     ALL_CLASSES[edition] ??= {};
     ALL_CLASSES[edition][source] ??= {};
     ALL_CLASSES[edition][source][classKey] ??= {
       class: null,
       subclasses: {}
     };
-
+    
     ALL_CLASSES[edition][source][classKey].class = baseClass;
+    
   });
 
   if (Array.isArray(classData.subclass)) {
     classData.subclass.forEach(sc => {
+      
+    if(validSources.length > 0)
+    {
+      if(validSources.includes(sc.source) == false)
+      {
+        return;
+      }
+    }
+
       const edition = forcedEdition;
-      const source = forcedSource;
+      const source = sc.classSource;
       const classKey = sc.className;
 
       const classEntry =

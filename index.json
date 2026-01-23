@@ -1,0 +1,17 @@
+{
+	"index": 
+    [
+        {
+			"dataPath":"data-2014",
+            "editionName":"classic",
+            "validSources":["PHB","SCAG","XGE","TCE","BGG","ERLW","VRGR","MTF","GGR","EGW","MOT","FTD","SCC"]
+
+        },
+        {
+			"dataPath":"data",
+            "editionName":"one",
+            "validSources":["XPHB","EFA","FRHof","EFA"]
+        }
+    ]
+}
+    
