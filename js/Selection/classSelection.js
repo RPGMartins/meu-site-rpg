@@ -1,10 +1,6 @@
 import { ALL_CLASSES } from "../data/dataRegistry.js";
 import { fillSelect } from "./uiUtils.js";
-import {
-  classSelected,
-  classEditionSelected,
-  classSourceSelected,
-  subClassSelected
+import {  classSelected,  classEditionSelected,  classSourceSelected,  subClassSelected
 } from "../state/characterState.js";
 
 const classSelect    = document.getElementById("classSelect");
@@ -61,12 +57,8 @@ export function loadCharacter(classGeneral) {
   sourceSelectedEvent(classGeneral.edition, classGeneral.source);
 
   classSelect.value = classGeneral.class;
-  classSelectedEvent(
-    classGeneral.edition,
-    classGeneral.source,
-    classGeneral.class
-  );
-
+  classSelectedEvent(classGeneral.edition,classGeneral.source,classGeneral.class);
+  
   subclassSelect.value = classGeneral.subclass;
   subClassSelectedEvent(classGeneral.subclass);
 }

@@ -4,10 +4,10 @@ import { ALL_CLASSES, getClassFeatures, getSubclassFeatures,} from "../data/data
 import { parse5eText } from "../parse/parseText.js";
 
 export function showClassDetailsOverlay() {
-  const selectedClass = ALL_CLASSES[CharacterState.generalClass.class][CharacterState.generalClass.edition][CharacterState.generalClass.source].class;
+  debugger
+  const selectedClass = ALL_CLASSES[CharacterState.generalClass.edition][CharacterState.generalClass.source][CharacterState.generalClass.class].class;
   if (!selectedClass) 
     return;
-  debugger
 
     //TODO colocar os campos da classe
     const html = `
@@ -24,12 +24,11 @@ export function showClassDetailsOverlay() {
 }
 
 export function showSubClassDetailsOverlay() {
-  const selectedSubClass = ALL_CLASSES[CharacterState.generalClass.class][CharacterState.generalClass.edition][CharacterState.generalClass.source].subclasses[CharacterState.generalClass.subclass];
+  const selectedSubClass = ALL_CLASSES[CharacterState.generalClass.edition][CharacterState.generalClass.source][CharacterState.generalClass.class].subclasses[CharacterState.generalClass.subclass];
   if (!selectedSubClass) 
     return;
 
-  debugger
-    //TODO colocar os campos da classe
+    //TODO colocar os campos da subcclasse
     const html = `
     <p><strong>Classe:</strong> ${selectedSubClass.name}</p>
     <p><strong>Fonte:</strong> ${selectedSubClass.source}</p>

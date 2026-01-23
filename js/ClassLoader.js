@@ -18,8 +18,8 @@ async function initClass(key,editionName,validSources) {
   
 
   registerClassFile(data,editionName,validSources);
-  //registerClassFeatures(data.classFeature);
-  //registerSubclassFeatures(data.subclassFeature);
+  registerClassFeatures(data.classFeature,editionName,validSources);
+  registerSubclassFeatures(data.subclassFeature,editionName,validSources);
 }
 
 async function loadClassesIndex(dataPath) {
