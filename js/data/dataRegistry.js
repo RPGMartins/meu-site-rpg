@@ -10,79 +10,67 @@ export const ALL_CLASS_FEATURES = {};
 export const ALL_SUBCLASS_FEATURES = {};
 
 export const EDITIONS = {
-  CLASSIC: "Classic",
-  ONE: "One",
+  CLASSIC: "classic",
+  ONE: "one",
 };
 
 // ===============================
-// REGISTRO DE CLASSES
+// CLASSES
 // ===============================
 
-export function registerClassFile(classData,forcedEdition,validSources = []) {
+export function registerClassFile(classData, forcedEdition, validSources = []) {
   if (!Array.isArray(classData?.class)) return;
 
-  
   classData.class.forEach(baseClass => {
-      
-    if(validSources.length > 0)
-    {
-      if(validSources.includes(baseClass.source) == false)
-      {
-        return;
-      }
-    }
-    
+
+    if (!ValidateSource(validSources, baseClass.source)) return;
 
     const edition = forcedEdition;
     const source = baseClass.source;
     const classKey = baseClass.name;
-    
+
     ALL_CLASSES[edition] ??= {};
     ALL_CLASSES[edition][source] ??= {};
     ALL_CLASSES[edition][source][classKey] ??= {
       class: null,
       subclasses: {}
     };
-    
+
     ALL_CLASSES[edition][source][classKey].class = baseClass;
-    
   });
 
-  if (Array.isArray(classData.subclass)) {
-    classData.subclass.forEach(sc => {
-      
-    if(validSources.length > 0)
-    {
-      if(validSources.includes(sc.source) == false)
-      {
-        return;
-      }
-    }
+  if (!Array.isArray(classData.subclass)) return;
 
-      const edition = forcedEdition;
-      const source = sc.classSource;
-      const classKey = sc.className;
+  classData.subclass.forEach(sc => {
 
-      const classEntry =
-        ALL_CLASSES?.[edition]?.[source]?.[classKey];
+    if (!ValidateSource(validSources, sc.source)) return;
 
-      if (!classEntry) return;
+    const edition = forcedEdition;
+    const source = sc.classSource;
+    const classKey = sc.className;
 
-      classEntry.subclasses[sc.name] = sc;
-    });
-  }
+    const classEntry =
+      ALL_CLASSES?.[edition]?.[source]?.[classKey];
+
+    if (!classEntry) return;
+
+    classEntry.subclasses[sc.name] = sc;
+  });
 }
 
 // ===============================
-// FEATURES DE CLASSE
+// CLASS FEATURES
 // ===============================
 
-export function registerClassFeatures(classFeatureData, forcedSource = "default",forcedEdition = "default") {
+export function registerClassFeatures(classFeatureData, forcedEdition, validSources = []) {
   if (!Array.isArray(classFeatureData)) return;
 
   classFeatureData.forEach(feature => {
+
+    if (!ValidateSource(validSources, feature.source)) return;
+
     const edition = forcedEdition;
-    const source = forcedSource;
+    const source = feature.classSource;
     const classKey = feature.className;
 
     ALL_CLASS_FEATURES[edition] ??= {};
@@ -94,15 +82,18 @@ export function registerClassFeatures(classFeatureData, forcedSource = "default"
 }
 
 // ===============================
-// FEATURES DE SUBCLASSE
+// SUBCLASS FEATURES
 // ===============================
 
-export function registerSubclassFeatures(subclassFeatureData, forcedSource = "default",forcedEdition = "default") {
+export function registerSubclassFeatures(subclassFeatureData, forcedEdition, validSources = []) {
   if (!Array.isArray(subclassFeatureData)) return;
 
   subclassFeatureData.forEach(feature => {
+
+    if (!ValidateSource(validSources, feature.source)) return;
+
     const edition = forcedEdition;
-    const source = forcedSource;
+    const source = feature.classSource;
     const classKey = feature.className;
 
     const subclasses =
@@ -119,15 +110,7 @@ export function registerSubclassFeatures(subclassFeatureData, forcedSource = "de
       }
     }
 
-    if (!subclassKey) {
-      console.warn(
-        "Subclass não encontrada:",
-        feature.subclassShortName,
-        "para",
-        classKey
-      );
-      return;
-    }
+    if (!subclassKey) return;
 
     ALL_SUBCLASS_FEATURES[edition] ??= {};
     ALL_SUBCLASS_FEATURES[edition][source] ??= {};
@@ -142,9 +125,11 @@ export function registerSubclassFeatures(subclassFeatureData, forcedSource = "de
 // FEATS
 // ===============================
 
-export function registerFeat(feat, forcedSource = "default", forcedEdition = "default") {
-    const edition = forcedEdition;
-  const source = forcedSource;
+export function registerFeat(feat, forcedEdition, validSources = []) {
+  if (!ValidateSource(validSources, feat.source)) return;
+
+  const edition = forcedEdition;
+  const source = feat.source;
   const key = feat.name;
 
   ALL_FEATS[edition] ??= {};
@@ -156,10 +141,14 @@ export function registerFeat(feat, forcedSource = "default", forcedEdition = "de
 // RAÇAS
 // ===============================
 
-export function registerRaceFile(raceData, forcedSource = "default", forcedEdition = "default") {
+export function registerRaceFile(raceData, forcedEdition, validSources = []) {
+
   raceData.race?.forEach(race => {
+
+    if (!ValidateSource(validSources, race.source)) return;
+
     const edition = forcedEdition;
-    const source = forcedSource;
+    const source = race.source;
     const key = race.name;
 
     ALL_RACES[edition] ??= {};
@@ -171,18 +160,19 @@ export function registerRaceFile(raceData, forcedSource = "default", forcedEditi
   });
 
   raceData.subrace?.forEach(sr => {
+
+    if (!ValidateSource(validSources, sr.source)) return;
+
     const edition = forcedEdition;
-    const source = forcedSource;
+    const source = sr.source;
     const key = sr.raceName;
 
-    ALL_RACES[edition] ??= {};
-    ALL_RACES[edition][source] ??= {};
-    ALL_RACES[edition][source][key] ??= {
-      race: null,
-      subraces: {}
-    };
+    const raceEntry =
+      ALL_RACES?.[edition]?.[source]?.[key];
 
-    ALL_RACES[edition][source][key].subraces[sr.name] = sr;
+    if (!raceEntry) return;
+
+    raceEntry.subraces[sr.name] = sr;
   });
 }
 
@@ -190,9 +180,11 @@ export function registerRaceFile(raceData, forcedSource = "default", forcedEditi
 // BACKGROUNDS
 // ===============================
 
-export function registerBackground(bg, forcedSource = "default", forcedEdition = "default") {
-    const edition = forcedEdition;
-  const source = forcedSource;
+export function registerBackground(bg, forcedEdition, validSources = []) {
+  if (!ValidateSource(validSources, bg.source)) return;
+
+  const edition = forcedEdition;
+  const source = bg.source;
   const key = bg.name;
 
   ALL_BACKGROUNDS[edition] ??= {};
@@ -235,9 +227,7 @@ export function getClassFeatures(classKey, edition, source) {
 }
 
 export function getSubclassFeatures(classKey, subclassKey, edition, source) {
-  return (
-    ALL_SUBCLASS_FEATURES?.[edition]?.[source]?.[classKey]?.[subclassKey] ?? []
-  );
+  return ALL_SUBCLASS_FEATURES?.[edition]?.[source]?.[classKey]?.[subclassKey] ?? [];
 }
 
 export function getAllSelectedFeatures(classKey, subclassKey, edition, source) {
@@ -251,4 +241,13 @@ export function getAllSelectedFeatures(classKey, subclassKey, edition, source) {
 
 export function getFeat(name, edition, source) {
   return ALL_FEATS?.[edition]?.[source]?.[name] ?? null;
+}
+
+// ===============================
+// UTILS
+// ===============================
+
+function ValidateSource(validSources, source) {
+  if (validSources.length === 0) return true;
+  return validSources.includes(source);
 }
