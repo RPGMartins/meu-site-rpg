@@ -36,7 +36,7 @@ if (node.entries && typeof node.name === "string" && node.name.trim()) {
   // LISTA
   if (node.type === "list") {
 
-  // LISTA DO TIPO "HANGING" → vira FEATURE colapsável
+  // LISTA HANGING → vira FEATURE
   if (node.style === "list-hang-notitle") {
     return node.items.map(item => `
       <details class="class-feature">
@@ -50,18 +50,23 @@ if (node.entries && typeof node.name === "string" && node.name.trim()) {
     `).join("");
   }
 
-  // LISTA NORMAL
+  // LISTA NORMAL (strings OU objetos)
   return `
     <ul>
       ${node.items.map(item => `
         <li>
-          ${item.name ? `<strong>${item.name}</strong> ` : ""}
-          ${renderListItemContent(item)}
+          ${typeof item === "string"
+            ? parse5eText(item)
+            : `
+              ${item.name ? `<strong>${item.name}</strong> ` : ""}
+              ${renderListItemContent(item)}
+            `}
         </li>
       `).join("")}
     </ul>
   `;
 }
+
 
 
   // TABELA
