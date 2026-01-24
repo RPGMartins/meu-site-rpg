@@ -8,11 +8,64 @@ export const ALL_FEATS = {};
 export const ALL_BACKGROUNDS = {};
 export const ALL_CLASS_FEATURES = {};
 export const ALL_SUBCLASS_FEATURES = {};
+export const ALL_RACE_FEATURES = {};
+export const ALL_SUBRACE_FEATURES = {};
 
-export const EDITIONS = {
-  CLASSIC: "classic",
-  ONE: "one",
+export const SOURCE_REGISTRY = {
+  homebrew: {}
 };
+
+export function registerSourcesFromMeta(file) {
+
+    const meta = file._meta;
+    const group = file.book[0].group === "homebrew"
+      ? "homebrew"
+      : "official";
+
+  if (!meta?.sources) return;
+
+  meta.sources.forEach(src => {
+    SOURCE_REGISTRY[group][src.json] = {
+      id: src.json,
+      name: src.full,
+      abbreviation: src.abbreviation,
+      edition: meta.edition ?? null,
+      color: src.color ?? null
+    };
+  });
+}
+
+export async function loadHomebrewFromFile(file,initClassUI) {
+  
+  registerSourcesFromMeta(file);
+  const data = file;
+  const edition = data._meta?.edition ?? "classic";
+  const validSources = data._meta?.sources?.map(s => s.json) ?? [];
+
+  loadFile(data,edition,validSources);
+  initClassUI();
+}
+
+export async function loadFromFile(file,editionName,validSources) {
+  
+  const data = file;
+  const edition = editionName;
+
+  loadFile(data,edition,validSources);
+}
+
+function loadFile(data, edition, validSources)
+{
+  registerClassFile(data, edition, validSources);
+  registerClassFeatures(data.classFeature, edition, validSources);
+  registerSubclassFeatures(data.subclassFeature, edition, validSources);
+  registerRaceFile(data, edition, validSources);
+  registerRaceFeatures(data, edition, validSources);
+  registerSubraceFeatures(data, edition, validSources);
+
+  data.feat?.forEach(f => registerFeat(f, edition, validSources));
+  data.background?.forEach(b => registerBackground(b, edition, validSources));
+}
 
 // ===============================
 // CLASSES
@@ -176,6 +229,59 @@ export function registerRaceFile(raceData, forcedEdition, validSources = []) {
   });
 }
 
+function registerRaceFeatures(raceData, forcedEdition, validSources = []) {
+  if (!Array.isArray(raceData?.race)) return;
+
+  raceData.race.forEach(race => {
+
+    if (!ValidateSource(validSources, race.source)) return;
+
+    if (!Array.isArray(race.entries)) return;
+
+    const edition = forcedEdition;
+    const source = race.source;
+    const raceKey = race.name;
+
+    ALL_RACE_FEATURES[edition] ??= {};
+    ALL_RACE_FEATURES[edition][source] ??= {};
+    ALL_RACE_FEATURES[edition][source][raceKey] ??= [];
+
+    race.entries.forEach(entry => {
+      if (entry.name) {
+        ALL_RACE_FEATURES[edition][source][raceKey].push(entry);
+      }
+    });
+  });
+}
+
+function registerSubraceFeatures(raceData, forcedEdition, validSources = []) {
+  if (!Array.isArray(raceData?.subrace)) return;
+
+  raceData.subrace.forEach(subrace => {
+
+    if (!ValidateSource(validSources, subrace.source)) return;
+
+    if (!Array.isArray(subrace.entries)) return;
+
+    const edition = forcedEdition;
+    const source = subrace.raceSource;
+    const raceKey = subrace.raceName;
+    const subraceKey = subrace.name;
+
+    ALL_SUBRACE_FEATURES[edition] ??= {};
+    ALL_SUBRACE_FEATURES[edition][source] ??= {};
+    ALL_SUBRACE_FEATURES[edition][source][raceKey] ??= {};
+    ALL_SUBRACE_FEATURES[edition][source][raceKey][subraceKey] ??= [];
+
+    subrace.entries.forEach(entry => {
+      if (entry.name) {
+        ALL_SUBRACE_FEATURES[edition][source][raceKey][subraceKey].push(entry);
+      }
+    });
+  });
+}
+
+
 // ===============================
 // BACKGROUNDS
 // ===============================
@@ -221,6 +327,24 @@ export function getAvailableSubclasses(edition, source, classKey) {
     ALL_CLASSES?.[edition]?.[source]?.[classKey]?.subclasses ?? {}
   );
 }
+
+export function getRaceFeatures(raceKey, edition, source) {
+  return ALL_RACE_FEATURES?.[edition]?.[source]?.[raceKey] ?? [];
+}
+
+export function getSubraceFeatures(raceKey, subraceKey, edition, source) {
+  return ALL_SUBRACE_FEATURES?.[edition]?.[source]?.[raceKey]?.[subraceKey] ?? [];
+}
+
+export function getAllSelectedRaceFeatures(raceKey, subraceKey, edition, source) {
+  return [
+    ...getRaceFeatures(raceKey, edition, source),
+    ...(subraceKey
+      ? getSubraceFeatures(raceKey, subraceKey, edition, source)
+      : [])
+  ];
+}
+
 
 export function getClassFeatures(classKey, edition, source) {
   return ALL_CLASS_FEATURES?.[edition]?.[source]?.[classKey] ?? [];

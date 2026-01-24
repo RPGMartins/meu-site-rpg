@@ -1,3 +1,5 @@
+import { getSourceDisplayName } from "../data/sourceNames.js";
+
 export function fillSelect(select, options, placeholder = "— Escolha —") {
   select.innerHTML = "";
 
@@ -6,10 +8,20 @@ export function fillSelect(select, options, placeholder = "— Escolha —") {
   opt.textContent = placeholder;
   select.appendChild(opt);
 
-  options.forEach(value => {
+  options.forEach(option => {
     const o = document.createElement("option");
-    o.value = value;
-    o.textContent = value;
+
+    // Caso antigo: string simples
+    if (typeof option === "string") {
+      o.value = option;
+      o.textContent = option;
+    }
+    // Caso novo: objeto { value, label }
+    else {
+      o.value = option.value;
+      o.textContent = option.label;
+    }
+
     select.appendChild(o);
   });
 

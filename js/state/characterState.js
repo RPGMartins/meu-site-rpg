@@ -6,6 +6,13 @@ export const CharacterState = {
         edition : null,
         source : null,
         subclass : null,
+
+    },
+    generalRace: {
+        race : null,
+        edition : null,
+        source : null,
+        subRace : null,
     }
 }
 
@@ -35,4 +42,33 @@ export function classSelected(classSelection){
 export function subClassSelected(subclassSelection){
 
     CharacterState.generalClass.subclass = subclassSelection;
+}
+
+
+
+export function raceEditionSelected(editionSelected)
+{
+    CharacterState.generalRace.edition = editionSelected;
+    CharacterState.generalRace.source = null;
+    CharacterState.generalRace.race = null;
+    CharacterState.generalRace.subRace = null;
+}
+
+export function raceSourceSelected(sourceSelected)
+{
+
+    CharacterState.generalRace.source = sourceSelected;
+    CharacterState.generalRace.race = null;
+    CharacterState.generalRace.subRace = null;
+}
+
+export function raceSelected(raceSelected)
+{
+    CharacterState.generalRace.race = raceSelected;
+    CharacterState.generalRace.subRace = null;
+}
+
+export function subRaceSelected(subRaceSelected)
+{
+    CharacterState.generalRace.subRace = subRaceSelected;
 }

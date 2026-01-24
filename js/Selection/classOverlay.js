@@ -1,10 +1,9 @@
 import { openClassOverlay } from "../ui/overlay.js";
 import { CharacterState } from "../state/characterState.js"
 import { ALL_CLASSES, getClassFeatures, getSubclassFeatures,} from "../data/dataRegistry.js";
-import { parse5eText } from "../parse/parseText.js";
+import { renderClassFeatures } from "./baseOverlay.js";
 
 export function showClassDetailsOverlay() {
-  debugger
   const selectedClass = ALL_CLASSES[CharacterState.generalClass.edition][CharacterState.generalClass.source][CharacterState.generalClass.class].class;
   if (!selectedClass) 
     return;
@@ -17,7 +16,7 @@ export function showClassDetailsOverlay() {
 
     <hr>
 
-    ${renderClassFeatures()}
+    ${prepareClassFeatures()}
   `;
 
   openClassOverlay(selectedClass.name, html);
@@ -35,43 +34,24 @@ export function showSubClassDetailsOverlay() {
 
     <hr>
 
-    ${rendersubClassFeatures()}
+    ${preparesubClassFeatures()}
   `;
 
   openClassOverlay(selectedSubClass.name, html);
 }
 
-function renderClassFeatures() {
+function prepareClassFeatures() {
 
   if (!CharacterState.generalClass.class) 
     return "";
 
-  return renderFeatures(getClassFeatures(CharacterState.generalClass.class, CharacterState.generalClass.edition, CharacterState.generalClass.source));
+  return renderClassFeatures(getClassFeatures(CharacterState.generalClass.class, CharacterState.generalClass.edition, CharacterState.generalClass.source));
 }
 
-function rendersubClassFeatures() {
+function preparesubClassFeatures() {
 
   if (!CharacterState.generalClass.subclass) 
     return "";
 
-  return renderFeatures(getSubclassFeatures(CharacterState.generalClass.class,CharacterState.generalClass.subclass, CharacterState.generalClass.edition, CharacterState.generalClass.source));
+  return renderClassFeatures(getSubclassFeatures(CharacterState.generalClass.class,CharacterState.generalClass.subclass, CharacterState.generalClass.edition, CharacterState.generalClass.source));
 }
-
-function renderFeatures(classFeatures)
-{
-    if(!classFeatures)
-        return "";
-    debugger
-    var textToReturn = classFeatures.map(f => `
-    <details class="class-feature">
-      <summary class="class-feature-title">
-        ${+ f.level + " :"+f.name}
-      </summary>
-      <div class="class-feature-body">
-        ${parse5eText(f.entries.join(" "))}
-      </div>
-    </details>
-  `).join("");
-
-  return textToReturn;
-} 

@@ -1,7 +1,7 @@
 import { ALL_CLASSES } from "../data/dataRegistry.js";
 import { fillSelect } from "./uiUtils.js";
-import {  classSelected,  classEditionSelected,  classSourceSelected,  subClassSelected
-} from "../state/characterState.js";
+import { getSourceDisplayName } from "../data/sourceNames.js";
+import { classSelected, classEditionSelected, classSourceSelected, subClassSelected} from "../state/characterState.js";
 
 const classSelect    = document.getElementById("classSelect");
 const editionSelect  = document.getElementById("editionSelect");
@@ -75,7 +75,14 @@ function editionSelectedEvent(edition) {
   if (!edition) return;
 
   const sources = Object.keys(ALL_CLASSES[edition] ?? {});
-  fillSelect(sourceSelect, sources);
+
+    const sourceOptions = sources.map(src => ({
+    value: src,
+    label: `${src} — ${getSourceDisplayName(src)}`
+  }));
+
+
+  fillSelect(sourceSelect, sourceOptions);
 
   classEditionSelected(edition);
 }
@@ -86,11 +93,11 @@ function sourceSelectedEvent(edition, source) {
 
   if (!edition || !source) return;
 
-  const classes = Object.keys(
+  const classOption = Object.keys(
     ALL_CLASSES?.[edition]?.[source] ?? {}
   );
 
-  fillSelect(classSelect, classes);
+  fillSelect(classSelect, classOption);
   classSourceSelected(source);
 }
 

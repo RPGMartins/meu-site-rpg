@@ -11,11 +11,16 @@
 
 <button id="btnSave">Salvar</button>
 <button id="btnLoad">Carregar</button>
-<button id="btnClassDetails">Ver Classe</button>
-<button id="btnSubClassDetails">Ver SubClasse</button>
+
+<button id="btnImportHomebrew">Load Homebrew</button>
 
 <section class="panel">
-  <h2 class="panel-title">Classes</h2>
+  <h2 class="panel-title">
+    
+    Classes 
+    <button id="btnClassDetails">Ver Classe</button>
+    <button id="btnSubClassDetails">Ver SubClasse</button>
+  </h2>
 
   <div class="class-controls">
     <div class="field">
@@ -41,6 +46,37 @@
   </div>
 
   <div id="classInfo" class="class-info"></div>
+</section>
+
+<section class="panel">
+  <h2 class="panel-title">
+    Raça
+    <button id="btnRaceDetails">Ver Raça</button>
+  </h2>
+
+  <div class="class-controls">
+    <div class="field">
+      <label for="raceEditionSelect">Edição</label>
+      <select id="raceEditionSelect"></select>
+    </div>
+
+    <div class="field">
+      <label for="raceSourceSelect">Fonte</label>
+      <select id="raceSourceSelect"></select>
+    </div>
+
+    <div class="field">
+      <label for="raceSelect">Raça</label>
+      <select id="raceSelect"></select>
+    </div>
+
+    <div class="field">
+      <label for="subRaceSelect">Sub-raça</label>
+      <select id="subRaceSelect"></select>
+    </div>
+  </div>
+
+  <div id="raceInfo" class="class-info"></div>
 </section>
 
 

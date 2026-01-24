@@ -4,13 +4,13 @@
         {
 			"dataPath":"data-2014",
             "editionName":"classic",
-            "validSources":["PHB","SCAG","XGE","TCE","BGG","ERLW","VRGR","MTF","GGR","EGW","MOT","FTD","SCC"]
+            "validSources": [ "PHB", "MM", "DMG", "Screen", "SCAG", "PS-Z", "PS-I", "AL", "VGM", "PS-K", "PS-A", "OGA", "XGE", "PS-X", "MTF", "PS-D", "GGR", "SAC", "AI", "AWM", "RMR", "ERLW", "EGW", "MOT", "ScreenDungeonKit", "HF", "ScreenWildernessKit", "TCE", "MGELFT", "VRGR", "DoD", "MaBJoV", "FTD", "SCC", "MPMM", "TD", "ScreenSpelljammer", "AAG", "BAM", "HAT-TG", "BGG", "MCV4EC", "MPP", "SatO", "AATM", "HFFotM", "BMT", "DMTCRG" ]
 
         },
         {
 			"dataPath":"data",
             "editionName":"one",
-            "validSources":["XPHB","EFA","FRHof","EFA"]
+            "validSources":["XPHB","EFA","FRHof"]
         }
     ]
 }
