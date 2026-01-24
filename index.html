@@ -88,7 +88,9 @@
 <section class="panel">
   <h2 class="panel-title">
     Background
+    <button id="btnBackgroundDetails">Ver Background</button>
   </h2>
+  
   <div class="class-controls">
     <div class="field">
       <label for="bgEditionSelect">Edição</label>
@@ -107,6 +109,37 @@
   </div>
 
   <div id="backgroundInfo" class="class-info"></div>
+</section>
+
+  <!-- FEATS -->
+
+<section class="panel">
+  <h2 class="panel-title">
+    Feats
+    <button id="btnFeatsDetails">Ver Feats</button>
+  </h2>
+
+  <div class="class-controls">
+    <div class="field">
+      <label for="featEditionSelect">Edição</label>
+      <select id="featEditionSelect"></select>
+    </div>
+
+    <div class="field">
+      <label for="featSourceSelect">Fonte</label>
+      <select id="featSourceSelect"></select>
+    </div>
+
+    <div class="field">
+      <label for="featSelect">
+        Feats
+        <small>(Ctrl / Shift para múltiplos)</small>
+      </label>
+      <select id="featSelect" multiple size="8"></select>
+    </div>
+  </div>
+
+  <div id="featInfo" class="class-info"></div>
 </section>
 
 

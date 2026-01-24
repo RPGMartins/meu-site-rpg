@@ -36,6 +36,22 @@ export function initBackgroundUI() {
   fillSelect(bgSelect, []);
 }
 
+export function loadBackground(backgroundState)
+{
+  bgEditionSelect.value = backgroundState.edition;
+  editionSelectedEvent(backgroundState.edition);
+
+  bgSourceSelect.value = backgroundState.source;
+  sourceSelectedEvent(
+    backgroundState.edition,
+    backgroundState.source
+  );
+
+  bgSelect.value = backgroundState.background;
+  backgroundSelected(backgroundState.background);
+}
+
+
 // ===============================
 // HANDLERS
 // ===============================

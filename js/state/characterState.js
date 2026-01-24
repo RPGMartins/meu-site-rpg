@@ -6,6 +6,7 @@ export const CharacterState = {
         subclass : null,
 
     },
+
     generalRace: {
         race : null,
         edition : null,
@@ -17,6 +18,12 @@ export const CharacterState = {
         background : null,
         edition : null,
         source : null,
+    },
+    
+    generalFeats: {
+        edition : null,
+        source : null,
+        feats : [],
     }
 }
 
@@ -93,4 +100,32 @@ export function backgroundSourceSelected(sourceSelected)
 export function backgroundSelected(backgroundSelected)
 {
     CharacterState.generalBackground.background = backgroundSelected;
+}
+
+
+export function featEditionSelected(editionSelected)
+{
+    CharacterState.generalFeats.edition = editionSelected;
+    CharacterState.generalFeats.source = null;
+    CharacterState.generalFeats.feats = [];
+}
+
+export function featSourceSelected(sourceSelected)
+{
+    CharacterState.generalFeats.source = sourceSelected;
+    CharacterState.generalFeats.feats = [];
+}
+
+export function featsSelected(featList)
+{
+    CharacterState.generalFeats.feats = [...featList];
+}
+
+export function clearFeats()
+{
+    CharacterState.generalFeats.feats = [];
+}
+export function hasFeat(featName)
+{
+    return CharacterState.generalFeats.feats.includes(featName);
 }
