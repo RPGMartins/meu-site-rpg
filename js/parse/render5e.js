@@ -35,17 +35,34 @@ if (node.entries && typeof node.name === "string" && node.name.trim()) {
 
   // LISTA
   if (node.type === "list") {
-    return `
-      <ul>
-        ${node.items.map(item => `
-          <li>
-            ${item.name ? `<strong>${item.name}</strong> ` : ""}
-            ${renderListItemContent(item)}
-          </li>
-        `).join("")}
-      </ul>
-    `;
+
+  // LISTA DO TIPO "HANGING" → vira FEATURE colapsável
+  if (node.style === "list-hang-notitle") {
+    return node.items.map(item => `
+      <details class="class-feature">
+        <summary class="class-feature-title">
+          ${item.name?.replace(/:$/, "")}
+        </summary>
+        <div class="class-feature-body">
+          ${renderListItemContent(item)}
+        </div>
+      </details>
+    `).join("");
   }
+
+  // LISTA NORMAL
+  return `
+    <ul>
+      ${node.items.map(item => `
+        <li>
+          ${item.name ? `<strong>${item.name}</strong> ` : ""}
+          ${renderListItemContent(item)}
+        </li>
+      `).join("")}
+    </ul>
+  `;
+}
+
 
   // TABELA
   if (node.type === "table") {
