@@ -61,7 +61,9 @@
 
     XPHB: "Player’s Handbook (2024)",
     EFA: "Unearthed Arcana: Expert Classes",
-    FRHof: "Forgotten Realms: Heroes of the Forgotten Realms"
+    FRHof: "Forgotten Realms: Heroes of the Forgotten Realms",
+
+    DSotDQ: "Dragonlance Shadow of the Dragon Queen"
   };
 
 export function getSourceDisplayName(source) {

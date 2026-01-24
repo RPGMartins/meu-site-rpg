@@ -78,3 +78,38 @@ select:focus {
   outline: none;
   border-color: #9cdcfe;
 }
+
+
+/* ===== BOTÃO VER DETALHES ===== */
+.btn-view {
+  background: transparent;
+  color: #9cdcfe;
+  border: 1px solid #9cdcfe;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-view:hover {
+  background: #9cdcfe;
+  color: #1e1e1e;
+}
+
+.btn-view:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.panel-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-actions {
+  display: flex;
+  gap: 6px;
+}
