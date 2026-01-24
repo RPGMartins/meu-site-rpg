@@ -1,7 +1,7 @@
 import { openClassOverlay } from "../ui/overlay.js";
 import { CharacterState } from "../state/characterState.js"
 import { ALL_RACES, getRaceFeatures, getSubraceFeatures,} from "../data/dataRegistry.js";
-import { renderRaceFeatures } from "./baseOverlay.js";
+import { renderFeatures } from "./baseOverlay.js";
 
 export function showRaceDetailsOverlay()
 {
@@ -26,7 +26,6 @@ export function showRaceDetailsOverlay()
         return;
     } 
 
-    debugger
     html += `
     <p><strong>SubClasse:</strong> ${selectedSubRace.name}</p>
     <p><strong>Fonte:</strong> ${selectedSubRace.source}</p>
@@ -43,7 +42,7 @@ function prepareRaceFeatures() {
   if (!CharacterState.generalRace.race) 
     return "";
 
-  return renderRaceFeatures(getRaceFeatures(CharacterState.generalRace.race, CharacterState.generalRace.edition, CharacterState.generalRace.source));
+  return renderFeatures(getRaceFeatures(CharacterState.generalRace.race, CharacterState.generalRace.edition, CharacterState.generalRace.source));
 }
 
 function prepareSubRaceFeatures() {
@@ -51,5 +50,5 @@ function prepareSubRaceFeatures() {
   if (!CharacterState.generalRace.subRace) 
     return "";
 
-  return renderRaceFeatures(getSubraceFeatures(CharacterState.generalRace.race,CharacterState.generalRace.subRace, CharacterState.generalRace.edition, CharacterState.generalRace.source));
+  return renderFeatures(getSubraceFeatures(CharacterState.generalRace.race,CharacterState.generalRace.subRace, CharacterState.generalRace.edition, CharacterState.generalRace.source));
 }

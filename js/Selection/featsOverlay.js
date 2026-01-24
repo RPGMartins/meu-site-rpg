@@ -1,7 +1,7 @@
 import { openClassOverlay } from "../ui/overlay.js";
 import { CharacterState } from "../state/characterState.js";
 import { ALL_FEATS } from "../data/dataRegistry.js";
-import { renderRaceFeatures } from "./baseOverlay.js";
+import { renderFeatures } from "./baseOverlay.js";
 
 export function showFeatsDetailsOverlay()
 {
@@ -47,5 +47,5 @@ function prepareFeatFeatures(feat)
   if (!feat.entries)
     return "";
 
-  return renderRaceFeatures(feat.entries);
+  return renderFeatures(feat.entries);
 }

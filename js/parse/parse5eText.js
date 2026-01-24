@@ -1,8 +1,7 @@
 export function parse5eText(text) {
   if (!text) return "";
 
-  return text.replace(/\{@(\w+)\s([^}]+)\}/gi, (match, tag, content) => {
-    if (!content) return "";
+  return text.replace(/\{@(\w+)\s([^}]+)\}/gi, (_, tag, content) => {
     return render5eTag(tag.toLowerCase(), content);
   });
 }
@@ -61,5 +60,6 @@ function abilityToFullName(abbr) {
     wis: "Wisdom",
     cha: "Charisma"
   };
+
   return map[abbr.toLowerCase()] ?? abbr;
 }

@@ -1,7 +1,7 @@
 import { openClassOverlay } from "../ui/overlay.js";
 import { CharacterState } from "../state/characterState.js"
 import { ALL_CLASSES, getClassFeatures, getSubclassFeatures,} from "../data/dataRegistry.js";
-import { renderClassFeatures } from "./baseOverlay.js";
+import { renderFeatures } from "./baseOverlay.js";
 
 export function showClassDetailsOverlay() {
   const selectedClass = ALL_CLASSES[CharacterState.generalClass.edition][CharacterState.generalClass.source][CharacterState.generalClass.class].class;
@@ -45,7 +45,7 @@ function prepareClassFeatures() {
   if (!CharacterState.generalClass.class) 
     return "";
 
-  return renderClassFeatures(getClassFeatures(CharacterState.generalClass.class, CharacterState.generalClass.edition, CharacterState.generalClass.source));
+  return renderFeatures(getClassFeatures(CharacterState.generalClass.class, CharacterState.generalClass.edition, CharacterState.generalClass.source));
 }
 
 function preparesubClassFeatures() {
@@ -53,5 +53,5 @@ function preparesubClassFeatures() {
   if (!CharacterState.generalClass.subclass) 
     return "";
 
-  return renderClassFeatures(getSubclassFeatures(CharacterState.generalClass.class,CharacterState.generalClass.subclass, CharacterState.generalClass.edition, CharacterState.generalClass.source));
+  return renderFeatures(getSubclassFeatures(CharacterState.generalClass.class,CharacterState.generalClass.subclass, CharacterState.generalClass.edition, CharacterState.generalClass.source));
 }

@@ -1,7 +1,7 @@
 import { openClassOverlay } from "../ui/overlay.js";
 import { CharacterState } from "../state/characterState.js";
 import { ALL_BACKGROUNDS } from "../data/dataRegistry.js";
-import { renderRaceFeatures } from "./baseOverlay.js";
+import { renderFeatures } from "./baseOverlay.js";
 
 export function showBackgroundDetailsOverlay()
 {
@@ -9,7 +9,6 @@ export function showBackgroundDetailsOverlay()
 
   if (!bgState.background)
     return;
-
   const bg =
     ALL_BACKGROUNDS
       ?.[bgState.edition]
@@ -18,6 +17,7 @@ export function showBackgroundDetailsOverlay()
 
   if (!bg)
     return;
+
 
   let html = `
     <p><strong>Background:</strong> ${bg.name}</p>
@@ -36,5 +36,5 @@ function prepareBackgroundFeatures(background)
   if (!background.entries)
     return "";
 
-  return renderRaceFeatures(background.entries);
+  return renderFeatures(background.entries);
 }
