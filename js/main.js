@@ -1,11 +1,13 @@
 import { initClassLoader } from "./loader/ClassLoader.js";
 import { initRaceLoader} from "./loader/raceLoader.js"
+import { initBackgroundLoader} from "./loader/backgroundLoader.js"
 import { initClassUI, loadCharacter } from "./Selection/classSelection.js";
 import { downloadCharacterState, uploadCharacterState } from "./state/statePersistance.js"
 import { showClassDetailsOverlay, showSubClassDetailsOverlay } from "./Selection/classOverlay.js"
 import { showRaceDetailsOverlay } from "./Selection/raceOverlay.js"
 import { loadHomebrewFromFile, loadFromFile} from "./data/dataRegistry.js"
 import { initRaceUI, loadRace } from "./Selection/raceSelection.js"
+import { initBackgroundUI} from "./Selection/backgroundSelection.js"
 
 let ALL_INDEX = null;
 
@@ -39,6 +41,7 @@ function reloadUI()
 {
   initClassUI();
   initRaceUI();
+  initBackgroundUI();
 }
 
 async function GetEditionIndex() {
@@ -53,6 +56,7 @@ async function GetEditionIndex() {
 async function iniEditions(item) {
   await initClassLoader(item.dataPath,item.editionName,item.validSources,loadFromFile);
   await initRaceLoader(item.dataPath,item.editionName,item.validSources,loadFromFile);
+  await initBackgroundLoader(item.dataPath,item.editionName,item.validSources,loadFromFile);
 
 }
 

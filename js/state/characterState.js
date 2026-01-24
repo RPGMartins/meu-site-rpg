@@ -1,5 +1,3 @@
-//import { ALL_CLASSES } from "../data/dataRegistry";
-
 export const CharacterState = {
     generalClass: {
         class : null,
@@ -13,6 +11,12 @@ export const CharacterState = {
         edition : null,
         source : null,
         subRace : null,
+    },
+
+    generalBackground: {
+        background : null,
+        edition : null,
+        source : null,
     }
 }
 
@@ -71,4 +75,22 @@ export function raceSelected(raceSelected)
 export function subRaceSelected(subRaceSelected)
 {
     CharacterState.generalRace.subRace = subRaceSelected;
+}
+
+export function backgroundEditionSelected(editionSelected)
+{
+    CharacterState.generalBackground.edition = editionSelected;
+    CharacterState.generalBackground.source = null;
+    CharacterState.generalBackground.background = null;
+}
+
+export function backgroundSourceSelected(sourceSelected)
+{
+    CharacterState.generalBackground.source = sourceSelected;
+    CharacterState.generalBackground.background = null;
+}
+
+export function backgroundSelected(backgroundSelected)
+{
+    CharacterState.generalBackground.background = backgroundSelected;
 }

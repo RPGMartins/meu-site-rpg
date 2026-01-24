@@ -1,4 +1,3 @@
-let ALL_RACES_INDEX = null;
 
 export async function initRaceLoader(racePath,editionName,validSources,loadFile) {
   const data = await loadRacesFile(racePath);
