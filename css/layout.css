@@ -1,0 +1,131 @@
+/* ===============================
+   PAINÉIS
+================================ */
+
+.panel {
+  border: 1px solid #555;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 16px;
+  background: #1e1e1e;
+  color: #eee;
+}
+
+/* ===============================
+   TÍTULOS
+================================ */
+
+.panel-title {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #444;
+  padding-bottom: 6px;
+}
+
+/* Linha do título (mobile first) */
+.panel-title-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+/* ===============================
+   CONTROLES / CAMPOS
+================================ */
+
+.class-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field label {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin-bottom: 4px;
+}
+
+/* Selects */
+.field select {
+  font-size: 1rem;
+  padding: 10px;
+  background: #2b2b2b;
+  color: #eee;
+  border: 1px solid #444;
+  border-radius: 6px;
+}
+
+select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+select:focus {
+  outline: none;
+  border-color: #9cdcfe;
+}
+
+/* ===============================
+   ÁREA DE INFO
+================================ */
+
+.class-info {
+  margin-top: 12px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* ===============================
+   AÇÕES DO PAINEL
+================================ */
+
+.panel-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.panel-actions button {
+  width: 100%;
+}
+
+/* ===============================
+   RESPONSIVO
+================================ */
+
+@media (min-width: 768px) {
+
+  .class-controls {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .field {
+    min-width: 180px;
+    flex: 1;
+  }
+
+  .panel-title {
+    font-size: 1.25rem;
+  }
+
+  .panel-title-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .panel-actions {
+    flex-direction: row;
+  }
+
+  .panel-actions button {
+    width: auto;
+  }
+}

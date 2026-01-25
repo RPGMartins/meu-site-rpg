@@ -1,32 +1,95 @@
 <div id="homebrewOverlay" class="overlay hidden">
-  <div class="overlay-content">
+  <div class="overlay-content homebrew-layout">
 
     <button class="overlay-close" id="closeHomebrewOverlay">✕</button>
 
     <h2>Gerenciar Homebrews</h2>
 
-    <div class="field">
-      <label for="homebrewSelect">Homebrews carregadas</label>
-      <select id="homebrewSelect"></select>
+    <!-- ===============================
+         LISTAS (LADO A LADO)
+    ================================ -->
+    <div class="homebrew-lists">
+
+      <!-- ATIVAS -->
+      <div class="homebrew-column">
+        <h3>Homebrews ativas</h3>
+
+        <div class="field">
+          <label for="homebrewSelect">Selecionada</label>
+          <select id="homebrewSelect"></select>
+        </div>
+
+        <div class="field">
+          <label>Homebrew selecionada</label>
+          <input
+            id="selectedHomebrewName"
+            type="text"
+            disabled
+            placeholder="Nenhuma selecionada"
+          />
+        </div>
+
+        <button
+          id="btnRemoveHomebrew"
+          class="btn-primary"
+          disabled
+        >
+          Remover Homebrew
+        </button>
+      </div>
+
+      <!-- DISPONÍVEIS -->
+      <div class="homebrew-column">
+        <h3>Homebrews disponíveis</h3>
+
+        <div class="field">
+          <label for="homebrewRemoteSelect">
+            Biblioteca online (5eTools)
+          </label>
+          <select id="homebrewRemoteSelect"></select>
+        </div>
+
+        <button
+          id="btnDownloadHomebrew"
+          class="btn-primary"
+          disabled
+        >
+          Baixar Homebrew
+        </button>
+      </div>
+
     </div>
 
-    <div class="homebrew-actions">
-      <button id="btnImportHomebrewOverlay" class="btn-primary">
-        Importar Homebrew
+    <!-- ===============================
+         IMPORTAÇÃO MANUAL
+    ================================ -->
+    <hr />
+
+    <div class="homebrew-import">
+
+      <button
+        id="btnImportHomebrewOverlay"
+        class="btn-primary"
+      >
+        Importar via arquivo JSON
       </button>
 
-      <button id="btnRemoveHomebrew" class="btn-primary" disabled>
-        Remover Homebrew
+      <button
+        id="btnImportHomebrewByUrl"
+        class="btn-primary"
+      >
+        Importar via URL
       </button>
+
+      <!-- input invisível -->
+      <input
+        type="file"
+        id="homebrewFileInput"
+        accept=".json"
+        hidden
+      />
+
     </div>
-
-    <!-- input invisível -->
-    <input
-      type="file"
-      id="homebrewFileInput"
-      accept=".json"
-      hidden
-    />
 
   </div>
 </div>
