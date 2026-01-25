@@ -16,6 +16,7 @@ import { initFeatUI, loadFeats} from "./Selection/featSelection.js"
 
 import { downloadCharacterState, uploadCharacterState } from "./state/statePersistance.js"
 import { loadHomebrewFromFile, loadFromFile} from "./data/dataRegistry.js"
+import { openHomebrewManagement} from "./ui/homebrewManagement.js"
 
 let ALL_INDEX = null;
 
@@ -30,8 +31,8 @@ document.getElementById("btnLoad").onclick = () => {
     callLoadCharacter();
 };
 
-document.getElementById("btnImportHomebrew").onclick = () => {
-    callLoadHomebrew();
+document.getElementById("btnManageHomebrew").onclick = () => {
+    openHomebrewManagement();
 };
 
 document.getElementById("btnClassDetails").onclick = () => {
@@ -53,7 +54,7 @@ document.getElementById("btnFeatsDetails").onclick = () => {
     showFeatsDetailsOverlay();;
 };
 
-function reloadUI()
+export function reloadUI()
 {
   initClassUI();
   initRaceUI();
@@ -75,12 +76,6 @@ async function iniEditions(item) {
   await initRaceLoader(item.dataPath,item.editionName,item.validSources,loadFromFile);
   await initBackgroundLoader(item.dataPath,item.editionName,item.validSources,loadFromFile);
   await initFeatLoader(item.dataPath,item.editionName,item.validSources,loadFromFile);
-}
-
-async function callLoadHomebrew() {
-
-  const state = await uploadCharacterState();
-  loadHomebrewFromFile(state,reloadUI);
 }
 
 async function callLoadCharacter() {

@@ -12,16 +12,42 @@
 <button id="btnSave">Salvar</button>
 <button id="btnLoad">Carregar</button>
 
-<button id="btnImportHomebrew">Load Homebrew</button>
+
+<div id="homebrewOverlay" class="overlay hidden">
+  <div class="overlay-content">
+
+    <button class="overlay-close" id="closeHomebrewOverlay">
+      ✕
+    </button>
+
+    <h2>Gerenciar Homebrews</h2>
+
+    <div class="field">
+      <label for="homebrewSelect">Homebrews carregadas</label>
+      <select id="homebrewSelect"></select>
+    </div>
+
+    <div class="homebrew-actions">
+      <button id="btnImportHomebrewOverlay">Importar Homebrew</button>
+      <button id="btnRemoveHomebrew" disabled>Remover Homebrew</button>
+    </div>
+
+    <!-- input invisível -->
+    <input type="file" id="homebrewFileInput" accept=".json" hidden />
+  </div>
+</div>
 
   <!-- CLASS -->
 <section class="panel">
   <h2 class="panel-title panel-title-row">
 <div class="class-controls">
   <div class="field">
-    <label for="EditionSelect">Edição</label>
+    <label for="EditionSelect"></label>
     <select id="EditionSelect"></select>
   </div>
+<button id="btnManageHomebrew" class="btn-primary">
+  🧪 Homebrew
+</button>
 </div>
   </h2>
 
@@ -144,7 +170,7 @@
 <!-- ===== OVERLAY / MODAL ===== -->
 
   <div id="classOverlay" class="overlay hidden">
-  <div class="overlay-content">
+    <div class="overlay-content">
 
     <button class="overlay-close" id="closeClassOverlay">
       ✕
@@ -156,8 +182,10 @@
       <!-- Conteúdo dinâmico -->
     </div>
 
+    </div>
   </div>
-</div>
+
+  
 
 </body>
 </html>

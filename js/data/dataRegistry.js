@@ -43,7 +43,6 @@ export async function loadHomebrewFromFile(file,initClassUI) {
   const validSources = data._meta?.sources?.map(s => s.json) ?? [];
 
   loadFile(data,edition,validSources);
-  initClassUI();
 }
 
 export async function loadFromFile(file,editionName,validSources) {
@@ -297,6 +296,26 @@ export function registerBackground(bg, forcedEdition, validSources = []) {
   ALL_BACKGROUNDS[edition][source] ??= {};
   ALL_BACKGROUNDS[edition][source][key] = bg;
 }
+
+// ===============================
+// HOMEBREW
+// ===============================
+
+
+export function removeHomebrew(sourceId) {
+
+  delete SOURCE_REGISTRY.homebrew[sourceId];
+
+  for (const edition in ALL_CLASSES) {
+    delete ALL_CLASSES[edition]?.[sourceId];
+    delete ALL_RACES[edition]?.[sourceId];
+    delete ALL_FEATS[edition]?.[sourceId];
+    delete ALL_BACKGROUNDS[edition]?.[sourceId];
+    delete ALL_CLASS_FEATURES[edition]?.[sourceId];
+    delete ALL_SUBCLASS_FEATURES[edition]?.[sourceId];
+  }
+}
+
 
 // ===============================
 // GETTERS

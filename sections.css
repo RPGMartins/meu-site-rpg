@@ -113,3 +113,21 @@ select:focus {
   display: flex;
   gap: 6px;
 }
+.btn-primary {
+  background: #2b2f3a;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+
+.btn-primary:hover {
+  background: #3a3f4f;
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
