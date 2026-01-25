@@ -4,31 +4,30 @@ import { fillSelect } from "./uiUtils.js";
 import { getSourceDisplayName } from "../data/sourceNames.js";
 import { backgroundSelected,backgroundEditionSelected,backgroundSourceSelected} from "../state/characterState.js";
 
-const bgEditionSelect = document.getElementById("EditionSelect");
-const bgSourceSelect  = document.getElementById("bgSourceSelect");
-const bgSelect        = document.getElementById("bgSelect");
 
-// ===============================
-// EVENTOS
-// ===============================
-
-bgEditionSelect.addEventListener("change", () => {
-  editionSelectedEvent(bgEditionSelect.value);
-});
-
-bgSourceSelect.addEventListener("change", () => {
-  sourceSelectedEvent(bgEditionSelect.value, bgSourceSelect.value);
-});
-
-bgSelect.addEventListener("change", () => {
-  backgroundSelected(bgSelect.value);
-});
 
 // ===============================
 // INIT
 // ===============================
 
 export function initBackgroundUI() {
+
+  const bgEditionSelect = document.getElementById("EditionSelect");
+  const bgSourceSelect  = document.getElementById("bgSourceSelect");
+  const bgSelect        = document.getElementById("bgSelect");
+
+  bgEditionSelect.addEventListener("change", () => {
+    editionSelectedEvent(bgEditionSelect.value);
+  });
+
+  bgSourceSelect.addEventListener("change", () => {
+    sourceSelectedEvent(bgEditionSelect.value, bgSourceSelect.value);
+  });
+
+  bgSelect.addEventListener("change", () => {
+    backgroundSelected(bgSelect.value);
+  });
+
   const editions = Object.keys(ALL_BACKGROUNDS);
 
   fillSelect(bgEditionSelect, editions);

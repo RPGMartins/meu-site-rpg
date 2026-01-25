@@ -14,9 +14,12 @@ export function closeClassOverlay() {
   overlayBody.innerHTML = "";
 }
 
-closeBtn.addEventListener("click", closeClassOverlay);
+export function initOverlay()
+{
+  closeBtn.addEventListener("click", closeClassOverlay);
 
-// Fecha clicando fora
-overlay.addEventListener("click", e => {
-  if (e.target === overlay) closeClassOverlay();
-});
+  // Fecha clicando fora
+  overlay.addEventListener("click", e => {
+    if (e.target === overlay) closeClassOverlay();
+  });
+}

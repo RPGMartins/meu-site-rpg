@@ -5,37 +5,36 @@ import { fillSelect } from "./uiUtils.js";
 import { getSourceDisplayName } from "../data/sourceNames.js";
 import { featEditionSelected,featSourceSelected,featsSelected} from "../state/characterState.js";
 
-const featEditionSelect = document.getElementById("EditionSelect");
-const featSourceSelect  = document.getElementById("featSourceSelect");
-const featSelect        = document.getElementById("featSelect");
 
-// ===============================
-// EVENTOS
-// ===============================
-
-featEditionSelect.addEventListener("change", () => {
-  editionSelectedEvent(featEditionSelect.value);
-});
-
-featSourceSelect.addEventListener("change", () => {
-  sourceSelectedEvent(
-    featEditionSelect.value,
-    featSourceSelect.value
-  );
-});
-
-featSelect.addEventListener("change", () => {
-  const selected = Array.from(featSelect.selectedOptions)
-    .map(o => o.value);
-
-  featsSelected(selected);
-});
 
 // ===============================
 // INIT
 // ===============================
 
 export function initFeatUI() {
+
+  const featEditionSelect = document.getElementById("EditionSelect");
+  const featSourceSelect  = document.getElementById("featSourceSelect");
+  const featSelect        = document.getElementById("featSelect");
+
+  featEditionSelect.addEventListener("change", () => {
+    editionSelectedEvent(featEditionSelect.value);
+  });
+
+  featSourceSelect.addEventListener("change", () => {
+    sourceSelectedEvent(
+      featEditionSelect.value,
+      featSourceSelect.value
+    );
+  });
+
+  featSelect.addEventListener("change", () => {
+    const selected = Array.from(featSelect.selectedOptions)
+      .map(o => o.value);
+
+    featsSelected(selected);
+  });
+
   const editions = Object.keys(ALL_FEATS);
 
   fillSelect(featEditionSelect, editions);

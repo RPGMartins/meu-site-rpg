@@ -1,0 +1,32 @@
+<div id="homebrewOverlay" class="overlay hidden">
+  <div class="overlay-content">
+
+    <button class="overlay-close" id="closeHomebrewOverlay">✕</button>
+
+    <h2>Gerenciar Homebrews</h2>
+
+    <div class="field">
+      <label for="homebrewSelect">Homebrews carregadas</label>
+      <select id="homebrewSelect"></select>
+    </div>
+
+    <div class="homebrew-actions">
+      <button id="btnImportHomebrewOverlay" class="btn-primary">
+        Importar Homebrew
+      </button>
+
+      <button id="btnRemoveHomebrew" class="btn-primary" disabled>
+        Remover Homebrew
+      </button>
+    </div>
+
+    <!-- input invisível -->
+    <input
+      type="file"
+      id="homebrewFileInput"
+      accept=".json"
+      hidden
+    />
+
+  </div>
+</div>

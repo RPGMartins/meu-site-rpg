@@ -3,40 +3,41 @@ import { fillSelect } from "./uiUtils.js";
 import { getSourceDisplayName } from "../data/sourceNames.js";
 import { classSelected, classEditionSelected, classSourceSelected, subClassSelected} from "../state/characterState.js";
 
-const classSelect    = document.getElementById("classSelect");
-const editionSelect  = document.getElementById("EditionSelect");
-const sourceSelect   = document.getElementById("sourceSelect");
-const subclassSelect = document.getElementById("subclassSelect");
 
-// ===============================
-// EVENTOS
-// ===============================
 
-editionSelect.addEventListener("change", () => {
-  editionSelectedEvent(editionSelect.value);
-});
 
-sourceSelect.addEventListener("change", () => {
-  sourceSelectedEvent(editionSelect.value, sourceSelect.value);
-});
-
-classSelect.addEventListener("change", () => {
-  classSelectedEvent(
-    editionSelect.value,
-    sourceSelect.value,
-    classSelect.value
-  );
-});
-
-subclassSelect.addEventListener("change", () => {
-  subClassSelectedEvent(subclassSelect.value);
-});
 
 // ===============================
 // INIT
 // ===============================
 
 export function initClassUI() {
+
+  const classSelect    = document.getElementById("classSelect");
+  const editionSelect  = document.getElementById("EditionSelect");
+  const sourceSelect   = document.getElementById("sourceSelect");
+  const subclassSelect = document.getElementById("subclassSelect");
+
+  editionSelect.addEventListener("change", () => {
+    editionSelectedEvent(editionSelect.value);
+  });
+
+  sourceSelect.addEventListener("change", () => {
+    sourceSelectedEvent(editionSelect.value, sourceSelect.value);
+  });
+
+  classSelect.addEventListener("change", () => {
+    classSelectedEvent(
+      editionSelect.value,
+      sourceSelect.value,
+      classSelect.value
+    );
+  });
+
+    subclassSelect.addEventListener("change", () => {
+    subClassSelectedEvent(subclassSelect.value);
+  });
+
   const editions = Object.keys(ALL_CLASSES);
   fillSelect(editionSelect, editions);
 

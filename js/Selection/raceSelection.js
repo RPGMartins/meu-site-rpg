@@ -3,43 +3,42 @@ import { fillSelect } from "./uiUtils.js";
 import { getSourceDisplayName } from "../data/sourceNames.js";
 import { raceSelected, raceEditionSelected,  raceSourceSelected,  subRaceSelected} from "../state/characterState.js";
 
-const raceEditionSelect  = document.getElementById("EditionSelect");
-const raceSourceSelect   = document.getElementById("raceSourceSelect");
-const raceSelect         = document.getElementById("raceSelect");
-const subRaceSelect      = document.getElementById("subRaceSelect");
 
-// ===============================
-// EVENTOS
-// ===============================
-
-raceEditionSelect.addEventListener("change", () => {
-  editionSelectedEvent(raceEditionSelect.value);
-});
-
-raceSourceSelect.addEventListener("change", () => {
-  sourceSelectedEvent(
-    raceEditionSelect.value,
-    raceSourceSelect.value
-  );
-});
-
-raceSelect.addEventListener("change", () => {
-  raceSelectedEvent(
-    raceEditionSelect.value,
-    raceSourceSelect.value,
-    raceSelect.value
-  );
-});
-
-subRaceSelect.addEventListener("change", () => {
-  subRaceSelectedEvent(subRaceSelect.value);
-});
 
 // ===============================
 // INIT
 // ===============================
 
 export function initRaceUI() {
+
+  const raceEditionSelect  = document.getElementById("EditionSelect");
+  const raceSourceSelect   = document.getElementById("raceSourceSelect");
+  const raceSelect         = document.getElementById("raceSelect");
+  const subRaceSelect      = document.getElementById("subRaceSelect");
+
+  raceEditionSelect.addEventListener("change", () => {
+    editionSelectedEvent(raceEditionSelect.value);
+  });
+
+  raceSourceSelect.addEventListener("change", () => {
+    sourceSelectedEvent(
+      raceEditionSelect.value,
+      raceSourceSelect.value
+    );
+  });
+
+  raceSelect.addEventListener("change", () => {
+    raceSelectedEvent(
+      raceEditionSelect.value,
+      raceSourceSelect.value,
+      raceSelect.value
+    );
+  });
+
+  subRaceSelect.addEventListener("change", () => {
+    subRaceSelectedEvent(subRaceSelect.value);
+  });
+
   const editions = Object.keys(ALL_RACES);
 
   fillSelect(raceEditionSelect, editions);

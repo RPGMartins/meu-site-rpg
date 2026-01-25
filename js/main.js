@@ -16,7 +16,20 @@ import { initFeatUI, loadFeats} from "./Selection/featSelection.js"
 
 import { downloadCharacterState, uploadCharacterState } from "./state/statePersistance.js"
 import { loadFromFile } from "./data/dataRegistry.js"
-import { openHomebrewManagement, loadHomebrewFromLocalStorage } from "./ui/homebrewManagement.js"
+import { initHomebrewManagement ,openHomebrewManagement, loadHomebrewFromLocalStorage } from "./ui/homebrewManagement.js"
+
+import { loadPartial } from "./ui/loadPartials.js";
+
+await loadPartial("appHeader", "../partials/header.html");
+
+await loadPartial("appMain", "./partials/classPanel.html");
+await loadPartial("appMain", "./partials/racePanel.html");
+await loadPartial("appMain", "./partials/backgroundPanel.html");
+await loadPartial("appMain", "./partials/featPanel.html");
+
+await loadPartial("overlays", "./overlays/homebrewOverlay.html");
+await loadPartial("overlays", "./overlays/classOverlay.html");
+
 
 let ALL_INDEX = null;
 
@@ -56,6 +69,7 @@ document.getElementById("btnFeatsDetails").onclick = () => {
 
 export function reloadUI()
 {
+  initHomebrewManagement();
   loadHomebrewFromLocalStorage();
   initClassUI();
   initRaceUI();
