@@ -35,7 +35,7 @@ export function saveHomebrew(homebrewEntry) {
 // REMOVE
 // ===============================
 
-export function removeHomebrew(homebrewId) {
+export function removeHomebrewLocalStorage(homebrewId) {
   const list = loadStoredHomebrews()
     .filter(h => h.id !== homebrewId);
 

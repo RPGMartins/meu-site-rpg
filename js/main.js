@@ -9,16 +9,17 @@ import { showBackgroundDetailsOverlay } from "./Selection/backgroundOverlay.js"
 import { showFeatsDetailsOverlay } from "./Selection/featsOverlay.js"
 
 
-import { initClassUI, loadCharacter } from "./Selection/classSelection.js";
-import { initRaceUI, loadRace } from "./Selection/raceSelection.js"
-import { initBackgroundUI, loadBackground} from "./Selection/backgroundSelection.js"
-import { initFeatUI, loadFeats} from "./Selection/featSelection.js"
+import { initClassSelection,initClassUI, loadCharacter } from "./Selection/classSelection.js";
+import { initRaceSelection, initRaceUI, loadRace } from "./Selection/raceSelection.js"
+import { initBackgroundSelection, initBackgroundUI, loadBackground} from "./Selection/backgroundSelection.js"
+import { initFeatSelection, initFeatUI, loadFeats} from "./Selection/featSelection.js"
 
 import { downloadCharacterState, uploadCharacterState } from "./state/statePersistance.js"
 import { loadFromFile } from "./data/dataRegistry.js"
 import { initHomebrewManagement ,openHomebrewManagement, loadHomebrewFromLocalStorage } from "./ui/homebrewManagement.js"
 
 import { loadPartial } from "./ui/loadPartials.js";
+import { initOverlay } from "./ui/overlay.js";
 
 await loadPartial("appHeader", "../partials/header.html");
 
@@ -34,6 +35,7 @@ await loadPartial("overlays", "./overlays/classOverlay.html");
 let ALL_INDEX = null;
 
 await GetEditionIndex();
+init();
 reloadUI();
 
 document.getElementById("btnSave").onclick = () => {
@@ -67,9 +69,18 @@ document.getElementById("btnFeatsDetails").onclick = () => {
     showFeatsDetailsOverlay();;
 };
 
+function init()
+{
+  initOverlay()
+  initHomebrewManagement();
+  initClassSelection();
+  initRaceSelection();
+  initBackgroundSelection();
+  initFeatSelection();
+}
+
 export function reloadUI()
 {
-  initHomebrewManagement();
   loadHomebrewFromLocalStorage();
   initClassUI();
   initRaceUI();

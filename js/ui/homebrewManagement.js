@@ -1,17 +1,17 @@
-import {  loadHomebrewFromFile} from "../data/dataRegistry.js";
+import {  loadHomebrewFromFile , removeHomebrewDataRegistry} from "../data/dataRegistry.js";
 
-import {  loadStoredHomebrews,  saveHomebrew,  removeHomebrew} from "../hoemebrew/homebrewStorage.js";
+import {  loadStoredHomebrews,  saveHomebrew,  removeHomebrewLocalStorage} from "../hoemebrew/homebrewStorage.js";
 
 import { fillSelect } from "../Selection/uiUtils.js";
 import { initClassUI } from "../Selection/classSelection.js";
 import { reloadUI } from "../main.js";
 
-  let overlay   = document.getElementById("homebrewOverlay");
-  let closeBtn  = document.getElementById("closeHomebrewOverlay");
-  let select    = document.getElementById("homebrewSelect");
-  let importBtn = document.getElementById("btnImportHomebrewOverlay");
-  let removeBtn = document.getElementById("btnRemoveHomebrew");
-  let fileInput = document.getElementById("homebrewFileInput");
+  let overlay;
+  let closeBtn;
+  let select;
+  let importBtn;
+  let removeBtn;
+  let fileInput;
 
 export function initHomebrewManagement()
 {
@@ -57,6 +57,7 @@ export function initHomebrewManagement()
 
     loadHomebrewFromFile(json, initClassUI);
     refreshHomebrewList();
+    reloadUI();
 
     fileInput.value = "";
   });
@@ -66,11 +67,10 @@ export function initHomebrewManagement()
     const id = select.value;
     if (!id) return;
 
-    removeHomebrew(id);
-
-    // recarrega tudo do zero
-    reloadUI();
+    removeHomebrewLocalStorage(id);
+    removeHomebrewDataRegistry(id);
     refreshHomebrewList();
+    reloadUI();
   });
 
 

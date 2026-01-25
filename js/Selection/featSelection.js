@@ -5,17 +5,15 @@ import { fillSelect } from "./uiUtils.js";
 import { getSourceDisplayName } from "../data/sourceNames.js";
 import { featEditionSelected,featSourceSelected,featsSelected} from "../state/characterState.js";
 
+ let featEditionSelect;
+ let featSourceSelect;  
+ let featSelect;
 
-
-// ===============================
-// INIT
-// ===============================
-
-export function initFeatUI() {
-
-  const featEditionSelect = document.getElementById("EditionSelect");
-  const featSourceSelect  = document.getElementById("featSourceSelect");
-  const featSelect        = document.getElementById("featSelect");
+export function initFeatSelection()
+{ 
+  featEditionSelect = document.getElementById("EditionSelect");
+  featSourceSelect  = document.getElementById("featSourceSelect");
+  featSelect        = document.getElementById("featSelect");
 
   featEditionSelect.addEventListener("change", () => {
     editionSelectedEvent(featEditionSelect.value);
@@ -34,7 +32,9 @@ export function initFeatUI() {
 
     featsSelected(selected);
   });
+}
 
+export function initFeatUI() {
   const editions = Object.keys(ALL_FEATS);
 
   fillSelect(featEditionSelect, editions);

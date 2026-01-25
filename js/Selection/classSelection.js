@@ -3,20 +3,17 @@ import { fillSelect } from "./uiUtils.js";
 import { getSourceDisplayName } from "../data/sourceNames.js";
 import { classSelected, classEditionSelected, classSourceSelected, subClassSelected} from "../state/characterState.js";
 
+  let classSelect;
+  let editionSelect;
+  let sourceSelect;
+  let subclassSelect;
 
-
-
-
-// ===============================
-// INIT
-// ===============================
-
-export function initClassUI() {
-
-  const classSelect    = document.getElementById("classSelect");
-  const editionSelect  = document.getElementById("EditionSelect");
-  const sourceSelect   = document.getElementById("sourceSelect");
-  const subclassSelect = document.getElementById("subclassSelect");
+export function initClassSelection()
+{
+  classSelect    = document.getElementById("classSelect");
+  editionSelect  = document.getElementById("EditionSelect");
+  sourceSelect   = document.getElementById("sourceSelect");
+  subclassSelect = document.getElementById("subclassSelect");
 
   editionSelect.addEventListener("change", () => {
     editionSelectedEvent(editionSelect.value);
@@ -37,7 +34,9 @@ export function initClassUI() {
     subclassSelect.addEventListener("change", () => {
     subClassSelectedEvent(subclassSelect.value);
   });
+}
 
+export function initClassUI() {
   const editions = Object.keys(ALL_CLASSES);
   fillSelect(editionSelect, editions);
 

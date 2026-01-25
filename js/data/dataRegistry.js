@@ -302,7 +302,7 @@ export function registerBackground(bg, forcedEdition, validSources = []) {
 // ===============================
 
 
-export function removeHomebrew(sourceId) {
+export function removeHomebrewDataRegistry(sourceId) {
 
   delete SOURCE_REGISTRY.homebrew[sourceId];
 

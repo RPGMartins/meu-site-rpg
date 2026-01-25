@@ -3,18 +3,17 @@ import { fillSelect } from "./uiUtils.js";
 import { getSourceDisplayName } from "../data/sourceNames.js";
 import { raceSelected, raceEditionSelected,  raceSourceSelected,  subRaceSelected} from "../state/characterState.js";
 
+  let raceEditionSelect;
+  let raceSourceSelect;
+  let raceSelect;
+  let subRaceSelect;
 
-
-// ===============================
-// INIT
-// ===============================
-
-export function initRaceUI() {
-
-  const raceEditionSelect  = document.getElementById("EditionSelect");
-  const raceSourceSelect   = document.getElementById("raceSourceSelect");
-  const raceSelect         = document.getElementById("raceSelect");
-  const subRaceSelect      = document.getElementById("subRaceSelect");
+export function initRaceSelection()
+{
+  raceEditionSelect  = document.getElementById("EditionSelect");
+  raceSourceSelect   = document.getElementById("raceSourceSelect");
+  raceSelect         = document.getElementById("raceSelect");
+  subRaceSelect      = document.getElementById("subRaceSelect");
 
   raceEditionSelect.addEventListener("change", () => {
     editionSelectedEvent(raceEditionSelect.value);
@@ -38,7 +37,9 @@ export function initRaceUI() {
   subRaceSelect.addEventListener("change", () => {
     subRaceSelectedEvent(subRaceSelect.value);
   });
+}
 
+export function initRaceUI() {
   const editions = Object.keys(ALL_RACES);
 
   fillSelect(raceEditionSelect, editions);

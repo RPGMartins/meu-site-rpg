@@ -4,17 +4,15 @@ import { fillSelect } from "./uiUtils.js";
 import { getSourceDisplayName } from "../data/sourceNames.js";
 import { backgroundSelected,backgroundEditionSelected,backgroundSourceSelected} from "../state/characterState.js";
 
+  let bgEditionSelect;
+  let bgSourceSelect;
+  let bgSelect;
 
-
-// ===============================
-// INIT
-// ===============================
-
-export function initBackgroundUI() {
-
-  const bgEditionSelect = document.getElementById("EditionSelect");
-  const bgSourceSelect  = document.getElementById("bgSourceSelect");
-  const bgSelect        = document.getElementById("bgSelect");
+export function initBackgroundSelection()
+{
+  bgEditionSelect = document.getElementById("EditionSelect");
+  bgSourceSelect  = document.getElementById("bgSourceSelect");
+  bgSelect        = document.getElementById("bgSelect");
 
   bgEditionSelect.addEventListener("change", () => {
     editionSelectedEvent(bgEditionSelect.value);
@@ -27,7 +25,9 @@ export function initBackgroundUI() {
   bgSelect.addEventListener("change", () => {
     backgroundSelected(bgSelect.value);
   });
+}
 
+export function initBackgroundUI() {
   const editions = Object.keys(ALL_BACKGROUNDS);
 
   fillSelect(bgEditionSelect, editions);

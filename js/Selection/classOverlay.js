@@ -18,7 +18,6 @@ export function showClassDetailsOverlay() {
 
     ${prepareClassFeatures()}
   `;
-
   openClassOverlay(selectedClass.name, html);
 }
 

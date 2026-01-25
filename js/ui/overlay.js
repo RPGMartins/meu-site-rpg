@@ -1,7 +1,7 @@
-const overlay = document.getElementById("classOverlay");
-const closeBtn = document.getElementById("closeClassOverlay");
-const overlayTitle = document.getElementById("overlayTitle");
-const overlayBody = document.getElementById("overlayBody");
+let overlay;
+let closeBtn;
+let overlayTitle;
+let overlayBody;
 
 export function openClassOverlay(title, htmlContent) {
   overlayTitle.textContent = title;
@@ -14,10 +14,17 @@ export function closeClassOverlay() {
   overlayBody.innerHTML = "";
 }
 
+
 export function initOverlay()
 {
+  overlay = document.getElementById("classOverlay");
+  closeBtn = document.getElementById("closeClassOverlay");
+  overlayTitle = document.getElementById("overlayTitle");
+  overlayBody = document.getElementById("overlayBody");
+  
   closeBtn.addEventListener("click", closeClassOverlay);
 
+  
   // Fecha clicando fora
   overlay.addEventListener("click", e => {
     if (e.target === overlay) closeClassOverlay();
