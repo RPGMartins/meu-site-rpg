@@ -3,7 +3,7 @@ import { fillSelect } from "./uiUtils.js";
 import { getSourceDisplayName } from "../data/sourceNames.js";
 import { raceSelected, raceEditionSelected,  raceSourceSelected,  subRaceSelected} from "../state/characterState.js";
 
-const raceEditionSelect  = document.getElementById("raceEditionSelect");
+const raceEditionSelect  = document.getElementById("EditionSelect");
 const raceSourceSelect   = document.getElementById("raceSourceSelect");
 const raceSelect         = document.getElementById("raceSelect");
 const subRaceSelect      = document.getElementById("subRaceSelect");

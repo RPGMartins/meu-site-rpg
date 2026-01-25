@@ -4,7 +4,7 @@ import { fillSelect } from "./uiUtils.js";
 import { getSourceDisplayName } from "../data/sourceNames.js";
 import { backgroundSelected,backgroundEditionSelected,backgroundSourceSelected} from "../state/characterState.js";
 
-const bgEditionSelect = document.getElementById("bgEditionSelect");
+const bgEditionSelect = document.getElementById("EditionSelect");
 const bgSourceSelect  = document.getElementById("bgSourceSelect");
 const bgSelect        = document.getElementById("bgSelect");
 

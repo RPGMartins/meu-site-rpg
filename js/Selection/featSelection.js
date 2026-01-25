@@ -5,7 +5,7 @@ import { fillSelect } from "./uiUtils.js";
 import { getSourceDisplayName } from "../data/sourceNames.js";
 import { featEditionSelected,featSourceSelected,featsSelected} from "../state/characterState.js";
 
-const featEditionSelect = document.getElementById("featEditionSelect");
+const featEditionSelect = document.getElementById("EditionSelect");
 const featSourceSelect  = document.getElementById("featSourceSelect");
 const featSelect        = document.getElementById("featSelect");
 

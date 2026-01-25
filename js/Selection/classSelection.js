@@ -4,7 +4,7 @@ import { getSourceDisplayName } from "../data/sourceNames.js";
 import { classSelected, classEditionSelected, classSourceSelected, subClassSelected} from "../state/characterState.js";
 
 const classSelect    = document.getElementById("classSelect");
-const editionSelect  = document.getElementById("editionSelect");
+const editionSelect  = document.getElementById("EditionSelect");
 const sourceSelect   = document.getElementById("sourceSelect");
 const subclassSelect = document.getElementById("subclassSelect");
 
