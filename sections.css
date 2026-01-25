@@ -131,3 +131,22 @@ select:focus {
 .btn-primary:active {
   transform: translateY(1px);
 }
+.btn-homebrew {
+  background: linear-gradient(135deg, #6b4fa3, #3e2a70);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: filter 0.2s ease, transform 0.05s ease;
+}
+
+.btn-homebrew:hover {
+  filter: brightness(1.15);
+}
+
+.btn-homebrew:active {
+  transform: translateY(1px);
+}

@@ -15,8 +15,8 @@ import { initBackgroundUI, loadBackground} from "./Selection/backgroundSelection
 import { initFeatUI, loadFeats} from "./Selection/featSelection.js"
 
 import { downloadCharacterState, uploadCharacterState } from "./state/statePersistance.js"
-import { loadHomebrewFromFile, loadFromFile} from "./data/dataRegistry.js"
-import { openHomebrewManagement} from "./ui/homebrewManagement.js"
+import { loadFromFile } from "./data/dataRegistry.js"
+import { openHomebrewManagement, loadHomebrewFromLocalStorage } from "./ui/homebrewManagement.js"
 
 let ALL_INDEX = null;
 
@@ -56,6 +56,7 @@ document.getElementById("btnFeatsDetails").onclick = () => {
 
 export function reloadUI()
 {
+  loadHomebrewFromLocalStorage();
   initClassUI();
   initRaceUI();
   initBackgroundUI();

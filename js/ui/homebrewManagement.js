@@ -1,29 +1,31 @@
-import {  SOURCE_REGISTRY,  loadHomebrewFromFile,  removeHomebrew} from "../data/dataRegistry.js";
-import { fillSelect } from ".././Selection/uiUtils.js";
-import { initClassUI } from ".././Selection/classSelection.js";
-import {  uploadCharacterState } from "../state/statePersistance.js"
-import {  reloadUI } from "../main.js"
+import {  loadHomebrewFromFile} from "../data/dataRegistry.js";
 
-const overlay = document.getElementById("homebrewOverlay");
-const closeBtn = document.getElementById("closeHomebrewOverlay");
+import {  loadStoredHomebrews,  saveHomebrew,  removeHomebrew} from "../hoemebrew/homebrewStorage.js";
 
-const select = document.getElementById("homebrewSelect");
+import { fillSelect } from "../Selection/uiUtils.js";
+import { initClassUI } from "../Selection/classSelection.js";
+import { reloadUI } from "../main.js";
+
+// ===============================
+// ELEMENTOS
+// ===============================
+
+const overlay   = document.getElementById("homebrewOverlay");
+const closeBtn  = document.getElementById("closeHomebrewOverlay");
+
+const select    = document.getElementById("homebrewSelect");
 const importBtn = document.getElementById("btnImportHomebrewOverlay");
 const removeBtn = document.getElementById("btnRemoveHomebrew");
 const fileInput = document.getElementById("homebrewFileInput");
-
-
 
 // ===============================
 // OPEN / CLOSE
 // ===============================
 
-export function openHomebrewManagement()
-{
+export function openHomebrewManagement() {
   overlay.classList.remove("hidden");
   refreshHomebrewList();
 }
-
 
 closeBtn.addEventListener("click", () => {
   overlay.classList.add("hidden");
@@ -34,14 +36,8 @@ closeBtn.addEventListener("click", () => {
 // ===============================
 
 importBtn.addEventListener("click", () => {
-  callLoadHomebrew();
+  fileInput.click();
 });
-
-async function callLoadHomebrew() {
-  const state = await uploadCharacterState();
-  await loadHomebrewFromFile(state);
-  refreshHomebrewList();
-}
 
 fileInput.addEventListener("change", async () => {
   const file = fileInput.files[0];
@@ -50,7 +46,22 @@ fileInput.addEventListener("change", async () => {
   const text = await file.text();
   const json = JSON.parse(text);
 
-  await loadHomebrewFromFile(json, initClassUI);
+  const meta = json._meta;
+  const source = meta?.sources?.[0];
+
+  if (!source) {
+    alert("Homebrew inválido (sem _meta.sources)");
+    return;
+  }
+
+  saveHomebrew({
+    id: source.json,
+    name: source.full,
+    edition: meta.edition ?? "classic",
+    data: json
+  });
+
+  loadHomebrewFromFile(json, initClassUI);
   refreshHomebrewList();
 
   fileInput.value = "";
@@ -61,12 +72,14 @@ fileInput.addEventListener("change", async () => {
 // ===============================
 
 removeBtn.addEventListener("click", () => {
-  const source = select.value;
-  if (!source) return;
+  const id = select.value;
+  if (!id) return;
 
-  removeHomebrew(source);
+  removeHomebrew(id);
+
+  // recarrega tudo do zero
+  reloadUI();
   refreshHomebrewList();
-  initClassUI();
 });
 
 // ===============================
@@ -82,17 +95,25 @@ select.addEventListener("change", () => {
 // ===============================
 
 function refreshHomebrewList() {
-  const homebrews = Object.values(SOURCE_REGISTRY.homebrew);
-
+  const homebrews = loadStoredHomebrews();
   fillSelect(
     select,
-    homebrews.map(hb => ({
-      value: hb.id,
-      label: hb.name
-    })),
-    "— Nenhuma —"
+    homebrews.map(hb => hb.id),
+    "— Nenhuma —",
+    id => {
+      const hb = homebrews.find(h => h.id === id);
+      return hb ? hb.name : id;
+    }
   );
 
   removeBtn.disabled = true;
-  reloadUI();
+}
+
+export function loadHomebrewFromLocalStorage()
+{
+  const homebrews = loadStoredHomebrews();
+
+    homebrews.forEach(homebrew => {
+        loadHomebrewFromFile(homebrew.data, initClassUI);
+    });
 }
