@@ -17,10 +17,19 @@ export const SOURCE_REGISTRY = {
 
 export function registerSourcesFromMeta(file) {
 
-    const meta = file._meta;
-    const group = file.book[0].group === "homebrew"
-      ? "homebrew"
-      : "official";
+  let group = null;
+  const meta = file._meta;
+  if(!file.book)
+    {
+      group = "homebrew";
+    }
+    else
+    {
+      group = file.book[0].group === "homebrew"
+        ? "homebrew"
+        : "official";
+    }
+
 
   if (!meta?.sources) return;
 
