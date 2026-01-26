@@ -20,6 +20,7 @@ import { initHomebrewManagement ,openHomebrewManagement, loadHomebrewFromLocalSt
 
 import { loadPartial } from "./ui/loadPartials.js";
 import { initOverlay } from "./ui/overlay.js";
+import { waitAllElements } from "./domUtils.js";
 
 let ALL_INDEX = null;
 
@@ -66,6 +67,8 @@ async function mainInit(){
       showFeatsDetailsOverlay();;
   };
   
+  await waitAllElements();
+
   await GetEditionIndex();
   init();
   reloadUI();
@@ -123,4 +126,21 @@ async function callLoadCharacter() {
   loadRace(state.generalRace);
   loadBackground(state.generalBackground);
   loadFeats(state.generalFeats);
+}
+
+function waitForElement(id) {
+  return new Promise(resolve => {
+    const el = document.getElementById(id);
+    if (el) return resolve(el);
+
+    const obs = new MutationObserver(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        obs.disconnect();
+        resolve(el);
+      }
+    });
+
+    obs.observe(document.body, { childList: true, subtree: true });
+  });
 }
