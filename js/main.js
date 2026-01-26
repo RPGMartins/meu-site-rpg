@@ -26,15 +26,15 @@ let ALL_INDEX = null;
 
 
 async function mainInit(){
-  await loadPartial("appHeader", "../partials/header.html");
+    await loadPartial("appHeader", "partials/header.html");
 
-  await loadPartial("appMain", "../partials/classPanel.html");
-  await loadPartial("appMain", "../partials/racePanel.html");
-  await loadPartial("appMain", "../partials/backgroundPanel.html");
-  await loadPartial("appMain", "../partials/featPanel.html");
+    await loadPartial("appMain", "partials/classPanel.html");
+    await loadPartial("appMain", "partials/racePanel.html");
+    await loadPartial("appMain", "partials/backgroundPanel.html");
+    await loadPartial("appMain", "partials/featPanel.html");
 
-  await loadPartial("overlays", "../overlays/homebrewOverlay.html");
-  await loadPartial("overlays", "../overlays/classOverlay.html");
+    await loadPartial("overlays", "overlays/homebrewOverlay.html");
+    await loadPartial("overlays", "overlays/classOverlay.html");
 
     document.getElementById("btnSave").onclick = () => {
     downloadCharacterState();
