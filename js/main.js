@@ -21,53 +21,63 @@ import { initHomebrewManagement ,openHomebrewManagement, loadHomebrewFromLocalSt
 import { loadPartial } from "./ui/loadPartials.js";
 import { initOverlay } from "./ui/overlay.js";
 
-await loadPartial("appHeader", "../partials/header.html");
-
-await loadPartial("appMain", "../partials/classPanel.html");
-await loadPartial("appMain", "../partials/racePanel.html");
-await loadPartial("appMain", "../partials/backgroundPanel.html");
-await loadPartial("appMain", "../partials/featPanel.html");
-
-await loadPartial("overlays", "../overlays/homebrewOverlay.html");
-await loadPartial("overlays", "../overlays/classOverlay.html");
-
-
 let ALL_INDEX = null;
 
-await GetEditionIndex();
-init();
-reloadUI();
 
-document.getElementById("btnSave").onclick = () => {
-  downloadCharacterState();
-};
+async function mainInit(){
+  await loadPartial("appHeader", "../partials/header.html");
 
-document.getElementById("btnLoad").onclick = () => {
-    callLoadCharacter();
-};
+  await loadPartial("appMain", "../partials/classPanel.html");
+  await loadPartial("appMain", "../partials/racePanel.html");
+  await loadPartial("appMain", "../partials/backgroundPanel.html");
+  await loadPartial("appMain", "../partials/featPanel.html");
 
-document.getElementById("btnManageHomebrew").onclick = () => {
-    openHomebrewManagement();
-};
+  await loadPartial("overlays", "../overlays/homebrewOverlay.html");
+  await loadPartial("overlays", "../overlays/classOverlay.html");
 
-document.getElementById("btnClassDetails").onclick = () => {
-    showClassDetailsOverlay();
-};
-document.getElementById("btnSubClassDetails").onclick = () => {
-    showSubClassDetailsOverlay();
-};
+    document.getElementById("btnSave").onclick = () => {
+    downloadCharacterState();
+  };
 
-document.getElementById("btnRaceDetails").onclick = () => {
-    showRaceDetailsOverlay();;
-};
+  document.getElementById("btnLoad").onclick = () => {
+      callLoadCharacter();
+  };
 
-document.getElementById("btnBackgroundDetails").onclick = () => {
-    showBackgroundDetailsOverlay();;
-};
+  document.getElementById("btnManageHomebrew").onclick = () => {
+      openHomebrewManagement();
+  };
 
-document.getElementById("btnFeatsDetails").onclick = () => {
-    showFeatsDetailsOverlay();;
-};
+  document.getElementById("btnClassDetails").onclick = () => {
+      showClassDetailsOverlay();
+  };
+  document.getElementById("btnSubClassDetails").onclick = () => {
+      showSubClassDetailsOverlay();
+  };
+
+  document.getElementById("btnRaceDetails").onclick = () => {
+      showRaceDetailsOverlay();;
+  };
+
+  document.getElementById("btnBackgroundDetails").onclick = () => {
+      showBackgroundDetailsOverlay();;
+  };
+
+  document.getElementById("btnFeatsDetails").onclick = () => {
+      showFeatsDetailsOverlay();;
+  };
+  
+  await GetEditionIndex();
+  init();
+  reloadUI();
+
+}
+
+mainInit();
+
+
+
+
+
 
 function init()
 {
