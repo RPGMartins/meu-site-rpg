@@ -21,7 +21,7 @@ import { initHomebrewManagement ,openHomebrewManagement, loadHomebrewFromLocalSt
 import { loadPartial } from "./ui/loadPartials.js";
 import { initOverlay } from "./ui/overlay.js";
 
-await loadPartial("appHeader", "../partials/header.html");
+await loadPartial("appHeader", "./partials/header.html");
 
 await loadPartial("appMain", "./partials/classPanel.html");
 await loadPartial("appMain", "./partials/racePanel.html");
