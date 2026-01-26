@@ -21,15 +21,15 @@ import { initHomebrewManagement ,openHomebrewManagement, loadHomebrewFromLocalSt
 import { loadPartial } from "./ui/loadPartials.js";
 import { initOverlay } from "./ui/overlay.js";
 
-await loadPartial("appHeader", "./partials/header.html");
+await loadPartial("appHeader", "../partials/header.html");
 
-await loadPartial("appMain", "./partials/classPanel.html");
-await loadPartial("appMain", "./partials/racePanel.html");
-await loadPartial("appMain", "./partials/backgroundPanel.html");
-await loadPartial("appMain", "./partials/featPanel.html");
+await loadPartial("appMain", "../partials/classPanel.html");
+await loadPartial("appMain", "../partials/racePanel.html");
+await loadPartial("appMain", "../partials/backgroundPanel.html");
+await loadPartial("appMain", "../partials/featPanel.html");
 
-await loadPartial("overlays", "./overlays/homebrewOverlay.html");
-await loadPartial("overlays", "./overlays/classOverlay.html");
+await loadPartial("overlays", "../overlays/homebrewOverlay.html");
+await loadPartial("overlays", "../overlays/classOverlay.html");
 
 
 let ALL_INDEX = null;
