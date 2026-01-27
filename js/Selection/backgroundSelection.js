@@ -1,15 +1,15 @@
+import {  ALL_BACKGROUNDS,  VIRTUAL_SOURCES,  getAvailableBackgroundSources,  getAvailableBackgrounds} from "../data/dataRegistry.js";
 
-import { ALL_BACKGROUNDS } from "../data/dataRegistry.js";
 import { fillSelect } from "./uiUtils.js";
 import { getSourceDisplayName } from "../data/sourceNames.js";
-import { backgroundSelected,backgroundEditionSelected,backgroundSourceSelected} from "../state/characterState.js";
+import {  backgroundSelected,  backgroundEditionSelected,  backgroundSourceSelected} from "../state/characterState.js";
+
 
   let bgEditionSelect;
-  let bgSourceSelect;
-  let bgSelect;
+let bgSourceSelect;
+let bgSelect;
 
-export function initBackgroundSelection()
-{
+export function initBackgroundSelection() {
   bgEditionSelect = document.getElementById("EditionSelect");
   bgSourceSelect  = document.getElementById("bgSourceSelect");
   bgSelect        = document.getElementById("bgSelect");
@@ -19,7 +19,10 @@ export function initBackgroundSelection()
   });
 
   bgSourceSelect.addEventListener("change", () => {
-    sourceSelectedEvent(bgEditionSelect.value, bgSourceSelect.value);
+    sourceSelectedEvent(
+      bgEditionSelect.value,
+      bgSourceSelect.value
+    );
   });
 
   bgSelect.addEventListener("change", () => {
@@ -35,8 +38,11 @@ export function initBackgroundUI() {
   fillSelect(bgSelect, []);
 }
 
-export function loadBackground(backgroundState)
-{
+// ===============================
+// LOAD CHARACTER
+// ===============================
+
+export function loadBackground(backgroundState) {
   bgEditionSelect.value = backgroundState.edition;
   editionSelectedEvent(backgroundState.edition);
 
@@ -50,7 +56,6 @@ export function loadBackground(backgroundState)
   backgroundSelected(backgroundState.background);
 }
 
-
 // ===============================
 // HANDLERS
 // ===============================
@@ -61,13 +66,15 @@ function editionSelectedEvent(edition) {
 
   if (!edition) return;
 
-  const sources = Object.keys(ALL_BACKGROUNDS[edition] ?? {});
-  const opts = sources.map(s => ({
-    value: s,
-    label: `${s} — ${getSourceDisplayName(s)}`
-  }));
+  const sources = getAvailableBackgroundSources(edition);
 
-  fillSelect(bgSourceSelect, opts);
+  fillSelect(
+    bgSourceSelect,
+    sources,
+    "— Fonte —",
+    src => formatBackgroundSourceLabel(src)
+  );
+
   backgroundEditionSelected(edition);
 }
 
@@ -76,10 +83,34 @@ function sourceSelectedEvent(edition, source) {
 
   if (!edition || !source) return;
 
-  const backgrounds = Object.keys(
-    ALL_BACKGROUNDS?.[edition]?.[source] ?? {}
+  const backgrounds = getAvailableBackgrounds(edition, source);
+
+  fillSelect(
+    bgSelect,
+    backgrounds.map(bg => bg.backgroundName), // ✅ VALUE LIMPO
+    "— Background —",
+    name => {
+      const bg = backgrounds.find(b => b.backgroundName === name);
+      return `${name} — ${getSourceDisplayName(bg.source)}`;
+    }
   );
 
-  fillSelect(bgSelect, backgrounds);
   backgroundSourceSelected(source);
+}
+
+// ===============================
+// LABELS
+// ===============================
+
+function formatBackgroundSourceLabel(source) {
+  switch (source) {
+    case VIRTUAL_SOURCES.ALL:
+      return "Todos os Backgrounds";
+    case VIRTUAL_SOURCES.ALL_BASE:
+      return "Oficiais";
+    case VIRTUAL_SOURCES.ALL_HOMEBREW:
+      return "Homebrews";
+    default:
+      return `${source} — ${getSourceDisplayName(source)}`;
+  }
 }

@@ -6,18 +6,18 @@ import { renderFeatures } from "./baseOverlay.js";
 export function showBackgroundDetailsOverlay()
 {
   const bgState = CharacterState.generalBackground;
-
+  
   if (!bgState.background)
     return;
   const bg =
-    ALL_BACKGROUNDS
-      ?.[bgState.edition]
-      ?.[bgState.source]
-      ?.[bgState.background];
-
+  ALL_BACKGROUNDS
+  ?.[bgState.edition]
+  ?.[bgState.source]
+  ?.[bgState.background];
+  
   if (!bg)
     return;
-
+  
 
   let html = `
     <p><strong>Background:</strong> ${bg.name}</p>

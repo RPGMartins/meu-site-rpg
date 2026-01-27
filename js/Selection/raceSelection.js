@@ -1,19 +1,32 @@
-import { ALL_RACES } from "../data/dataRegistry.js";
+import {  ALL_RACES,  getAvailableRaceSources,  getAvailableRaces,  getRace,  VIRTUAL_SOURCES} from "../data/dataRegistry.js";
+
 import { fillSelect } from "./uiUtils.js";
 import { getSourceDisplayName } from "../data/sourceNames.js";
-import { raceSelected, raceEditionSelected,  raceSourceSelected,  subRaceSelected} from "../state/characterState.js";
 
-  let raceEditionSelect;
-  let raceSourceSelect;
-  let raceSelect;
-  let subRaceSelect;
+import {
+  raceSelected,
+  raceEditionSelected,
+  raceSourceSelected,
+  subRaceSelected
+} from "../state/characterState.js";
 
-export function initRaceSelection()
-{
-  raceEditionSelect  = document.getElementById("EditionSelect");
-  raceSourceSelect   = document.getElementById("raceSourceSelect");
-  raceSelect         = document.getElementById("raceSelect");
-  subRaceSelect      = document.getElementById("subRaceSelect");
+let raceEditionSelect;
+let raceSourceSelect;
+let raceSelect;
+let subRaceSelect;
+
+// cache local das raças listadas (para índice → objeto)
+let currentRaceList = [];
+
+// ===============================
+// INIT
+// ===============================
+
+export function initRaceSelection() {
+  raceEditionSelect = document.getElementById("EditionSelect");
+  raceSourceSelect  = document.getElementById("raceSourceSelect");
+  raceSelect        = document.getElementById("raceSelect");
+  subRaceSelect     = document.getElementById("subRaceSelect");
 
   raceEditionSelect.addEventListener("change", () => {
     editionSelectedEvent(raceEditionSelect.value);
@@ -27,11 +40,7 @@ export function initRaceSelection()
   });
 
   raceSelect.addEventListener("change", () => {
-    raceSelectedEvent(
-      raceEditionSelect.value,
-      raceSourceSelect.value,
-      raceSelect.value
-    );
+    raceSelectedEvent(raceSelect.value);
   });
 
   subRaceSelect.addEventListener("change", () => {
@@ -59,12 +68,17 @@ export function loadRace(raceState) {
   raceSourceSelect.value = raceState.source;
   sourceSelectedEvent(raceState.edition, raceState.source);
 
-  raceSelect.value = raceState.race;
-  raceSelectedEvent(
-    raceState.edition,
-    raceState.source,
-    raceState.race
+  // encontra índice correto (nome + source)
+  const idx = currentRaceList.findIndex(
+    r =>
+      r.raceName === raceState.race &&
+      r.source === raceState.source
   );
+
+  if (idx !== -1) {
+    raceSelect.value = String(idx);
+    raceSelectedEvent(idx);
+  }
 
   subRaceSelect.value = raceState.subRace;
   subRaceSelectedEvent(raceState.subRace);
@@ -78,48 +92,85 @@ function editionSelectedEvent(edition) {
   fillSelect(raceSourceSelect, []);
   fillSelect(raceSelect, []);
   fillSelect(subRaceSelect, []);
+  currentRaceList = [];
 
   if (!edition) return;
 
-  const sources = Object.keys(ALL_RACES[edition] ?? {});
+  const sources = getAvailableRaceSources(edition);
 
-  const sourceOptions = sources.map(src => ({
-    value: src,
-    label: `${src} — ${getSourceDisplayName(src)}`
-  }));
-
-  fillSelect(raceSourceSelect, sourceOptions);
+  fillSelect(
+    raceSourceSelect,
+    sources,
+    "— Fonte —",
+    formatRaceSourceLabel
+  );
 
   raceEditionSelected(edition);
 }
 
-function sourceSelectedEvent(edition, source) {
+function sourceSelectedEvent(edition, sourceFilter) {
   fillSelect(raceSelect, []);
   fillSelect(subRaceSelect, []);
+  currentRaceList = [];
 
-  if (!edition || !source) return;
+  if (!edition || !sourceFilter) return;
 
-  const races = Object.keys(
-    ALL_RACES?.[edition]?.[source] ?? {}
+  const races = getAvailableRaces(edition, sourceFilter);
+  currentRaceList = races;
+
+  fillSelect(
+    raceSelect,
+    races.map((_, i) => i),
+    "— Raça —",
+    i => {
+      const r = races[i];
+      return `${r.raceName} (${getSourceDisplayName(r.source)})`;
+    }
   );
 
-  fillSelect(raceSelect, races);
-  raceSourceSelected(source);
+  raceSourceSelected(sourceFilter);
 }
 
-function raceSelectedEvent(edition, source, raceKey) {
+function raceSelectedEvent(index) {
   fillSelect(subRaceSelect, []);
 
-  if (!edition || !source || !raceKey) return;
+  const raceEntry = currentRaceList[index];
+  if (!raceEntry) return;
 
-  const subraces =
-    ALL_RACES?.[edition]?.[source]?.[raceKey]?.subraces;
+  const raceData = getRace(
+    raceEditionSelect.value,
+    raceEntry.source,
+    raceEntry.raceName
+  );
 
-  fillSelect(subRaceSelect, Object.keys(subraces ?? {}));
-  raceSelected(raceKey);
+  if (!raceData) return;
+
+  fillSelect(
+    subRaceSelect,
+    Object.keys(raceData.subraces ?? {})
+  );
+
+  raceSelected(raceEntry.raceName);
 }
 
 function subRaceSelectedEvent(subraceKey) {
   if (!subraceKey) return;
   subRaceSelected(subraceKey);
+}
+
+// ===============================
+// LABELS
+// ===============================
+
+function formatRaceSourceLabel(source) {
+  switch (source) {
+    case VIRTUAL_SOURCES.ALL:
+      return "Todas as Raças";
+    case VIRTUAL_SOURCES.ALL_BASE:
+      return "Oficiais";
+    case VIRTUAL_SOURCES.ALL_HOMEBREW:
+      return "Homebrews";
+    default:
+      return `${source} — ${getSourceDisplayName(source)}`;
+  }
 }

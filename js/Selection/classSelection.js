@@ -76,16 +76,16 @@ function editionSelectedEvent(edition) {
 
   const sources = Object.keys(ALL_CLASSES[edition] ?? {});
 
-    const sourceOptions = sources.map(src => ({
-    value: src,
-    label: `${src} — ${getSourceDisplayName(src)}`
-  }));
-
-
-  fillSelect(sourceSelect, sourceOptions);
+  fillSelect(
+    sourceSelect,
+    sources,
+    "— Fonte —",
+    src => `${src} — ${getSourceDisplayName(src)}`
+  );
 
   classEditionSelected(edition);
 }
+
 
 function sourceSelectedEvent(edition, source) {
   fillSelect(classSelect, []);

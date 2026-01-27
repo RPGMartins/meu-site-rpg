@@ -15,6 +15,12 @@ export const SOURCE_REGISTRY = {
   homebrew: {}
 };
 
+export const VIRTUAL_SOURCES = {
+  ALL: "__ALL__",
+  ALL_BASE: "__ALL_BASE__",
+  ALL_HOMEBREW: "__ALL_HOMEBREW__"
+};
+
 export function registerSourcesFromMeta(file) {
 
   let group = null;
@@ -73,7 +79,28 @@ function loadFile(data, edition, validSources)
 
   data.feat?.forEach(f => registerFeat(f, edition, validSources));
   data.background?.forEach(b => registerBackground(b, edition, validSources));
+
+  cleanupEmptySources(ALL_CLASSES);
+  cleanupEmptySources(ALL_RACES);
+  cleanupEmptySources(ALL_FEATS);
+  cleanupEmptySources(ALL_BACKGROUNDS);
+  cleanupEmptySources(ALL_CLASS_FEATURES);
+  cleanupEmptySources(ALL_SUBCLASS_FEATURES);
+  cleanupEmptySources(ALL_RACE_FEATURES);
+  cleanupEmptySources(ALL_SUBRACE_FEATURES);
+
 }
+
+function cleanupEmptySources(dict) {
+  for (const edition in dict) {
+    for (const source in dict[edition]) {
+      if (Object.keys(dict[edition][source]).length === 0) {
+        delete dict[edition][source];
+      }
+    }
+  }
+}
+
 
 // ===============================
 // CLASSES
@@ -402,4 +429,176 @@ export function getFeat(name, edition, source) {
 function ValidateSource(validSources, source) {
   if (validSources.length === 0) return true;
   return validSources.includes(source);
+}
+
+function isHomebrewSource(source) {
+  return !!SOURCE_REGISTRY.homebrew[source];
+}
+
+export function getAvailableRaceSources(edition) {
+  const realSources = Object.keys(ALL_RACES?.[edition] ?? {});
+
+  return [
+    VIRTUAL_SOURCES.ALL,
+    VIRTUAL_SOURCES.ALL_BASE,
+    VIRTUAL_SOURCES.ALL_HOMEBREW,
+    ...realSources
+  ];
+}
+
+export function getAvailableRaces(edition, sourceFilter) {
+  const editionData = ALL_RACES?.[edition];
+  if (!editionData) return [];
+
+  let sourcesToScan = [];
+
+  switch (sourceFilter) {
+    case VIRTUAL_SOURCES.ALL:
+      sourcesToScan = Object.keys(editionData);
+      break;
+
+    case VIRTUAL_SOURCES.ALL_BASE:
+      sourcesToScan = Object.keys(editionData)
+        .filter(src => !isHomebrewSource(src));
+      break;
+
+    case VIRTUAL_SOURCES.ALL_HOMEBREW:
+      sourcesToScan = Object.keys(editionData)
+        .filter(isHomebrewSource);
+      break;
+
+    default:
+      sourcesToScan = [sourceFilter];
+      break;
+  }
+
+  const result = [];
+
+  sourcesToScan.forEach(source => {
+    const racesInSource = editionData[source];
+    if (!racesInSource) return;
+
+    Object.keys(racesInSource).forEach(raceName => {
+      result.push({
+        raceName,
+        source
+      });
+    });
+  });
+
+  return result;
+}
+
+export function getRace(edition, source, raceName) {
+  return ALL_RACES?.[edition]?.[source]?.[raceName] ?? null;
+}
+
+
+export function getAvailableBackgroundSources(edition) {
+  const realSources = Object.keys(ALL_BACKGROUNDS?.[edition] ?? {});
+
+  return [
+    VIRTUAL_SOURCES.ALL,
+    VIRTUAL_SOURCES.ALL_BASE,
+    VIRTUAL_SOURCES.ALL_HOMEBREW,
+    ...realSources
+  ];
+}
+
+export function getAvailableBackgrounds(edition, sourceFilter) {
+  const editionData = ALL_BACKGROUNDS?.[edition];
+  if (!editionData) return [];
+
+  let sourcesToScan = [];
+
+  switch (sourceFilter) {
+    case VIRTUAL_SOURCES.ALL:
+      sourcesToScan = Object.keys(editionData);
+      break;
+
+    case VIRTUAL_SOURCES.ALL_BASE:
+      sourcesToScan = Object.keys(editionData)
+        .filter(src => !isHomebrewSource(src));
+      break;
+
+    case VIRTUAL_SOURCES.ALL_HOMEBREW:
+      sourcesToScan = Object.keys(editionData)
+        .filter(isHomebrewSource);
+      break;
+
+    default:
+      sourcesToScan = [sourceFilter];
+      break;
+  }
+
+  const result = [];
+
+  sourcesToScan.forEach(source => {
+    const bgsInSource = editionData[source];
+    if (!bgsInSource) return;
+
+    Object.keys(bgsInSource).forEach(bgName => {
+      result.push({
+        backgroundName: bgName,
+        source
+      });
+    });
+  });
+
+  return result;
+}
+
+
+export function getAvailableFeatSources(edition) {
+  const realSources = Object.keys(ALL_FEATS?.[edition] ?? {});
+
+  return [
+    VIRTUAL_SOURCES.ALL,
+    VIRTUAL_SOURCES.ALL_BASE,
+    VIRTUAL_SOURCES.ALL_HOMEBREW,
+    ...realSources
+  ];
+}
+
+export function getAvailableFeats(edition, sourceFilter) {
+  const editionData = ALL_FEATS?.[edition];
+  if (!editionData) return [];
+
+  let sourcesToScan = [];
+
+  switch (sourceFilter) {
+    case VIRTUAL_SOURCES.ALL:
+      sourcesToScan = Object.keys(editionData);
+      break;
+
+    case VIRTUAL_SOURCES.ALL_BASE:
+      sourcesToScan = Object.keys(editionData)
+        .filter(src => !isHomebrewSource(src));
+      break;
+
+    case VIRTUAL_SOURCES.ALL_HOMEBREW:
+      sourcesToScan = Object.keys(editionData)
+        .filter(isHomebrewSource);
+      break;
+
+    default:
+      sourcesToScan = [sourceFilter];
+      break;
+  }
+
+  const result = [];
+
+  sourcesToScan.forEach(source => {
+    const featsInSource = editionData[source];
+    if (!featsInSource) return;
+
+    Object.keys(featsInSource).forEach(featName => {
+      result.push({
+        featName,
+        source
+      });
+    });
+  });
+
+  return result;
 }

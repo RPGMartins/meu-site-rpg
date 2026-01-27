@@ -18,7 +18,8 @@ export function showFeatsDetailsOverlay()
       ALL_FEATS
         ?.[featsState.edition]
         ?.[featsState.source]
-        ?.[featKey];
+        ?.[featKey.featName];
+  debugger
 
     if (!feat)
       return;

@@ -6,17 +6,25 @@
     </div>
   </h2>
 
-  <div class="field">
-    <label for="featSourceSelect">Fonte</label>
-    <select id="featSourceSelect"></select>
-  </div>
+  <div class="class-controls">
 
-  <div class="field">
-    <label for="featSelect">
-      Feats
-      <small>(Ctrl / Shift para múltiplos)</small>
-    </label>
-    <select id="featSelect" multiple size="8"></select>
+    <div class="field">
+      <label for="featSourceSelect">Fonte</label>
+      <select id="featSourceSelect"></select>
+    </div>
+
+    <div class="field">
+      <label>Feats disponíveis</label>
+      <select id="featAvailableSelect" size="8"></select>
+      <button id="btnAddFeat" class="btn-primary">➕ Adicionar</button>
+    </div>
+
+    <div class="field">
+      <label>Feats escolhidos</label>
+      <select id="featSelectedSelect" size="8"></select>
+      <button id="btnRemoveFeat" class="btn-primary">➖ Remover</button>
+    </div>
+
   </div>
 
   <div id="featInfo" class="class-info"></div>
