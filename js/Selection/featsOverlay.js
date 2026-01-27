@@ -1,6 +1,6 @@
 import { openClassOverlay } from "../ui/overlay.js";
 import { CharacterState } from "../state/characterState.js";
-import { ALL_FEATS } from "../data/dataRegistry.js";
+import {ALL_FEATS, VIRTUAL_SOURCES} from "../data/dataRegistry.js";
 import { renderFeatures } from "./baseOverlay.js";
 
 export function showFeatsDetailsOverlay()
@@ -16,7 +16,7 @@ export function showFeatsDetailsOverlay()
 
     let sourceTouse = featsState.source;
 
-    if(!featsState.source)
+    if(!featsState.source || featsState.source == VIRTUAL_SOURCES.ALL|| featsState.source == VIRTUAL_SOURCES.ALL_BASE|| featsState.source == VIRTUAL_SOURCES.ALL_HOMEBREW)
     {
       sourceTouse = featKey.source;
     }

@@ -91,10 +91,6 @@ async function mainInit(){
 mainInit();
 
 
-
-
-
-
 function init()
 {
   initOverlay()

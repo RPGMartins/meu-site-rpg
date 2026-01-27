@@ -98,19 +98,21 @@ export function renderFeatureOverlay() {
     renderFeatureList({
       container: document.getElementById("featFeatureList"),
       features: feats,
-      getKey: feat => feat,
+      getKey: feat => feat.featName,
+      getLabel: feat => feat.featName, // ← ISSO RESOLVE
       isSelected: key =>
-        !!CharacterState.generalPrint.feats[key],
+          !!CharacterState.generalPrint.feats[key],
       onToggle: key => {
         CharacterState.generalPrint.feats[key]
-          ? delete CharacterState.generalPrint.feats[key]
-          : CharacterState.generalPrint.feats[key] = true;
+            ? delete CharacterState.generalPrint.feats[key]
+            : CharacterState.generalPrint.feats[key] = true;
       }
     });
 
-  /* ─────────────────────────────────────────
-   * SEM FEATS → background vai pra terceira
-   * ─────────────────────────────────────── */
+
+    /* ─────────────────────────────────────────
+     * SEM FEATS → background vai pra terceira
+     * ─────────────────────────────────────── */
   } else {
     middleTitle.textContent = "Subclass & Race";
     rightTitle.textContent  = "Background";
@@ -136,8 +138,9 @@ function renderFeatureList({
   features,
   isSelected,
   onToggle,
-  getKey
-}) {
+  getKey,
+  getLabel
+                           }) {
   if (!container) return;
 
   container.innerHTML = "";
@@ -146,8 +149,12 @@ function renderFeatureList({
     const key = getKey ? getKey(feature, index) : index;
 
     const li = document.createElement("li");
-    li.textContent =
-      feature.name ?? feature.title ?? feature;
+    const label = getLabel
+        ? getLabel(feature)
+        : feature.name ?? feature.title ?? String(feature);
+
+    li.textContent = label;
+
 
     if (isSelected(key)) {
       li.classList.add("selected");
