@@ -582,6 +582,11 @@ export function getAvailableBackgrounds(edition, sourceFilter) {
   return result;
 }
 
+export function getBackground(edition, sourceFilter,backgroundKey)
+{
+  return ALL_BACKGROUNDS?.[edition]?.[sourceFilter]?.[backgroundKey];
+}
+
 
 export function getAvailableFeatSources(edition) {
   const realSources = Object.keys(ALL_FEATS?.[edition] ?? {});

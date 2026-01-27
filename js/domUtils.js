@@ -3,7 +3,7 @@ export async function waitAllElements() {
     "bgSourceSelect",
     "classSelect",
     "featSourceSelect",
-    "raceSourceSelect","btnRemoveFeat"
+    "raceSourceSelect","btnRemoveFeat","featFeatureList","closeFeatureOverlay"
   ]);
 }
 export function waitForElements(ids) {

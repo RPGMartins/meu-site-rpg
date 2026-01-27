@@ -18,6 +18,7 @@ import { downloadCharacterState, uploadCharacterState } from "./state/statePersi
 import { loadFromFile } from "./data/dataRegistry.js"
 import { initHomebrewManagement ,openHomebrewManagement, loadHomebrewFromLocalStorage } from "./ui/homebrewManagement.js"
 
+import { openFeatureOverlay, closeFeatureOverlay } from "./feature/featureOverlay.js"
 import { loadPartial } from "./ui/loadPartials.js";
 import { initOverlay } from "./ui/overlay.js";
 import { waitAllElements } from "./domUtils.js";
@@ -26,18 +27,21 @@ let ALL_INDEX = null;
 
 
 async function mainInit(){
-    await loadPartial("appHeader", "partials/header.html");
+  await loadPartial("appHeader", "partials/header.html");
 
-    await loadPartial("appMain", "partials/classPanel.html");
-    await loadPartial("appMain", "partials/racePanel.html");
-    await loadPartial("appMain", "partials/backgroundPanel.html");
-    await loadPartial("appMain", "partials/featPanel.html");
+  await loadPartial("appMain", "partials/classPanel.html");
+  await loadPartial("appMain", "partials/racePanel.html");
+  await loadPartial("appMain", "partials/backgroundPanel.html");
+  await loadPartial("appMain", "partials/featPanel.html");
 
-    await loadPartial("overlays", "overlays/homebrewOverlay.html");
-    await loadPartial("overlays", "overlays/classOverlay.html");
+  await loadPartial("overlays", "overlays/homebrewOverlay.html");
+  await loadPartial("overlays", "overlays/classOverlay.html");
 
-    document.getElementById("btnSave").onclick = () => {
-    downloadCharacterState();
+  await loadPartial("features", "overlays/featureOverlay.html");
+
+
+  document.getElementById("btnSave").onclick = () => {
+  downloadCharacterState();
   };
 
   document.getElementById("btnLoad").onclick = () => {
@@ -66,6 +70,15 @@ async function mainInit(){
   document.getElementById("btnFeatsDetails").onclick = () => {
       showFeatsDetailsOverlay();;
   };
+
+  document.getElementById("btnFeatures").onclick = () => {
+      openFeatureOverlay();
+  };
+  
+    document.getElementById("closeFeatureOverlay").onclick = () => {
+      closeFeatureOverlay();
+  };
+
   
   await waitAllElements();
 
