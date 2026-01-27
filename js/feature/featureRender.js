@@ -8,66 +8,91 @@ import {
 } from "../data/dataRegistry.js";
 
 /* =========================================================
+ * APPLY LOADED STATE
+ * ======================================================= */
+export function applyLoadedPrintState(loadedPrintState) {
+  if (!loadedPrintState) return;
+
+  CharacterState.generalPrint.classFeatures =
+      Array.isArray(loadedPrintState.classFeatures)
+          ? [...loadedPrintState.classFeatures]
+          : [];
+
+  CharacterState.generalPrint.subclassFeatures =
+      Array.isArray(loadedPrintState.subclassFeatures)
+          ? [...loadedPrintState.subclassFeatures]
+          : [];
+
+  CharacterState.generalPrint.background =
+      loadedPrintState.background ?? null;
+
+  CharacterState.generalPrint.feats =
+      loadedPrintState.feats
+          ? { ...loadedPrintState.feats }
+          : {};
+}
+
+/* =========================================================
  * MAIN RENDER
  * ======================================================= */
 export function renderFeatureOverlay() {
 
   const classFeatures = getClassFeatures(
-    CharacterState.generalClass.class,
-    CharacterState.generalClass.edition,
-    CharacterState.generalClass.source
+      CharacterState.generalClass.class,
+      CharacterState.generalClass.edition,
+      CharacterState.generalClass.source
   );
 
   const subclassFeatures = getSubclassFeatures(
-    CharacterState.generalClass.class,
-    CharacterState.generalClass.edition,
-    CharacterState.generalClass.source,
-    CharacterState.generalClass.subclass
+      CharacterState.generalClass.class,
+      CharacterState.generalClass.edition,
+      CharacterState.generalClass.source,
+      CharacterState.generalClass.subclass
   );
 
   const raceFeatures = getRaceFeatures(
-    CharacterState.generalRace.race,
-    CharacterState.generalRace.edition,
-    CharacterState.generalRace.source
+      CharacterState.generalRace.race,
+      CharacterState.generalRace.edition,
+      CharacterState.generalRace.source
   );
 
   const subraceFeatures = getSubraceFeatures(
-    CharacterState.generalRace.race,
-    CharacterState.generalRace.edition,
-    CharacterState.generalRace.source,
-    CharacterState.generalRace.subRace
+      CharacterState.generalRace.race,
+      CharacterState.generalRace.edition,
+      CharacterState.generalRace.source,
+      CharacterState.generalRace.subRace
   );
 
   const background = getBackground(
-    CharacterState.generalBackground.edition,
-    CharacterState.generalBackground.source,
-    CharacterState.generalBackground.background
+      CharacterState.generalBackground.edition,
+      CharacterState.generalBackground.source,
+      CharacterState.generalBackground.background
   );
 
   const feats = CharacterState.generalFeats.feats ?? [];
 
   /* ─────────────────────────────────────────
-   * COLUNA 1 — CLASS FEATURES (INDEX)
+   * COLUNA 1 — CLASS FEATURES
    * ─────────────────────────────────────── */
   renderFeatureList({
     container: document.getElementById("classFeatureList"),
     features: classFeatures,
     isSelected: i =>
-      CharacterState.generalPrint.classFeatures.includes(i),
+        CharacterState.generalPrint.classFeatures.includes(i),
     onToggle: i =>
-      toggleIndexInArray(CharacterState.generalPrint.classFeatures, i)
+        toggleIndexInArray(CharacterState.generalPrint.classFeatures, i)
   });
 
   /* ─────────────────────────────────────────
-   * COLUNA 2 — SUBCLASS + RACE (INDEX)
+   * COLUNA 2 — SUBCLASS + RACE
    * ─────────────────────────────────────── */
   renderFeatureList({
     container: document.getElementById("subclassFeatureList"),
     features: [...subclassFeatures, ...raceFeatures, ...subraceFeatures],
     isSelected: i =>
-      CharacterState.generalPrint.subclassFeatures.includes(i),
+        CharacterState.generalPrint.subclassFeatures.includes(i),
     onToggle: i =>
-      toggleIndexInArray(CharacterState.generalPrint.subclassFeatures, i)
+        toggleIndexInArray(CharacterState.generalPrint.subclassFeatures, i)
   });
 
   const hasFeats = feats.length > 0;
@@ -82,24 +107,22 @@ export function renderFeatureOverlay() {
     middleTitle.textContent = "Subclass & Race";
     rightTitle.textContent  = "Background & Feats";
 
-    /* Background (single choice) */
     renderSingleChoice({
       container: document.getElementById("backgroundFeatureList"),
       item: background,
       isSelected: key =>
-        CharacterState.generalPrint.background === key,
+          CharacterState.generalPrint.background === key,
       onSelect: key => {
         CharacterState.generalPrint.background =
-          CharacterState.generalPrint.background === key ? null : key;
+            CharacterState.generalPrint.background === key ? null : key;
       }
     });
 
-    /* Feats (KEY BASED) */
     renderFeatureList({
       container: document.getElementById("featFeatureList"),
       features: feats,
       getKey: feat => feat.featName,
-      getLabel: feat => feat.featName, // ← ISSO RESOLVE
+      getLabel: feat => feat.featName,
       isSelected: key =>
           !!CharacterState.generalPrint.feats[key],
       onToggle: key => {
@@ -109,9 +132,8 @@ export function renderFeatureOverlay() {
       }
     });
 
-
     /* ─────────────────────────────────────────
-     * SEM FEATS → background vai pra terceira
+     * SEM FEATS
      * ─────────────────────────────────────── */
   } else {
     middleTitle.textContent = "Subclass & Race";
@@ -121,10 +143,10 @@ export function renderFeatureOverlay() {
       container: document.getElementById("featFeatureList"),
       item: background,
       isSelected: key =>
-        CharacterState.generalPrint.background === key,
+          CharacterState.generalPrint.background === key,
       onSelect: key => {
         CharacterState.generalPrint.background =
-          CharacterState.generalPrint.background === key ? null : key;
+            CharacterState.generalPrint.background === key ? null : key;
       }
     });
   }
@@ -134,12 +156,12 @@ export function renderFeatureOverlay() {
  * GENERIC FEATURE LIST
  * ======================================================= */
 function renderFeatureList({
-  container,
-  features,
-  isSelected,
-  onToggle,
-  getKey,
-  getLabel
+                             container,
+                             features,
+                             isSelected,
+                             onToggle,
+                             getKey,
+                             getLabel
                            }) {
   if (!container) return;
 
@@ -149,12 +171,12 @@ function renderFeatureList({
     const key = getKey ? getKey(feature, index) : index;
 
     const li = document.createElement("li");
+
     const label = getLabel
         ? getLabel(feature)
         : feature.name ?? feature.title ?? String(feature);
 
     li.textContent = label;
-
 
     if (isSelected(key)) {
       li.classList.add("selected");
@@ -173,11 +195,11 @@ function renderFeatureList({
  * SINGLE CHOICE (BACKGROUND)
  * ======================================================= */
 export function renderSingleChoice({
-  container,
-  item,
-  isSelected,
-  onSelect
-}) {
+                                     container,
+                                     item,
+                                     isSelected,
+                                     onSelect
+                                   }) {
   if (!container || !item) return;
 
   container.innerHTML = "";

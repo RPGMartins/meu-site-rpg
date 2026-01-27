@@ -18,7 +18,8 @@ import { downloadCharacterState, uploadCharacterState } from "./state/statePersi
 import { loadFromFile } from "./data/dataRegistry.js"
 import { initHomebrewManagement ,openHomebrewManagement, loadHomebrewFromLocalStorage } from "./ui/homebrewManagement.js"
 
-import { openFeatureOverlay, closeFeatureOverlay } from "./feature/featureOverlay.js"
+import { openFeatureOverlay, closeFeatureOverlay } from "./feature/featureOverlay.js";
+import {applyLoadedPrintState} from "./feature/featureRender.js";
 import { loadPartial } from "./ui/loadPartials.js";
 import { initOverlay } from "./ui/overlay.js";
 import { waitAllElements } from "./domUtils.js";
@@ -74,12 +75,12 @@ async function mainInit(){
   document.getElementById("btnFeatures").onclick = () => {
       openFeatureOverlay();
   };
-  
+
     document.getElementById("closeFeatureOverlay").onclick = () => {
       closeFeatureOverlay();
   };
 
-  
+
   await waitAllElements();
 
   await GetEditionIndex();
@@ -135,6 +136,7 @@ async function callLoadCharacter() {
   loadRace(state.generalRace);
   loadBackground(state.generalBackground);
   loadFeats(state.generalFeats);
+  applyLoadedPrintState(state.generalPrint);
 }
 
 function waitForElement(id) {
