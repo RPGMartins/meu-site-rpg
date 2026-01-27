@@ -3,7 +3,7 @@ export async function waitAllElements() {
     "bgSourceSelect",
     "classSelect",
     "featSourceSelect",
-    "raceSourceSelect"
+    "raceSourceSelect","btnRemoveFeat"
   ]);
 }
 export function waitForElements(ids) {
