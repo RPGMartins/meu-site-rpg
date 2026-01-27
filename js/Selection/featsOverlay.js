@@ -14,12 +14,18 @@ export function showFeatsDetailsOverlay()
 
   featsState.feats.forEach(featKey => {
 
+    let sourceTouse = featsState.source;
+
+    if(!featsState.source)
+    {
+      sourceTouse = featKey.source;
+    }
+
     const feat =
       ALL_FEATS
         ?.[featsState.edition]
-        ?.[featsState.source]
+        ?.[sourceTouse]
         ?.[featKey.featName];
-  debugger
 
     if (!feat)
       return;

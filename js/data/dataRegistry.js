@@ -100,6 +100,38 @@ function cleanupEmptySources(dict) {
     }
   }
 }
+function hasPlayableClassData(cls) {
+  // Classe sem features ainda é válida
+  return (
+    Array.isArray(cls.classFeatures) ||
+    Array.isArray(cls.entries) ||
+    cls.hd ||
+    cls.proficiency ||
+    cls.spellcasting
+  );
+}
+function hasPlayableFeatData(feat) {
+  return Array.isArray(feat.entries) && feat.entries.length > 0;
+}
+function hasPlayableRaceData(race) {
+  return (
+    Array.isArray(race.entries) ||
+    race.speed ||
+    race.size ||
+    race.traitTags
+  );
+}
+function hasPlayableSubraceData(subrace) {
+  return Array.isArray(subrace.entries) && subrace.entries.length > 0;
+}
+function hasPlayableBackgroundData(bg) {
+  return (
+    Array.isArray(bg.entries) ||
+    bg.skillProficiencies ||
+    bg.toolProficiencies ||
+    bg.languageProficiencies
+  );
+}
 
 
 // ===============================
@@ -110,8 +142,8 @@ export function registerClassFile(classData, forcedEdition, validSources = []) {
   if (!Array.isArray(classData?.class)) return;
 
   classData.class.forEach(baseClass => {
-
-    if (!ValidateSource(validSources, baseClass.source)) return;
+  if (!ValidateSource(validSources, baseClass.source)) return;
+  if (!hasPlayableClassData(baseClass)) return;
 
     const edition = forcedEdition;
     const source = baseClass.source;
@@ -215,7 +247,8 @@ export function registerSubclassFeatures(subclassFeatureData, forcedEdition, val
 
 export function registerFeat(feat, forcedEdition, validSources = []) {
   if (!ValidateSource(validSources, feat.source)) return;
-
+  if (!hasPlayableFeatData(feat)) return;
+  
   const edition = forcedEdition;
   const source = feat.source;
   const key = feat.name;
@@ -234,6 +267,7 @@ export function registerRaceFile(raceData, forcedEdition, validSources = []) {
   raceData.race?.forEach(race => {
 
     if (!ValidateSource(validSources, race.source)) return;
+    if (!hasPlayableRaceData(race)) return;
 
     const edition = forcedEdition;
     const source = race.source;
@@ -293,9 +327,8 @@ function registerSubraceFeatures(raceData, forcedEdition, validSources = []) {
   if (!Array.isArray(raceData?.subrace)) return;
 
   raceData.subrace.forEach(subrace => {
-
     if (!ValidateSource(validSources, subrace.source)) return;
-
+    if (!hasPlayableSubraceData(subrace)) return;
     if (!Array.isArray(subrace.entries)) return;
 
     const edition = forcedEdition;
@@ -323,7 +356,8 @@ function registerSubraceFeatures(raceData, forcedEdition, validSources = []) {
 
 export function registerBackground(bg, forcedEdition, validSources = []) {
   if (!ValidateSource(validSources, bg.source)) return;
-
+  if (!hasPlayableBackgroundData(bg)) return;
+  
   const edition = forcedEdition;
   const source = bg.source;
   const key = bg.name;
