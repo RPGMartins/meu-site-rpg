@@ -527,6 +527,10 @@ export function getRace(edition, source, raceName) {
   return ALL_RACES?.[edition]?.[source]?.[raceName] ?? null;
 }
 
+export function getSubrace(edition, source, raceName, subraceName) {
+  return getRace(edition,source,raceName)?.subraces[subraceName] ?? null;
+}
+
 
 export function getAvailableBackgroundSources(edition) {
   const realSources = Object.keys(ALL_BACKGROUNDS?.[edition] ?? {});

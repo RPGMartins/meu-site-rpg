@@ -18,7 +18,7 @@ import { downloadCharacterState, uploadCharacterState } from "./state/statePersi
 import { loadFromFile } from "./data/dataRegistry.js"
 import { initHomebrewManagement ,openHomebrewManagement, loadHomebrewFromLocalStorage } from "./ui/homebrewManagement.js"
 
-import { openFeatureOverlay, closeFeatureOverlay } from "./feature/featureOverlay.js";
+import {openFeatureOverlay, closeFeatureOverlay, initFeatureOverlay} from "./feature/featureOverlay.js";
 import {applyLoadedPrintState} from "./feature/featureRender.js";
 import { loadPartial } from "./ui/loadPartials.js";
 import { initOverlay } from "./ui/overlay.js";
@@ -109,6 +109,7 @@ export function reloadUI()
   initRaceUI();
   initBackgroundUI();
   initFeatUI();
+  initFeatureOverlay();
 }
 
 async function GetEditionIndex() {

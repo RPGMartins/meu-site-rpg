@@ -58,9 +58,9 @@ export function renderFeatureOverlay() {
 
   const subraceFeatures = getSubraceFeatures(
       CharacterState.generalRace.race,
+      CharacterState.generalRace.subRace,
       CharacterState.generalRace.edition,
-      CharacterState.generalRace.source,
-      CharacterState.generalRace.subRace
+      CharacterState.generalRace.source
   );
 
   const background = getBackground(
