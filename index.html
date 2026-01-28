@@ -1,241 +1,33 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Ficha D&D 5e</title>
-    <link rel="stylesheet" href="css/sheet.css">
+  <meta charset="UTF-8">
+  <title>RPG Builder</title>
+  <link rel="stylesheet" href="css/overlay.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/featureOverlay.css">
+
 </head>
+<body>
 
 <body>
 
-<form class="charsheet">
+  <!-- HEADER / GLOBAL ACTIONS -->
+  <header id="appHeader"></header>
 
-    <!-- ================= HEADER ================= -->
-    <header>
-        <section class="charname">
-            <label>Nome do Personagem</label>
-            <input placeholder="Thoradin Fireforge">
-        </section>
+  <!-- MAIN CONTENT -->
+  <main id="appMain"></main>
 
-        <section class="misc">
-            <ul>
-                <li><label>Classe & Nível</label><input placeholder="Paladino 2"></li>
-                <li><label>Antecedente</label><input placeholder="Acólito"></li>
-                <li><label>Jogador</label><input placeholder="Player"></li>
-                <li><label>Raça</label><input placeholder="Meio-elfo"></li>
-                <li><label>Alinhamento</label><input placeholder="Leal e Bom"></li>
-                <li><label>XP</label><input placeholder="3240"></li>
-            </ul>
-        </section>
-    </header>
+  <!-- OVERLAYS -->
+  <div id="overlays"></div>
 
-    <!-- ================= MAIN ================= -->
-    <main>
-
-        <!-- ================= ATTRIBUTES ================= -->
-        <section class="attributes-horizontal">
-
-            <!-- FORÇA -->
-            <div class="attribute">
-                <input type="checkbox" class="save-prof">
-                <label>Força</label>
-                <input class="score" placeholder="10">
-                <input class="mod" placeholder="+0">
-
-                <div class="skills">
-                    <label class="skill">
-                        <input type="checkbox"> Atletismo
-                    </label>
-                </div>
-            </div>
-
-            <!-- DESTREZA -->
-            <div class="attribute">
-                <input type="checkbox" class="save-prof">
-                <label>Destreza</label>
-                <input class="score" placeholder="10">
-                <input class="mod" placeholder="+0">
-
-                <div class="skills">
-                    <label class="skill"><input type="checkbox"> Acrobacia</label>
-                    <label class="skill"><input type="checkbox"> Prestidigitação</label>
-                    <label class="skill"><input type="checkbox"> Furtividade</label>
-                </div>
-            </div>
-
-            <!-- CONSTITUIÇÃO -->
-            <div class="attribute">
-                <input type="checkbox" class="save-prof">
-                <label>Constituição</label>
-                <input class="score" placeholder="10">
-                <input class="mod" placeholder="+0">
-                <div class="skills"></div>
-            </div>
-
-            <!-- INTELIGÊNCIA -->
-            <div class="attribute">
-                <input type="checkbox" class="save-prof">
-                <label>Inteligência</label>
-                <input class="score" placeholder="10">
-                <input class="mod" placeholder="+0">
-
-                <div class="skills">
-                    <label class="skill"><input type="checkbox"> Arcanismo</label>
-                    <label class="skill"><input type="checkbox"> História</label>
-                    <label class="skill"><input type="checkbox"> Investigação</label>
-                    <label class="skill"><input type="checkbox"> Natureza</label>
-                    <label class="skill"><input type="checkbox"> Religião</label>
-                </div>
-            </div>
-
-            <!-- SABEDORIA -->
-            <div class="attribute">
-                <input type="checkbox" class="save-prof">
-                <label>Sabedoria</label>
-                <input class="score" placeholder="10">
-                <input class="mod" placeholder="+0">
-
-                <div class="skills">
-                    <label class="skill"><input type="checkbox"> Adestrar Animais</label>
-                    <label class="skill"><input type="checkbox"> Intuição</label>
-                    <label class="skill"><input type="checkbox"> Medicina</label>
-                    <label class="skill"><input type="checkbox"> Percepção</label>
-                    <label class="skill"><input type="checkbox"> Sobrevivência</label>
-                </div>
-            </div>
-
-            <!-- CARISMA -->
-            <div class="attribute">
-                <input type="checkbox" class="save-prof">
-                <label>Carisma</label>
-                <input class="score" placeholder="10">
-                <input class="mod" placeholder="+0">
-
-                <div class="skills">
-                    <label class="skill"><input type="checkbox"> Atuação</label>
-                    <label class="skill"><input type="checkbox"> Enganação</label>
-                    <label class="skill"><input type="checkbox"> Intimidação</label>
-                    <label class="skill"><input type="checkbox"> Persuasão</label>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- ================= COMBAT ================= -->
-        <section class="combat">
-
-            <div class="combat-box prof">
-                <label>Bônus Prof.</label>
-                <input placeholder="+2">
-            </div>
-
-            <div class="combat-box">
-                <label>Iniciativa</label>
-                <input placeholder="+0">
-            </div>
-
-            <div class="combat-box hp">
-                <label>Vida</label>
-                <div class="hp-row">
-                    <div>
-                        <span>Máx</span>
-                        <input placeholder="20">
-                    </div>
-                    <div>
-                        <span>Atual</span>
-                        <input>
-                    </div>
-                    <div>
-                        <span>Temp</span>
-                        <input>
-                    </div>
-                </div>
-            </div>
-
-            <div class="combat-box">
-                <label>CA</label>
-                <input placeholder="10">
-            </div>
-
-            <div class="combat-box">
-                <label>Desloc.</label>
-                <input placeholder="30">
-            </div>
-
-            <div class="combat-box">
-                <label>CD Magia</label>
-                <input placeholder="13">
-            </div>
-
-        </section>
-
-        <section class="death-saves">
-            <div class="death-card">
-                <label>Testes contra a Morte</label>
-
-                <div class="death-columns">
-                    <div class="death-col success">
-                        <span>Sucessos</span>
-                        <label><input type="checkbox"></label>
-                        <label><input type="checkbox"></label>
-                        <label><input type="checkbox"></label>
-                    </div>
-
-                    <div class="death-col failure">
-                        <span>Falhas</span>
-                        <label><input type="checkbox"></label>
-                        <label><input type="checkbox"></label>
-                        <label><input type="checkbox"></label>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="attacks">
-            <label>Ataques</label>
-
-            <div class="attacks-box">
-                <!-- Espaço livre para ataques -->
-            </div>
-        </section>
+  <div id="features"></div>
 
 
-        <!-- ================= FEATURES ================= -->
-        <section class="proficiencies">
-            <label>Proficiências</label>
-
-            <div class="prof-grid">
-
-                <div class="prof-block">
-                    <span>Armas</span>
-                    <textarea placeholder="Simples, marciais, espada longa, arco longo..."></textarea>
-                </div>
-
-                <div class="prof-block">
-                    <span>Armaduras</span>
-                    <textarea placeholder="Leves, médias, escudos..."></textarea>
-                </div>
-
-                <div class="prof-block">
-                    <span>Ferramentas</span>
-                    <textarea placeholder="Ferramentas de ladrão, kit de herbalismo..."></textarea>
-                </div>
-
-                <div class="prof-block">
-                    <span>Idiomas</span>
-                    <textarea placeholder="Comum, Élfico, Anão..."></textarea>
-                </div>
-
-                <div class="prof-block full">
-                    <span>Resistências, Imunidades & Outras Proficiências</span>
-                    <textarea placeholder="Resistência a fogo, vantagem contra medo, proficiência em salvaguardas de Sabedoria..."></textarea>
-                </div>
-
-            </div>
-        </section>
-    </main>
-
-</form>
+  <!-- SCRIPTS -->
+  <script type="module" src="js/main.js"></script>
+</body>
 
 </body>
 </html>
