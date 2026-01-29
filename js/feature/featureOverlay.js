@@ -29,14 +29,14 @@ export function initFeatureOverlay() {
     const printable = resolvePrintableFeatures();
 
     /*
-     * Aqui você decide como mapear para {{ }}
-     * Exemplo simples:
+     * Mapeamento dos {{ }}
+     * Ajuste livremente conforme a ficha crescer
      */
     const templateData = {
-      classeNivel: printable.classBase?.name ?? "",
-      subclasseNome: printable.subClassBase?.name ?? "",
-      racaNome: printable.raceBase?.name ?? "",
-      antecedenteNome: printable.bgBase?.name ?? "",
+      classeNivel: printable.classBase?.name +" ("+ printable.subClassBase?.name + ")" ?? "",
+      raca: printable.raceBase?.race?.name +" ("+ printable.raceBase?.subraces[CharacterState?.generalRace?.subRace]?.name + ")" ?? "",
+      antecedente: printable.bgBase?.name ?? "",
+      vida: "d"+printable.classBase?.hd.faces ?? "",
 
       classFeatures: printable.classFeatures
           .map(f => f.name)
@@ -56,33 +56,72 @@ export function initFeatureOverlay() {
 }
 
 /* =========================================================
- * DOWNLOAD
+ * DOWNLOAD PIPELINE
  * ======================================================= */
 async function downloadSheet(data) {
-  const html = await loadSheetTemplate();
-  const finalHtml = applyTemplate(html, data);
+  const { html, css } = await loadSheetAssets();
+
+  const htmlWithCss = inlineCss(html, css);
+  const finalHtml   = applyTemplate(htmlWithCss, data);
+
   forceDownload(finalHtml, "ficha.html");
 }
 
+/* =========================================================
+ * TEMPLATE
+ * ======================================================= */
 function applyTemplate(html, data) {
-  return html.replace(/{{\s*(\w+)\s*}}/g, (_, key) =>
-  {
+  return html.replace(/{{\s*(\w+)\s*}}/g, (_, key) => {
     return key in data ? data[key] : "";
   });
 }
 
-async function loadSheetTemplate() {
-  const res = await fetch("../partials/sheet.html");
-  return await res.text();
+/* =========================================================
+ * LOAD HTML + CSS
+ * ======================================================= */
+async function loadSheetAssets() {
+  const [htmlRes, cssRes] = await Promise.all([
+    fetch("../partials/sheet.html"),
+    fetch("../css/sheet.css")
+  ]);
+
+  return {
+    html: await htmlRes.text(),
+    css: await cssRes.text()
+  };
 }
 
+/* =========================================================
+ * INLINE CSS
+ * ======================================================= */
+function inlineCss(html, css) {
+  // remove <link rel="stylesheet">
+  html = html.replace(
+      /<link[^>]+rel=["']stylesheet["'][^>]*>/i,
+      ""
+  );
+
+  // injeta o css dentro do <head>
+  return html.replace(
+      "</head>",
+      `<style>\n${css}\n</style>\n</head>`
+  );
+}
+
+/* =========================================================
+ * FORCE DOWNLOAD
+ * ======================================================= */
 function forceDownload(content, filename) {
-  const blob = new Blob([content], { type: "text/html;charset=utf-8" });
+  const blob = new Blob([content], {
+    type: "text/html;charset=utf-8"
+  });
+
   const url = URL.createObjectURL(blob);
 
   const a = document.createElement("a");
   a.href = url;
   a.download = filename;
+
   document.body.appendChild(a);
   a.click();
 
