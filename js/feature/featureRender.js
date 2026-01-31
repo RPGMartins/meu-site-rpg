@@ -45,9 +45,9 @@ export function renderFeatureOverlay() {
 
   const subclassFeatures = getSubclassFeatures(
       CharacterState.generalClass.class,
+      CharacterState.generalClass.subclass,
       CharacterState.generalClass.edition,
       CharacterState.generalClass.source,
-      CharacterState.generalClass.subclass
   );
 
   const raceFeatures = getRaceFeatures(

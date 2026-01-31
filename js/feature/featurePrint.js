@@ -1,7 +1,7 @@
 ﻿import {
     getBackground,
     getClass,
-    getClassFeatures,
+    getClassFeatures, getFeat,
     getRace,
     getRaceFeatures, getSubClass,
     getSubclassFeatures,
@@ -56,13 +56,14 @@ export function resolvePrintableFeatures() {
         CharacterState.generalClass.source
     );
 
+    const subclassFeatures = getSubclassFeatures(
+        CharacterState.generalClass.class,
+        CharacterState.generalClass.subclass,
+        CharacterState.generalClass.edition,
+        CharacterState.generalClass.source,
+    );
+
     const subclassRaceFeatures = [
-        ...getSubclassFeatures(
-            CharacterState.generalClass.class,
-            CharacterState.generalClass.edition,
-            CharacterState.generalClass.source,
-            CharacterState.generalClass.subclass
-        ),
         ...getRaceFeatures(
             CharacterState.generalRace.race,
             CharacterState.generalRace.edition,
@@ -70,20 +71,34 @@ export function resolvePrintableFeatures() {
         ),
         ...getSubraceFeatures(
             CharacterState.generalRace.race,
+            CharacterState.generalRace.subRace,
             CharacterState.generalRace.edition,
-            CharacterState.generalRace.source,
-            CharacterState.generalRace.subRace
+            CharacterState.generalRace.source
         )
     ];
 
-    const featPool = CharacterState.generalFeats.feats ?? [];
+    var featPool = [];
+    for (const feat of CharacterState.generalFeats.feats)
+    {
+        var x = getFeat(feat.featName,CharacterState.generalFeats.edition,feat.source);
+        if(!x)
+        {
+            continue;
+        }
+        featPool.push(x);
+
+    }
 
     /* ================= SELECTED FEATURES ================= */
     const selectedClassFeatures = CharacterState.generalPrint.classFeatures
         .map(i => classFeatures[i])
         .filter(Boolean);
 
-    const selectedSubclassFeatures = CharacterState.generalPrint.subclassFeatures
+    const selectedSubClassFeatures = CharacterState.generalPrint.subclassFeatures
+        .map(i => subclassFeatures[i])
+        .filter(Boolean);
+
+    const selectedRaceFeatures = CharacterState.generalPrint.subclassFeatures
         .map(i => subclassRaceFeatures[i])
         .filter(Boolean);
 
@@ -91,10 +106,6 @@ export function resolvePrintableFeatures() {
         CharacterState.generalPrint.background && backgroundBase
             ? [backgroundBase]
             : [];
-
-    const selectedFeatFeatures = featPool.filter(
-        feat => CharacterState.generalPrint.feats?.[feat.featName]
-    );
 
     /* ================= FINAL OBJECT ================= */
     return {
@@ -107,8 +118,9 @@ export function resolvePrintableFeatures() {
 
         /* Selected Features */
         classFeatures: selectedClassFeatures,
-        subclassFeatures: selectedSubclassFeatures,
+        subclassFeatures: selectedSubClassFeatures,
+        raceFeatures: selectedRaceFeatures,
         bgFeatures: selectedBackgroundFeatures,
-        featFeatures: selectedFeatFeatures
+        featFeatures: featPool
     };
 }

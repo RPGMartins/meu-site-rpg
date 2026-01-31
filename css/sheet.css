@@ -405,3 +405,43 @@ proficiencies {
         border-radius: 12px;
     height: 190px; /* altura pensada pra A4 */
 }
+
+.class-features {
+    margin-top: 12mm;
+}
+
+
+
+.feature-level {
+    font-style: italic;
+    margin-right: 6px;
+}
+
+.feature-block {
+    margin-bottom: 12px;
+    page-break-inside: avoid;
+}
+
+.feature-title {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    border-bottom: 1px solid #000;
+    margin-bottom: 4px;
+}
+
+.feature-text p {
+    margin: 2px 0;
+    font-size: 11px;
+}
+.feature-section {
+    margin-bottom: 2rem;
+}
+
+.feature-section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    border-bottom: 2px solid #444;
+    padding-bottom: 0.25rem;
+}

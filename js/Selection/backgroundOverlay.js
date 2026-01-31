@@ -33,7 +33,7 @@ export function showBackgroundDetailsOverlay()
 
 function prepareBackgroundFeatures(background)
 {
-  if (!background.entries)
+  if(!background || !background.entries)
     return "";
 
   return renderFeatures(background.entries);
