@@ -473,9 +473,9 @@ export function getAvailableRaceSources(edition) {
   const realSources = Object.keys(ALL_RACES?.[edition] ?? {});
 
   return [
-    VIRTUAL_SOURCES.ALL,
+    /*VIRTUAL_SOURCES.ALL,
     VIRTUAL_SOURCES.ALL_BASE,
-    VIRTUAL_SOURCES.ALL_HOMEBREW,
+    VIRTUAL_SOURCES.ALL_HOMEBREW,*/
     ...realSources
   ];
 }
@@ -536,9 +536,9 @@ export function getAvailableBackgroundSources(edition) {
   const realSources = Object.keys(ALL_BACKGROUNDS?.[edition] ?? {});
 
   return [
-    VIRTUAL_SOURCES.ALL,
+    /*VIRTUAL_SOURCES.ALL,
     VIRTUAL_SOURCES.ALL_BASE,
-    VIRTUAL_SOURCES.ALL_HOMEBREW,
+    VIRTUAL_SOURCES.ALL_HOMEBREW,*/
     ...realSources
   ];
 }
