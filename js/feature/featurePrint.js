@@ -1,9 +1,11 @@
 ﻿import {
     getBackground,
     getClass,
-    getClassFeatures, getFeat,
+    getClassFeatures,
+    getFeat,
     getRace,
-    getRaceFeatures, getSubClass,
+    getRaceFeatures,
+    getSubClass,
     getSubclassFeatures,
     getSubrace,
     getSubraceFeatures
@@ -12,11 +14,10 @@
 import { CharacterState } from "../state/characterState.js";
 
 /* =========================================================
- * RESOLVE PRINTABLE DATA (STRUCTURED)
+ * RESOLVE PRINTABLE DATA
  * ======================================================= */
 export function resolvePrintableFeatures() {
 
-    /* ================= BASE OBJECTS ================= */
     const classBase = getClass(
         CharacterState.generalClass.class,
         CharacterState.generalClass.edition,
@@ -49,7 +50,6 @@ export function resolvePrintableFeatures() {
         CharacterState.generalBackground.background
     );
 
-    /* ================= FEATURE POOLS ================= */
     const classFeatures = getClassFeatures(
         CharacterState.generalClass.class,
         CharacterState.generalClass.edition,
@@ -60,10 +60,10 @@ export function resolvePrintableFeatures() {
         CharacterState.generalClass.class,
         CharacterState.generalClass.subclass,
         CharacterState.generalClass.edition,
-        CharacterState.generalClass.source,
+        CharacterState.generalClass.source
     );
 
-    const subclassRaceFeatures = [
+    const raceFeatures = [
         ...getRaceFeatures(
             CharacterState.generalRace.race,
             CharacterState.generalRace.edition,
@@ -77,50 +77,59 @@ export function resolvePrintableFeatures() {
         )
     ];
 
-    var featPool = [];
-    for (const feat of CharacterState.generalFeats.feats)
-    {
-        var x = getFeat(feat.featName,CharacterState.generalFeats.edition,feat.source);
-        if(!x)
-        {
-            continue;
-        }
-        featPool.push(x);
-
-    }
-
-    /* ================= SELECTED FEATURES ================= */
-    const selectedClassFeatures = CharacterState.generalPrint.classFeatures
-        .map(i => classFeatures[i])
+    /* ================= FEATS ================= */
+    const featPool = CharacterState.generalFeats.feats
+        .map(f => getFeat(f.featName, CharacterState.generalFeats.edition, f.source))
         .filter(Boolean);
 
-    const selectedSubClassFeatures = CharacterState.generalPrint.subclassFeatures
-        .map(i => subclassFeatures[i])
-        .filter(Boolean);
+    /* ================= SELECTED (ORDER SAFE) ================= */
 
-    const selectedRaceFeatures = CharacterState.generalPrint.subclassFeatures
-        .map(i => subclassRaceFeatures[i])
-        .filter(Boolean);
+    const selectedClassFeatures = extractSelected(
+        classFeatures,
+        CharacterState.generalPrint.classFeatures
+    );
+
+    const selectedSubClassFeatures = extractSelected(
+        subclassFeatures,
+        CharacterState.generalPrint.subclassFeatures
+    );
+
+    const selectedRaceFeatures = extractSelected(
+        raceFeatures,
+        CharacterState.generalPrint.subclassFeatures
+    );
 
     const selectedBackgroundFeatures =
         CharacterState.generalPrint.background && backgroundBase
             ? [backgroundBase]
             : [];
 
-    /* ================= FINAL OBJECT ================= */
-    return {
-        /* Bases */
+    return {    
         classBase,
         subClassBase: subclassBase,
         raceBase,
         subRaceBase,
         bgBase: backgroundBase,
 
-        /* Selected Features */
         classFeatures: selectedClassFeatures,
         subclassFeatures: selectedSubClassFeatures,
         raceFeatures: selectedRaceFeatures,
         bgFeatures: selectedBackgroundFeatures,
         featFeatures: featPool
     };
+}
+
+/* =========================================================
+ * HELPERS
+ * ======================================================= */
+function extractSelected(featurePool, selectedIndexes = []) {
+    if (!Array.isArray(featurePool) || !Array.isArray(selectedIndexes)) {
+        return [];
+    }
+
+    return selectedIndexes
+        .slice()              // não muta o state
+        .sort((a, b) => a - b) // ORDEM REAL DAS FEATURES
+        .map(i => featurePool[i])
+        .filter(Boolean);
 }

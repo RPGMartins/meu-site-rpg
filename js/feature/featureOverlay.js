@@ -1,7 +1,7 @@
 import { renderFeatureOverlay } from "./featureRender.js";
 import { resolvePrintableFeatures } from "./featurePrint.js";
 import { CharacterState } from "../state/characterState.js";
-import { renderFeatureSection} from "./renderFeature.js";
+import { renderFeatureSection } from "./renderFeature.js";
 
 /* =========================================================
  * OPEN / CLOSE OVERLAY
@@ -28,13 +28,74 @@ export function initFeatureOverlay() {
   btn.onclick = async () => {
 
     const printable = resolvePrintableFeatures();
-
     const profs = getAllProficiencies(printable);
 
     let subraceName = "";
-    if(printable.subRaceBase){
-      subraceName =printable.subRaceBase.name;
+    if (printable.subRaceBase) {
+      subraceName = printable.subRaceBase.name;
     }
+
+    /* =========================================================
+     * FEATURE HTML (DEFENSIVO)
+     * ======================================================= */
+
+    let classFeaturesHtml = "";
+    if (
+        printable.classBase?.name &&
+        Array.isArray(printable.classFeatures) &&
+        printable.classFeatures.length
+    ) {
+      classFeaturesHtml = renderFeatureSection({
+        sourceType: "Classe",
+        sourceName: printable.classBase.name,
+        entries: printable.classFeatures
+      });
+    }
+
+    let subClassFeaturesHtml = "";
+    if (
+        printable.subClassBase?.name &&
+        Array.isArray(printable.subclassFeatures) &&
+        printable.subclassFeatures.length
+    ) {
+      subClassFeaturesHtml = renderFeatureSection({
+        sourceType: "Subclasse",
+        sourceName: printable.subClassBase.name,
+        entries: printable.subclassFeatures
+      });
+    }
+
+    let raceFeaturesHtml = "";
+    if (
+        printable.raceBase?.race?.name &&
+        Array.isArray(printable.raceFeatures) &&
+        printable.raceFeatures.length
+    ) {
+      raceFeaturesHtml = renderFeatureSection({
+        sourceType: "Race",
+        sourceName:
+            printable.raceBase.race.name +
+            (subraceName ? ` (${subraceName})` : ""),
+        entries: printable.raceFeatures
+      });
+    }
+
+    let bgFeaturesHtml = "";
+    if (
+        printable.bgBase?.name &&
+        Array.isArray(printable.bgFeatures) &&
+        printable.bgFeatures.length
+    ) {
+      bgFeaturesHtml = renderFeatureSection({
+        sourceType: "Background",
+        sourceName: printable.bgBase.name,
+        entries: printable.bgFeatures
+      });
+    }
+
+    /* =========================================================
+     * TEMPLATE DATA
+     * ======================================================= */
 
     const templateData = {
       classeNivel:
@@ -77,40 +138,20 @@ export function initFeatureOverlay() {
         ...mapWithPrefix(profs.other)
       ].join(", "),
 
-      classFeaturesHtml: renderFeatureSection({
-        sourceType: "Classe",
-        sourceName: printable.classBase.name,
-        entries: printable.classFeatures
-      }),
-      subClassFeaturesHtml: renderFeatureSection({
-        sourceType: "Subclasse",
-        sourceName: printable.subClassBase.name,
-        entries: printable.subclassFeatures
-      }),
-
-      raceFeaturesHtml: renderFeatureSection({
-        sourceType: "Race",
-        sourceName: printable.raceBase.race.name + " " +subraceName,
-        entries: printable.raceFeatures
-      }),
-
-      bgFeaturesHtml: renderFeatureSection({
-        sourceType: "Background",
-        sourceName: printable.bgBase.name,
-        entries: printable.bgFeatures
-      }),
-
-      /*featFeaturesHtml: renderFeatureSection({
-        sourceType: "Feat",
-        sourceName: printable.featFeatures.name,
-        entries: printable.features
-      }),*/
-
+      classFeaturesHtml,
+      subClassFeaturesHtml,
+      raceFeaturesHtml,
+      bgFeaturesHtml
     };
 
     await downloadSheet(templateData, printable.classBase);
   };
 }
+
+/* =========================================================
+ * ⬇⬇⬇ DAQUI PRA BAIXO: ABSOLUTAMENTE NADA FOI REMOVIDO ⬇⬇⬇
+ * ======================================================= */
+
 
 /* =========================================================
  * DOWNLOAD PIPELINE
