@@ -158,8 +158,11 @@ export function initFeatureOverlay() {
       await downloadSheet(templateData, printable.classBase);
 
     } catch (err) {
-      console.error(err);
-      alert("Erro ao gerar a ficha.");
+      alert(
+          "Erro ao gerar ficha:\n\n" +
+          (err?.message || err?.toString() || "erro desconhecido")
+      );
+      throw err; // deixa quebrar também no desktop
     }
   };
 }
