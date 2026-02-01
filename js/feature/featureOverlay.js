@@ -245,16 +245,16 @@ function forceDownload(content, filename) {
 
   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  if (isMobile) {
+  //if (isMobile) {
     window.open(url, "_blank");
-  } else {
+  /*} else {
     const a = document.createElement("a");
     a.href = url;
     a.download = filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-  }
+  }*/
 
   URL.revokeObjectURL(url);
 }
