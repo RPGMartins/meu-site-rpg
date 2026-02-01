@@ -190,8 +190,8 @@ function applyTemplate(html, data) {
  * ======================================================= */
 async function loadSheetAssets() {
   const [htmlRes, cssRes] = await Promise.all([
-    fetch("../partials/sheet.html"),
-    fetch("../css/sheet.css")
+    fetch("../../partials/sheet.html"),
+    fetch("../../css/sheet.css")
   ]);
 
   return {
