@@ -34,24 +34,6 @@ export function initFeatureOverlay() {
       return;
     }
 
-    // escreve algo imediatamente para manter a aba viva
-    popup.document.open();
-    popup.document.write(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Gerando ficha...</title>
-          <meta charset="utf-8">
-        </head>
-        <body>
-          <p style="font-family:sans-serif">
-            Gerando ficha, aguarde…
-          </p>
-        </body>
-      </html>
-    `);
-    popup.document.close();
-
     try {
       const printable = resolvePrintableFeatures();
       const profs = getAllProficiencies(printable);
@@ -181,11 +163,19 @@ async function downloadSheet(data, classBase, popup) {
   finalHtml = applySavingThrowProficiencies(finalHtml, classBase);
   finalHtml = applyTemplate(finalHtml, data);
 
-  // reescreve o conteúdo final na aba já aberta
-  popup.document.open();
-  popup.document.write(finalHtml);
-  popup.document.close();
+  const blob = new Blob([finalHtml], {
+    type: "text/html;charset=utf-8"
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  // 🔑 ISSO é o que funciona no mobile
+  popup.location.href = url;
+
+  // limpa depois (não imediatamente!)
+  setTimeout(() => URL.revokeObjectURL(url), 30_000);
 }
+
 
 
 /* =========================================================
