@@ -104,7 +104,7 @@ export function resolvePrintableFeatures() {
             ? [backgroundBase]
             : [];
 
-    return {    
+    return {
         classBase,
         subClassBase: subclassBase,
         raceBase,

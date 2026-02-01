@@ -93,6 +93,14 @@ export function initFeatureOverlay() {
       });
     }
 
+
+
+    let featFeaturesHtml =  renderFeatureSection({
+      sourceType: "Feat",
+      sourceName: "",
+      entries: printable.featFeatures
+    })
+
     /* =========================================================
      * TEMPLATE DATA
      * ======================================================= */
@@ -141,7 +149,8 @@ export function initFeatureOverlay() {
       classFeaturesHtml,
       subClassFeaturesHtml,
       raceFeaturesHtml,
-      bgFeaturesHtml
+      bgFeaturesHtml,
+      featFeaturesHtml
     };
 
     await downloadSheet(templateData, printable.classBase);
