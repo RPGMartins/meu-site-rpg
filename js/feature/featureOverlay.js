@@ -35,6 +35,23 @@ export function initFeatureOverlay() {
       return;
     }
 
+    popup.document.open();
+    popup.document.write(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Gerando ficha...</title>
+        <meta charset="utf-8">
+      </head>
+      <body>
+        <p style="font-family:sans-serif">
+          Gerando ficha, aguarde…
+        </p>
+      </body>
+    </html>
+  `);
+    popup.document.close();
+
     try {
       const printable = resolvePrintableFeatures();
       const profs = getAllProficiencies(printable);
