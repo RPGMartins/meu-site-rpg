@@ -26,30 +26,30 @@ export function initFeatureOverlay() {
   if (!btn) return;
 
   btn.onclick = async () => {
-
     // 🔑 ABRE A ABA IMEDIATAMENTE (CRÍTICO PARA MOBILE)
-    const popup = window.open("", "_blank");
+    const popup = window.open("about:blank", "_blank");
 
     if (!popup) {
       alert("Permita popups para gerar a ficha.");
       return;
     }
 
+    // escreve algo imediatamente para manter a aba viva
     popup.document.open();
     popup.document.write(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>Gerando ficha...</title>
-        <meta charset="utf-8">
-      </head>
-      <body>
-        <p style="font-family:sans-serif">
-          Gerando ficha, aguarde…
-        </p>
-      </body>
-    </html>
-  `);
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Gerando ficha...</title>
+          <meta charset="utf-8">
+        </head>
+        <body>
+          <p style="font-family:sans-serif">
+            Gerando ficha, aguarde…
+          </p>
+        </body>
+      </html>
+    `);
     popup.document.close();
 
     try {
@@ -64,7 +64,6 @@ export function initFeatureOverlay() {
       /* =========================================================
        * FEATURE HTML
        * ======================================================= */
-
       let classFeaturesHtml = "";
       if (
           printable.classBase?.name &&
@@ -128,7 +127,6 @@ export function initFeatureOverlay() {
       /* =========================================================
        * TEMPLATE DATA
        * ======================================================= */
-
       const templateData = {
         classeNivel:
             `${printable.classBase?.name ?? ""}` +
@@ -173,26 +171,21 @@ export function initFeatureOverlay() {
   };
 }
 
-
-  /* =========================================================
-   * ⬇⬇⬇ DAQUI PRA BAIXO: ABSOLUTAMENTE NADA FOI REMOVIDO ⬇⬇⬇
-   * ======================================================= */
-
-
 /* =========================================================
  * DOWNLOAD PIPELINE
  * ======================================================= */
-  async function downloadSheet(data, classBase, popup) {
-    const { html, css } = await loadSheetAssets();
+async function downloadSheet(data, classBase, popup) {
+  const { html, css } = await loadSheetAssets();
 
-    let finalHtml = inlineCss(html, css);
-    finalHtml = applySavingThrowProficiencies(finalHtml, classBase);
-    finalHtml = applyTemplate(finalHtml, data);
+  let finalHtml = inlineCss(html, css);
+  finalHtml = applySavingThrowProficiencies(finalHtml, classBase);
+  finalHtml = applyTemplate(finalHtml, data);
 
-    popup.document.open();
-    popup.document.write(finalHtml);
-    popup.document.close();
-  }
+  // reescreve o conteúdo final na aba já aberta
+  popup.document.open();
+  popup.document.write(finalHtml);
+  popup.document.close();
+}
 
 
 /* =========================================================
