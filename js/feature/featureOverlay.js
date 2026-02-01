@@ -26,14 +26,6 @@ export function initFeatureOverlay() {
   if (!btn) return;
 
   btn.onclick = async () => {
-    // 🔑 ABRE A ABA IMEDIATAMENTE (CRÍTICO PARA MOBILE)
-    const popup = window.open("about:blank", "_blank");
-
-    if (!popup) {
-      alert("Permita popups para gerar a ficha.");
-      return;
-    }
-
     try {
       const printable = resolvePrintableFeatures();
       const profs = getAllProficiencies(printable);
@@ -46,6 +38,7 @@ export function initFeatureOverlay() {
       /* =========================================================
        * FEATURE HTML
        * ======================================================= */
+
       let classFeaturesHtml = "";
       if (
           printable.classBase?.name &&
@@ -109,10 +102,13 @@ export function initFeatureOverlay() {
       /* =========================================================
        * TEMPLATE DATA
        * ======================================================= */
+
       const templateData = {
         classeNivel:
             `${printable.classBase?.name ?? ""}` +
-            (printable.subClassBase ? ` (${printable.subClassBase.name})` : ""),
+            (printable.subClassBase
+                ? ` (${printable.subClassBase.name})`
+                : ""),
 
         raca:
             `${printable.raceBase?.race?.name ?? ""}` +
@@ -121,12 +117,29 @@ export function initFeatureOverlay() {
                 : ""),
 
         antecedente: printable.bgBase?.name ?? "",
-        vida: printable.classBase?.hd ? `d${printable.classBase.hd.faces}` : "",
+        vida: printable.classBase?.hd
+            ? `d${printable.classBase.hd.faces}`
+            : "",
 
-        proficienciasArmas: profs.weapons.map(proficiencyToString).filter(Boolean).join(","),
-        proficienciasArmaduras: profs.armor.map(proficiencyToString).filter(Boolean).join(","),
-        proficienciasFerramentas: profs.tools.map(proficiencyToString).filter(Boolean).join(","),
-        idiomas: profs.languages.map(proficiencyToString).filter(Boolean).join(","),
+        proficienciasArmas: profs.weapons
+            .map(proficiencyToString)
+            .filter(Boolean)
+            .join(", "),
+
+        proficienciasArmaduras: profs.armor
+            .map(proficiencyToString)
+            .filter(Boolean)
+            .join(", "),
+
+        proficienciasFerramentas: profs.tools
+            .map(proficiencyToString)
+            .filter(Boolean)
+            .join(", "),
+
+        idiomas: profs.languages
+            .map(proficiencyToString)
+            .filter(Boolean)
+            .join(","),
 
         outrasProficiencias: [
           ...mapWithPrefix(profs.skills),
@@ -142,40 +155,47 @@ export function initFeatureOverlay() {
         featFeaturesHtml
       };
 
-      // ⬇️ passa a aba aberta
-      await downloadSheet(templateData, printable.classBase, popup);
+      await downloadSheet(templateData, printable.classBase);
 
     } catch (err) {
-      popup.close();
       console.error(err);
       alert("Erro ao gerar a ficha.");
     }
   };
 }
 
+
 /* =========================================================
  * DOWNLOAD PIPELINE
  * ======================================================= */
-async function downloadSheet(data, classBase, popup) {
+async function downloadSheet(data, classBase) {
   const { html, css } = await loadSheetAssets();
 
   let finalHtml = inlineCss(html, css);
   finalHtml = applySavingThrowProficiencies(finalHtml, classBase);
   finalHtml = applyTemplate(finalHtml, data);
 
-  const blob = new Blob([finalHtml], {
+  baixarArquivoHTML(finalHtml, "ficha_personagem.html");
+}
+
+function baixarArquivoHTML(conteudo, nomeArquivo) {
+  const blob = new Blob([conteudo], {
     type: "text/html;charset=utf-8"
   });
 
   const url = URL.createObjectURL(blob);
 
-  // 🔑 ISSO é o que funciona no mobile
-  popup.location.href = url;
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = nomeArquivo;
+  a.style.display = "none";
 
-  // limpa depois (não imediatamente!)
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
   setTimeout(() => URL.revokeObjectURL(url), 30_000);
 }
-
 
 
 /* =========================================================
