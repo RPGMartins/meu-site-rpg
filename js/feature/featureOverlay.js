@@ -243,16 +243,22 @@ function forceDownload(content, filename) {
 
   const url = URL.createObjectURL(blob);
 
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  document.body.appendChild(a);
-  a.click();
+  if (isMobile) {
+    window.open(url, "_blank");
+  } else {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
 
-  document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
+
 
 /* =========================================================
  * PROFICIENCY RESOLVER
