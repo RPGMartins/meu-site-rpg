@@ -27,154 +27,156 @@ export function initFeatureOverlay() {
 
   btn.onclick = async () => {
 
-    const printable = resolvePrintableFeatures();
-    const profs = getAllProficiencies(printable);
+    // 🔑 ABRE A ABA IMEDIATAMENTE (CRÍTICO PARA MOBILE)
+    const popup = window.open("", "_blank");
 
-    let subraceName = "";
-    if (printable.subRaceBase) {
-      subraceName = printable.subRaceBase.name;
+    if (!popup) {
+      alert("Permita popups para gerar a ficha.");
+      return;
     }
 
-    /* =========================================================
-     * FEATURE HTML (DEFENSIVO)
-     * ======================================================= */
+    try {
+      const printable = resolvePrintableFeatures();
+      const profs = getAllProficiencies(printable);
 
-    let classFeaturesHtml = "";
-    if (
-        printable.classBase?.name &&
-        Array.isArray(printable.classFeatures) &&
-        printable.classFeatures.length
-    ) {
-      classFeaturesHtml = renderFeatureSection({
-        sourceType: "Classe",
-        sourceName: printable.classBase.name,
-        entries: printable.classFeatures
+      let subraceName = "";
+      if (printable.subRaceBase) {
+        subraceName = printable.subRaceBase.name;
+      }
+
+      /* =========================================================
+       * FEATURE HTML
+       * ======================================================= */
+
+      let classFeaturesHtml = "";
+      if (
+          printable.classBase?.name &&
+          Array.isArray(printable.classFeatures) &&
+          printable.classFeatures.length
+      ) {
+        classFeaturesHtml = renderFeatureSection({
+          sourceType: "Classe",
+          sourceName: printable.classBase.name,
+          entries: printable.classFeatures
+        });
+      }
+
+      let subClassFeaturesHtml = "";
+      if (
+          printable.subClassBase?.name &&
+          Array.isArray(printable.subclassFeatures) &&
+          printable.subclassFeatures.length
+      ) {
+        subClassFeaturesHtml = renderFeatureSection({
+          sourceType: "Subclasse",
+          sourceName: printable.subClassBase.name,
+          entries: printable.subclassFeatures
+        });
+      }
+
+      let raceFeaturesHtml = "";
+      if (
+          printable.raceBase?.race?.name &&
+          Array.isArray(printable.raceFeatures) &&
+          printable.raceFeatures.length
+      ) {
+        raceFeaturesHtml = renderFeatureSection({
+          sourceType: "Race",
+          sourceName:
+              printable.raceBase.race.name +
+              (subraceName ? ` (${subraceName})` : ""),
+          entries: printable.raceFeatures
+        });
+      }
+
+      let bgFeaturesHtml = "";
+      if (
+          printable.bgBase?.name &&
+          Array.isArray(printable.bgFeatures) &&
+          printable.bgFeatures.length
+      ) {
+        bgFeaturesHtml = renderFeatureSection({
+          sourceType: "Background",
+          sourceName: printable.bgBase.name,
+          entries: printable.bgFeatures
+        });
+      }
+
+      let featFeaturesHtml = renderFeatureSection({
+        sourceType: "Feat",
+        sourceName: "",
+        entries: printable.featFeatures
       });
+
+      /* =========================================================
+       * TEMPLATE DATA
+       * ======================================================= */
+
+      const templateData = {
+        classeNivel:
+            `${printable.classBase?.name ?? ""}` +
+            (printable.subClassBase ? ` (${printable.subClassBase.name})` : ""),
+
+        raca:
+            `${printable.raceBase?.race?.name ?? ""}` +
+            (printable.raceBase?.subraces?.[CharacterState.generalRace.subRace]
+                ? ` (${printable.raceBase.subraces[CharacterState.generalRace.subRace].name})`
+                : ""),
+
+        antecedente: printable.bgBase?.name ?? "",
+        vida: printable.classBase?.hd ? `d${printable.classBase.hd.faces}` : "",
+
+        proficienciasArmas: profs.weapons.map(proficiencyToString).filter(Boolean).join(","),
+        proficienciasArmaduras: profs.armor.map(proficiencyToString).filter(Boolean).join(","),
+        proficienciasFerramentas: profs.tools.map(proficiencyToString).filter(Boolean).join(","),
+        idiomas: profs.languages.map(proficiencyToString).filter(Boolean).join(","),
+
+        outrasProficiencias: [
+          ...mapWithPrefix(profs.skills),
+          ...mapWithPrefix(profs.resistances, "R "),
+          ...mapWithPrefix(profs.immunities, "I "),
+          ...mapWithPrefix(profs.other)
+        ].join(", "),
+
+        classFeaturesHtml,
+        subClassFeaturesHtml,
+        raceFeaturesHtml,
+        bgFeaturesHtml,
+        featFeaturesHtml
+      };
+
+      // ⬇️ passa a aba aberta
+      await downloadSheet(templateData, printable.classBase, popup);
+
+    } catch (err) {
+      popup.close();
+      console.error(err);
+      alert("Erro ao gerar a ficha.");
     }
-
-    let subClassFeaturesHtml = "";
-    if (
-        printable.subClassBase?.name &&
-        Array.isArray(printable.subclassFeatures) &&
-        printable.subclassFeatures.length
-    ) {
-      subClassFeaturesHtml = renderFeatureSection({
-        sourceType: "Subclasse",
-        sourceName: printable.subClassBase.name,
-        entries: printable.subclassFeatures
-      });
-    }
-
-    let raceFeaturesHtml = "";
-    if (
-        printable.raceBase?.race?.name &&
-        Array.isArray(printable.raceFeatures) &&
-        printable.raceFeatures.length
-    ) {
-      raceFeaturesHtml = renderFeatureSection({
-        sourceType: "Race",
-        sourceName:
-            printable.raceBase.race.name +
-            (subraceName ? ` (${subraceName})` : ""),
-        entries: printable.raceFeatures
-      });
-    }
-
-    let bgFeaturesHtml = "";
-    if (
-        printable.bgBase?.name &&
-        Array.isArray(printable.bgFeatures) &&
-        printable.bgFeatures.length
-    ) {
-      bgFeaturesHtml = renderFeatureSection({
-        sourceType: "Background",
-        sourceName: printable.bgBase.name,
-        entries: printable.bgFeatures
-      });
-    }
-
-
-
-    let featFeaturesHtml =  renderFeatureSection({
-      sourceType: "Feat",
-      sourceName: "",
-      entries: printable.featFeatures
-    })
-
-    /* =========================================================
-     * TEMPLATE DATA
-     * ======================================================= */
-
-    const templateData = {
-      classeNivel:
-          `${printable.classBase?.name ?? ""}` +
-          (printable.subClassBase ? ` (${printable.subClassBase.name})` : ""),
-
-      raca:
-          `${printable.raceBase?.race?.name ?? ""}` +
-          (printable.raceBase?.subraces?.[CharacterState.generalRace.subRace]
-              ? ` (${printable.raceBase.subraces[CharacterState.generalRace.subRace].name})`
-              : ""),
-
-      antecedente: printable.bgBase?.name ?? "",
-      vida: printable.classBase?.hd ? `d${printable.classBase.hd.faces}` : "",
-
-      proficienciasArmas: profs.weapons
-          .map(proficiencyToString)
-          .filter(Boolean)
-          .join(","),
-
-      proficienciasArmaduras: profs.armor
-          .map(proficiencyToString)
-          .filter(Boolean)
-          .join(","),
-
-      proficienciasFerramentas: profs.tools
-          .map(proficiencyToString)
-          .filter(Boolean)
-          .join(","),
-
-      idiomas: profs.languages
-          .map(proficiencyToString)
-          .filter(Boolean)
-          .join(","),
-
-      outrasProficiencias: [
-        ...mapWithPrefix(profs.skills),
-        ...mapWithPrefix(profs.resistances, "R "),
-        ...mapWithPrefix(profs.immunities, "I "),
-        ...mapWithPrefix(profs.other)
-      ].join(", "),
-
-      classFeaturesHtml,
-      subClassFeaturesHtml,
-      raceFeaturesHtml,
-      bgFeaturesHtml,
-      featFeaturesHtml
-    };
-
-    await downloadSheet(templateData, printable.classBase);
   };
 }
 
-/* =========================================================
- * ⬇⬇⬇ DAQUI PRA BAIXO: ABSOLUTAMENTE NADA FOI REMOVIDO ⬇⬇⬇
- * ======================================================= */
+
+  /* =========================================================
+   * ⬇⬇⬇ DAQUI PRA BAIXO: ABSOLUTAMENTE NADA FOI REMOVIDO ⬇⬇⬇
+   * ======================================================= */
 
 
 /* =========================================================
  * DOWNLOAD PIPELINE
  * ======================================================= */
-async function downloadSheet(data, classBase) {
-  const { html, css } = await loadSheetAssets();
+  async function downloadSheet(data, classBase, popup) {
+    const { html, css } = await loadSheetAssets();
 
-  let finalHtml = inlineCss(html, css);
+    let finalHtml = inlineCss(html, css);
+    finalHtml = applySavingThrowProficiencies(finalHtml, classBase);
+    finalHtml = applyTemplate(finalHtml, data);
 
-  finalHtml = applySavingThrowProficiencies(finalHtml, classBase);
-  finalHtml = applyTemplate(finalHtml, data);
+    popup.document.open();
+    popup.document.write(finalHtml);
+    popup.document.close();
+  }
 
-  forceDownload(finalHtml, "ficha.html");
-}
 
 /* =========================================================
  * TEMPLATE
@@ -231,32 +233,6 @@ function applySavingThrowProficiencies(html, classBase) {
   });
 
   return html;
-}
-
-/* =========================================================
- * FORCE DOWNLOAD
- * ======================================================= */
-function forceDownload(content, filename) {
-  const blob = new Blob([content], {
-    type: "text/html;charset=utf-8"
-  });
-
-  const url = URL.createObjectURL(blob);
-
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-  //if (isMobile) {
-    window.open(url, "_blank");
-  /*} else {
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }*/
-
-  URL.revokeObjectURL(url);
 }
 
 
